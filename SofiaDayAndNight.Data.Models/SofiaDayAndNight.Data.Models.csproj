@@ -53,6 +53,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstracts\BaseModel.cs" />
+    <Compile Include="Contracts\IAuditable.cs" />
+    <Compile Include="Contracts\IDeletable.cs" />
+    <Compile Include="Contracts\IForbidabble.cs" />
     <Compile Include="Multimedia.cs" />
     <Compile Include="MultimediaImage.cs" />
     <Compile Include="Comment.cs" />
@@ -65,7 +69,7 @@
     <Compile Include="IndividualPlace.cs" />
     <Compile Include="Place.cs" />
     <Compile Include="Privacy.cs" />
-    <Compile Include="ApplicationUser.cs" />
+    <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserType.cs" />
   </ItemGroup>

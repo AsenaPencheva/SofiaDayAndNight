@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using SofiaDayAndNight.Data.Models.Abstracts;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SofiaDayAndNight.Data.Models
 {
-    public class Place
+    public class Place : BaseModel
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
-        public int ApplicationUserId { get; set; }
-
-        public ApplicationUser User { get; set; }
+        public User User { get; set; }
 
         [Required]
         public string Name { get; set; }

@@ -1,4 +1,6 @@
 ﻿using SofiaDayAndNight.Common.Attributes;
+using SofiaDayAndNight.Data.Models.Abstracts;
+using SofiaDayAndNight.Data.Models.Contracts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,10 +8,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SofiaDayAndNight.Data.Models
 {
-    public class Event
+    public class Event : BaseModel, IForbidabble
     {
-        public int Id { get; set; }
-
         [Required]
         [MinLength(3)]
         [MaxLength(50)]
@@ -19,14 +19,12 @@ namespace SofiaDayAndNight.Data.Models
         public string Description { get; set; }
 
         [DefaultValue(12)]
-        public int AgeRestriction { get; set; } 
-
-        public bool IsDeleted { get; set; }
-
-        public bool IsBanned { get; set; } 
+        public int AgeRestriction { get; set; }
 
         [DefaultValue(0)] //???
         public Privacy Privacy { get; set; }
+
+        public bool IsForbidden { get; set; }
 
         [DateRange]
         public DateTime Begins { get; set; }

@@ -6,16 +6,18 @@ using System.Linq.Expressions;
 
 using Bytes2you.Validation;
 using SofiaDayAndNight.Data.Contracts;
+using SofiaDayAndNight.Data.Contratcs;
+using SofiaDayAndNight.Data.Models.Contracts;
 
 namespace SofiaDayAndNight.Data.EfDbSetWrappers
 {
     public class EfDbSetWrapper<T> : IEfDbSetWrapper<T>
-         where T : class
+         where T : class, IDeletable
     {
-        private readonly DbContext efDbContext;
+        private readonly ISofiaDayAndNightDbContext efDbContext;
         private readonly IDbSet<T> dbSet;
 
-        public EfDbSetWrapper(DbContext efDbContext)
+        public EfDbSetWrapper(ISofiaDayAndNightDbContext efDbContext)
         {
             Guard.WhenArgument(efDbContext, "efDbContext").IsNull().Throw();
 
@@ -43,10 +45,10 @@ namespace SofiaDayAndNight.Data.EfDbSetWrappers
 
         public void Add(T entity)
         {
-            DbEntityEntry entry = this.efDbContext.Entry(entity);
-            if (entry.State != EntityState.Detached)
+            var state = this.efDbContext.GetState<T>(entity);
+            if (state != EntityState.Detached)
             {
-                entry.State = EntityState.Added;
+                this.efDbContext.SetEntryState(entity, EntityState.Added);
             }
             else
             {
@@ -56,27 +58,21 @@ namespace SofiaDayAndNight.Data.EfDbSetWrappers
 
         public void Update(T entity)
         {
-            DbEntityEntry entry = this.efDbContext.Entry(entity);
-            if (entry.State == EntityState.Detached)
+            var state = this.efDbContext.GetState<T>(entity);
+            if (state != EntityState.Detached)
             {
-                this.dbSet.Attach(entity);
+                this.efDbContext.Set<T>().Attach(entity);
             }
 
-            entry.State = EntityState.Modified;
+            this.efDbContext.SetEntryState(entity, EntityState.Added);
         }
 
         public void Delete(T entity)
         {
-            DbEntityEntry entry = this.efDbContext.Entry(entity);
-            if (entry.State != EntityState.Deleted)
-            {
-                entry.State = EntityState.Deleted;
-            }
-            else
-            {
-                this.dbSet.Attach(entity);
-                this.dbSet.Remove(entity);
-            }
+            entity.IsDeleted = true;
+            entity.DeletedOn = DateTime.Now;
+
+           this.efDbContext.SetEntryState(entity, EntityState.Modified);
         }
     }
 }

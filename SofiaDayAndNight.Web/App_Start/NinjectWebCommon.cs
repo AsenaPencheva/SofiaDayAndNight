@@ -3,13 +3,18 @@
 
 namespace SofiaDayAndNight.Web.App_Start
 {
+    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using System;
     using System.Web;
-
-    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+    using System.Data.Entity;
 
     using Ninject;
     using Ninject.Web.Common;
+    using Ninject.Extensions.Conventions;
+
+    using SofiaDayAndNight.Data;
+    using SofiaDayAndNight.Data.Contracts;
+    using SofiaDayAndNight.Data.EfDbSetWrappers;
 
     public static class NinjectWebCommon 
     {
@@ -61,6 +66,22 @@ namespace SofiaDayAndNight.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind(x =>
+            {
+                x.FromThisAssembly()
+                 .SelectAllClasses()
+                 .BindDefaultInterface();
+            });
+
+            //kernel.Bind(x =>
+            //{
+            //    x.FromAssembliesInPath("SofiaDayAndNight.Data.Services")
+            //     .SelectAllClasses()
+            //     .BindDefaultInterface();
+            //});
+
+            kernel.Bind(typeof(DbContext), typeof(SofiaDayAndNightDbContext)).To<SofiaDayAndNightDbContext>().InRequestScope();
+            kernel.Bind(typeof(IEfDbSetWrapper<>)).To(typeof(EfDbSetWrapper<>));
         }        
     }
 }

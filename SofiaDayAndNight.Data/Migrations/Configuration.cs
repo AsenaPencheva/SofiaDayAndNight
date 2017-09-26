@@ -1,18 +1,16 @@
 namespace SofiaDayAndNight.Data.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    public sealed class Configuration : DbMigrationsConfiguration<SofiaDayAndNight.Data.SofiaDayAndNightDbContext>
+    public sealed class Configuration : DbMigrationsConfiguration<SofiaDayAndNightDbContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            this.AutomaticMigrationsEnabled = false;
+            this.AutomaticMigrationDataLossAllowed = false;
         }
 
-        protected override void Seed(SofiaDayAndNight.Data.SofiaDayAndNightDbContext context)
+        protected override void Seed(SofiaDayAndNightDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
@@ -26,6 +24,11 @@ namespace SofiaDayAndNight.Data.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+        }
+
+        private void SeedAdmin(SofiaDayAndNightDbContext context)
+        {
+
         }
     }
 }

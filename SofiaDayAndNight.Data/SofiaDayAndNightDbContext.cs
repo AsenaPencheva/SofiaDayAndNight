@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System.Data.Entity;
-
-using SofiaDayAndNight.Data.Contracts;
-using SofiaDayAndNight.Data.Models;
 using System;
+using System.Data.Entity;
+using System.Linq;
+
+using SofiaDayAndNight.Data.Contratcs;
+using SofiaDayAndNight.Data.Models;
+using SofiaDayAndNight.Data.Models.Contracts;
 
 namespace SofiaDayAndNight.Data
 {
-    public class SofiaDayAndNightDbContext : IdentityDbContext<ApplicationUser>, ISofiaDayAndNightDbContextSaveChanges
+    public class SofiaDayAndNightDbContext : IdentityDbContext<User>, ISofiaDayAndNightDbContext
     {
         public SofiaDayAndNightDbContext()
             : base("SofiaDayAndNightDatabase")
@@ -70,7 +72,6 @@ namespace SofiaDayAndNight.Data
             modelBuilder.Entity<Comment>()
                 .HasRequired(c => c.Image)
                 .WithMany(i => i.Comments);
-                //.WillCascadeOnDelete();
         }
 
         private void OnEventAttended(DbModelBuilder modelBuilder)
@@ -104,11 +105,41 @@ namespace SofiaDayAndNight.Data
             return new SofiaDayAndNightDbContext();
         }
 
+        public override int SaveChanges()
+        {
+            this.ApplyAuditInfoRules();
+            return base.SaveChanges();
+        }
+
         public void SetEntryState(object entity, EntityState entityState)
         {
             var entry = this.Entry(entity);
             entry.State = entityState;
         }
 
+        public EntityState GetState<T>(T entity) where T : class
+        {
+            return this.Entry(entity).State;
+        }
+
+        private void ApplyAuditInfoRules()
+        {
+            foreach (var entry in
+                this.ChangeTracker.Entries()
+                    .Where(
+                        e =>
+                        e.Entity is IAuditable && ((e.State == EntityState.Added) || (e.State == EntityState.Modified))))
+            {
+                var entity = (IAuditable)entry.Entity;
+                if (entry.State == EntityState.Added && entity.CreatedOn == default(DateTime))
+                {
+                    entity.CreatedOn = DateTime.Now;
+                }
+                else
+                {
+                    entity.ModifiedOn = DateTime.Now;
+                }
+            }
+        }
     }
 }

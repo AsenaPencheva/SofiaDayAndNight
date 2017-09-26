@@ -1,24 +1,18 @@
-﻿using System;
+﻿using SofiaDayAndNight.Data.Models.Abstracts;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SofiaDayAndNight.Data.Models
 {
-    public class Comment
+    public class Comment:BaseModel
     {
-        public int Id { get; set; }
-
         [Required]
-        public int ApplicationUserId { get; set; }
+        public int UserId { get; set; }
 
-        public virtual ApplicationUser Author { get; set; }
+        public virtual User Author { get; set; }
 
         [Required]
         public string Content { get; set; }
-
-        [Required]
-        public DateTime CreatedOn { get; set; }
-
-        public bool isDeleted { get; set; }
 
         [Required]
         public int ImageId { get; set; }

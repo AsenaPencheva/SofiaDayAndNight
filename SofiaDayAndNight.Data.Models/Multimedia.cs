@@ -1,11 +1,9 @@
-﻿namespace SofiaDayAndNight.Data.Models
+﻿using SofiaDayAndNight.Data.Models.Abstracts;
+
+namespace SofiaDayAndNight.Data.Models
 {
-    public class Multimedia
+    public class Multimedia : BaseModel
     {
-        public int Id { get; set; }
-
-        public bool IsDeleted { get; set; }
-
         public Privacy Privacy { get; set; }
 
         public int Likes { get; set; }

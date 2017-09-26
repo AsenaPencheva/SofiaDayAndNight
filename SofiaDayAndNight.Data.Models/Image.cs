@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using SofiaDayAndNight.Data.Models.Abstracts;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace SofiaDayAndNight.Data.Models
 {
-    public class Image
+    public class Image : BaseModel
     {
-        public int Id { get; set; }
-
         [Required]
         public string Name { get; set; }
 
@@ -19,8 +18,6 @@ namespace SofiaDayAndNight.Data.Models
         public byte[] Data { get; set; }
 
         //public bool IsSelected { get; set; }
-
-        public bool IsDeleted { get; set; }
 
         [DefaultValue(Privacy.OnlyFriends)]
         public Privacy Privacy { get; set; }

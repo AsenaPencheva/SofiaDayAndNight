@@ -7,13 +7,13 @@ namespace SofiaDayAndNight.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class addedattributesandcollectionsfixedmodels : IMigrationMetadata
+    public sealed partial class abstractmodelsanddbContextfixedmodels : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addedattributesandcollectionsfixedmodels));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(abstractmodelsanddbContextfixedmodels));
         
         string IMigrationMetadata.Id
         {
-            get { return "201709250736137_added attributes and collections, fixed models"; }
+            get { return "201709261239592_abstract models and dbContext fixed models"; }
         }
         
         string IMigrationMetadata.Source
