@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B008A818-4859-44AF-BD2D-D5ED0AB4A9EC}</ProjectGuid>
+    <ProjectGuid>{E9F5D3C8-DD88-42E4-96D8-7B1EEEB7EC3A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SofiaDayAndNight.Data</RootNamespace>
-    <AssemblyName>SofiaDayAndNight.Data</AssemblyName>
+    <RootNamespace>SofiaDayAndNight.Data.Services</RootNamespace>
+    <AssemblyName>SofiaDayAndNight.Data.Services</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,10 +34,10 @@
       <HintPath>..\packages\Bytes2you.Validation.2.0.0.0\lib\portable-win+net40+sl40+wp+Xbox40\Bytes2you.Validation.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -56,53 +56,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\IEfDbSetWrapper.cs" />
-    <Compile Include="Contracts\ISaveContext.cs" />
-    <Compile Include="EfDbSetWrappers\EfDbSetWrapper.cs" />
-    <Compile Include="Contracts\ISofiaDayAndNightDbContext.cs" />
-    <Compile Include="Migrations\201709231139291_InitialCreate.cs" />
-    <Compile Include="Migrations\201709231139291_InitialCreate.Designer.cs">
-      <DependentUpon>201709231139291_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709241228249_event attendence tables.cs" />
-    <Compile Include="Migrations\201709241228249_event attendence tables.Designer.cs">
-      <DependentUpon>201709241228249_event attendence tables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709241243454_split individual and place from user.cs" />
-    <Compile Include="Migrations\201709241243454_split individual and place from user.Designer.cs">
-      <DependentUpon>201709241243454_split individual and place from user.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709261239592_abstract models and dbContext fixed models.cs" />
-    <Compile Include="Migrations\201709261239592_abstract models and dbContext fixed models.Designer.cs">
-      <DependentUpon>201709261239592_abstract models and dbContext fixed models.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="SofiaDayAndNightDbContext.cs" />
+    <Compile Include="BaseService.cs" />
+    <Compile Include="EventService.cs" />
+    <Compile Include="IndividualService.cs" />
+    <Compile Include="Models\IndividualModel.cs" />
+    <Compile Include="PlaceService.cs" />
+    <Compile Include="UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SofiaDayAndNight.Data.Models\SofiaDayAndNight.Data.Models.csproj">
       <Project>{8E0B4541-6099-4BCA-960D-264B689CC109}</Project>
       <Name>SofiaDayAndNight.Data.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SofiaDayAndNight.Data\SofiaDayAndNight.Data.csproj">
+      <Project>{B008A818-4859-44AF-BD2D-D5ED0AB4A9EC}</Project>
+      <Name>SofiaDayAndNight.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201709231139291_InitialCreate.resx">
-      <DependentUpon>201709231139291_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709241228249_event attendence tables.resx">
-      <DependentUpon>201709241228249_event attendence tables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709241243454_split individual and place from user.resx">
-      <DependentUpon>201709241243454_split individual and place from user.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709261239592_abstract models and dbContext fixed models.resx">
-      <DependentUpon>201709261239592_abstract models and dbContext fixed models.cs</DependentUpon>
-    </EmbeddedResource>
+    <Folder Include="Contracts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,10 +6,11 @@ using System.Linq;
 using SofiaDayAndNight.Data.Contratcs;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Models.Contracts;
+using SofiaDayAndNight.Data.Contracts;
 
 namespace SofiaDayAndNight.Data
 {
-    public class SofiaDayAndNightDbContext : IdentityDbContext<User>, ISofiaDayAndNightDbContext
+    public class SofiaDayAndNightDbContext : IdentityDbContext<User>, ISofiaDayAndNightDbContext, ISaveContext
     {
         public SofiaDayAndNightDbContext()
             : base("SofiaDayAndNightDatabase")
