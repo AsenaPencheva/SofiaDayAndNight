@@ -1,17 +1,22 @@
-﻿using SofiaDayAndNight.Data.Models.Abstracts;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
+using SofiaDayAndNight.Data.Models.Abstracts;
+using SofiaDayAndNight.Common.Enums;
 
 namespace SofiaDayAndNight.Data.Models
 {
     public class Image : BaseModel
     {
+        public Image()
+        {
+            this.Privacy = Privacy.OnlyFriends;
+        }
+
         [Required]
         public string Name { get; set; }
 
         [Required]
-
         public string ContentType { get; set; }
 
         [Required]
@@ -19,12 +24,19 @@ namespace SofiaDayAndNight.Data.Models
 
         //public bool IsSelected { get; set; }
 
-        [DefaultValue(Privacy.OnlyFriends)]
         public Privacy Privacy { get; set; }
 
         public int Likes { get; set; }
 
         public int Dislikes { get; set; }
+
+        public int EventId { get; set; }
+
+        public Event Event { get; set; }
+
+        public int UserId { get; set; }
+
+        public User User { get; set; }
 
         public int MultimediaId { get; set; }
 

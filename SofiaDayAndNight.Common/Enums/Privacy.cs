@@ -1,4 +1,4 @@
-﻿namespace SofiaDayAndNight.Data.Models
+﻿namespace SofiaDayAndNight.Common.Enums
 {
     public enum Privacy
     {

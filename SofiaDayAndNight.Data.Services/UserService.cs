@@ -21,13 +21,13 @@ namespace SofiaDayAndNight.Data.Services
             this.usersSetWrapper = usersSetWrapper;
         }
 
-        public User GetById(Guid id) // needed???
+        public User GetById(Guid id) 
         {
             var user = this.usersSetWrapper.GetById(id);
             return user;
         }
 
-        public User GetByUsername(string username) // needed???
+        public User GetByUsername(string username) 
         {
             var user = this.usersSetWrapper.All.FirstOrDefault(u => u.UserName == username);
             return user;

@@ -1,4 +1,5 @@
-﻿using SofiaDayAndNight.Data.Models.Abstracts;
+﻿using SofiaDayAndNight.Common.Enums;
+using SofiaDayAndNight.Data.Models.Abstracts;
 
 namespace SofiaDayAndNight.Data.Models
 {

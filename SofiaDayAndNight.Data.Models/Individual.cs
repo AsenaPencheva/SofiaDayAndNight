@@ -1,19 +1,25 @@
-﻿using SofiaDayAndNight.Data.Models.Abstracts;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
+using SofiaDayAndNight.Data.Models.Abstracts;
 
 namespace SofiaDayAndNight.Data.Models
 {
-    public class Individual:BaseModel
+    public class Individual : BaseModel
     {
+        [Required]
         public int UserId { get; set; }
 
         public User User { get; set; }
 
-        [Required]
+        [MinLength(3)]
+        [MaxLength(50)]
+        [Required(AllowEmptyStrings = false)]
         public string FirstName { get; set; }
 
-        [Required]
+        [MinLength(3)]
+        [MaxLength(50)]
+        [Required(AllowEmptyStrings = false)]
         public string LastName { get; set; }
 
         [Required]

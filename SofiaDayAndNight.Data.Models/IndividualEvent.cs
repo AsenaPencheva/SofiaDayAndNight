@@ -1,11 +1,12 @@
-﻿namespace SofiaDayAndNight.Data.Models
+﻿using SofiaDayAndNight.Common.Enums;
+
+namespace SofiaDayAndNight.Data.Models
 {
     public class IndividualEvent
-    {       
-        public IndividualEvent(int individualId, int eventId) 
+    {
+        public IndividualEvent()
         {
-            this.IndividualId = individualId;
-            this.EventId = eventId;
+            this.Privacy = Privacy.OnlyFriends;
         }
 
         public int Id { get; set; }

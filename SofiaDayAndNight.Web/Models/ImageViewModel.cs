@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using SofiaDayAndNight.Web.Infrastructure;
+using System.Collections.Generic;
+using SofiaDayAndNight.Data.Models;
+
 
 namespace SofiaDayAndNight.Web.Models
 {
-    public class ImageViewModel
+    public class ImageViewModel: IMapFrom<Image>
     {
         public int Id { get; set; }
 

@@ -1,10 +1,12 @@
 ﻿using System.Data.Entity;
+using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
 using SofiaDayAndNight.Data;
 using SofiaDayAndNight.Data.Migrations;
+using SofiaDayAndNight.Web.App_Start;
 
 namespace SofiaDayAndNight.Web
 {
@@ -17,6 +19,9 @@ namespace SofiaDayAndNight.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<SofiaDayAndNightDbContext, Configuration>());
+
+            var mapper = new AutoMapperConfig();
+            mapper.Execute(Assembly.GetExecutingAssembly());
         }
     }
 }

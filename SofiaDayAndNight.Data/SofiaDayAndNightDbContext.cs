@@ -36,10 +36,26 @@ namespace SofiaDayAndNight.Data
             this.OnIndividualFriend(modelBuilder);
             this.OnIndividualPlace(modelBuilder);
             this.OnImageComments(modelBuilder);
+            this.OnImageEvent(modelBuilder);
+            this.OnImageUser(modelBuilder);
 
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
+        }
+
+        private void OnImageUser(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Image>()
+                .HasRequired(i => i.User)
+                .WithOptional(u=>u.ProfileImage);
+        }
+
+        private void OnImageEvent(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Image>()
+                .HasRequired(i => i.Event)
+                .WithOptional(e => e.Cover);
         }
 
         private void OnIndividualPlace(DbModelBuilder modelBuilder)

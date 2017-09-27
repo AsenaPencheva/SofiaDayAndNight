@@ -1,4 +1,5 @@
-﻿using SofiaDayAndNight.Web.Models.UserProfile;
+﻿using SofiaDayAndNight.Web.Infrastructure;
+using SofiaDayAndNight.Web.Models.UserProfile;
 using System;
 
 namespace SofiaDayAndNight.Web.Models
