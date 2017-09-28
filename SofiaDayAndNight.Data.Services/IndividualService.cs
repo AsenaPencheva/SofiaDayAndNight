@@ -12,9 +12,9 @@ namespace SofiaDayAndNight.Data.Services
     public class IndividualService
     {
         private readonly IEfDbSetWrapper<Individual> individualSetWrapper;
-        private readonly ISaveContext dbContext;
+        private readonly IUnitOfWork dbContext;
 
-        public IndividualService(IEfDbSetWrapper<Individual> individualSetWrapper, ISaveContext dbContext)
+        public IndividualService(IEfDbSetWrapper<Individual> individualSetWrapper, IUnitOfWork dbContext)
         {
             Guard.WhenArgument(individualSetWrapper, "individualSetWrapper").IsNull().Throw();
             Guard.WhenArgument(dbContext, "dbContext").IsNull().Throw();
@@ -32,7 +32,7 @@ namespace SofiaDayAndNight.Data.Services
         public void Create(Individual individual)
         {
             this.individualSetWrapper.Add(individual);
-            this.dbContext.SaveChanges();
+            this.dbContext.Commit();
         }
 
         public IEnumerable<Individual> GetIndividualsByNameOrUsername(string searchTerm)
@@ -51,7 +51,7 @@ namespace SofiaDayAndNight.Data.Services
             this.Update(individual);
         }
 
-        public void FollowPlace(Guid individualId, Place placeToFollow)
+        public void FollowPlace(Guid individualId, Organization placeToFollow)
         {
             var individual = this.GetById(individualId);
             individual.Following.Add(placeToFollow);
@@ -78,7 +78,7 @@ namespace SofiaDayAndNight.Data.Services
         public void Update(Individual individual)
         {
             this.individualSetWrapper.Update(individual);
-            this.dbContext.SaveChanges();
+            this.dbContext.Commit();
         }
     }
 }

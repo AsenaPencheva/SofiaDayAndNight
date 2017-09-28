@@ -13,9 +13,9 @@ namespace SofiaDayAndNight.Data.Services
     {
         private readonly IEfDbSetWrapper<Event> eventsSetWrapper;
 
-        private readonly ISaveContext dbContext;
+        private readonly IUnitOfWork dbContext;
 
-        public EventService(IEfDbSetWrapper<Event> eventsSetWrapper, ISaveContext dbContext)
+        public EventService(IEfDbSetWrapper<Event> eventsSetWrapper, IUnitOfWork dbContext)
         {
             Guard.WhenArgument(eventsSetWrapper, "EventsSetWrapper").IsNull().Throw();
             Guard.WhenArgument(dbContext, "dbContext").IsNull().Throw();
@@ -33,7 +33,7 @@ namespace SofiaDayAndNight.Data.Services
         public void Create(Event newEvent)
         {
             this.eventsSetWrapper.Add(newEvent);
-            dbContext.SaveChanges();
+            dbContext.Commit();
         }
 
         public IEnumerable<Event> GetEventsByNameOrPlace(string searchTerm)
@@ -80,7 +80,7 @@ namespace SofiaDayAndNight.Data.Services
         public void Update(Event eventToUpdate)
         {
             this.eventsSetWrapper.Update(eventToUpdate);
-            this.dbContext.SaveChanges();
+            this.dbContext.Commit();
         }
     }
 }

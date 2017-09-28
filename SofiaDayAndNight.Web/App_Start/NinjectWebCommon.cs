@@ -15,6 +15,8 @@ namespace SofiaDayAndNight.Web.App_Start
     using SofiaDayAndNight.Data;
     using SofiaDayAndNight.Data.Contracts;
     using SofiaDayAndNight.Data.EfDbSetWrappers;
+    using SofiaDayAndNight.Data.Services.Contracts;
+    using AutoMapper;
 
     public static class NinjectWebCommon 
     {
@@ -73,15 +75,17 @@ namespace SofiaDayAndNight.Web.App_Start
                  .BindDefaultInterface();
             });
 
-            //kernel.Bind(x =>
-            //{
-            //    x.FromAssembliesInPath("SofiaDayAndNight.Data.Services")
-            //     .SelectAllClasses()
-            //     .BindDefaultInterface();
-            //});
+            kernel.Bind(x =>
+            {
+                x.FromAssemblyContaining(typeof(IService))
+                 .SelectAllClasses()
+                 .BindDefaultInterface();
+            });
 
             kernel.Bind(typeof(DbContext), typeof(SofiaDayAndNightDbContext)).To<SofiaDayAndNightDbContext>().InRequestScope();
             kernel.Bind(typeof(IEfDbSetWrapper<>)).To(typeof(EfDbSetWrapper<>));
-        }        
+            kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
+            kernel.Bind<IMapper>().To<Mapper>();
+        }
     }
 }

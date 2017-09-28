@@ -3,31 +3,29 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 
-using SofiaDayAndNight.Data.Contratcs;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Models.Contracts;
-using SofiaDayAndNight.Data.Contracts;
 
 namespace SofiaDayAndNight.Data
 {
-    public class SofiaDayAndNightDbContext : IdentityDbContext<User>, ISofiaDayAndNightDbContext, ISaveContext
+    public class SofiaDayAndNightDbContext : IdentityDbContext<User>
     {
         public SofiaDayAndNightDbContext()
-            : base("SofiaDayAndNightDatabase")
+            : base("SofiaDayAndNightDatabase", throwIfV1Schema: false)
         {
         }
 
-        public IDbSet<Individual> Individuals { get; set; }
+        public virtual IDbSet<Individual> Individuals { get; set; }
 
-        public IDbSet<Place> Places { get; set; }
+        public virtual IDbSet<Organization> Places { get; set; }
 
-        public IDbSet<Event> Events { get; set; }
+        public virtual IDbSet<Event> Events { get; set; }
 
-        public IDbSet<Multimedia> Multimedias { get; set; }
+        public virtual IDbSet<Multimedia> Multimedias { get; set; }
 
-        public IDbSet<Image> Images { get; set; }
+        //public virtual IDbSet<Image> Images { get; set; }
 
-        public IDbSet<Comment> Comments { get; set; }
+        public virtual IDbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -35,28 +33,28 @@ namespace SofiaDayAndNight.Data
             this.OnEventAttended(modelBuilder);
             this.OnIndividualFriend(modelBuilder);
             this.OnIndividualPlace(modelBuilder);
-            this.OnImageComments(modelBuilder);
-            this.OnImageEvent(modelBuilder);
-            this.OnImageUser(modelBuilder);
+            //this.OnImageComments(modelBuilder);
+            //this.OnImageEvent(modelBuilder);
+            //this.OnImageUser(modelBuilder);
 
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
         }
 
-        private void OnImageUser(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Image>()
-                .HasRequired(i => i.User)
-                .WithOptional(u=>u.ProfileImage);
-        }
+        //private void OnImageUser(DbModelBuilder modelBuilder)
+        //{
+        //    //modelBuilder.Entity<Image>()
+        //    //    .HasRequired(i => i.User)
+        //    //    .WithOptional(u=>u.ProfileImage);
+        //}
 
-        private void OnImageEvent(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Image>()
-                .HasRequired(i => i.Event)
-                .WithOptional(e => e.Cover);
-        }
+        //private void OnImageEvent(DbModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Image>()
+        //        .HasRequired(i => i.Event)
+        //        .WithOptional(e => e.Cover);
+        //}
 
         private void OnIndividualPlace(DbModelBuilder modelBuilder)
         {
@@ -67,7 +65,7 @@ namespace SofiaDayAndNight.Data
                 {
                     cs.MapLeftKey("IndividualRefId");
                     cs.MapRightKey("PlaceRefId");
-                    cs.ToTable("IndividualPlace");
+                    cs.ToTable("IndividualPlaces");
                 });
         }
 
@@ -84,12 +82,12 @@ namespace SofiaDayAndNight.Data
                 });
         }
 
-        private void OnImageComments(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Comment>()
-                .HasRequired(c => c.Image)
-                .WithMany(i => i.Comments);
-        }
+        //private void OnImageComments(DbModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Comment>()
+        //        .HasRequired(c => c.Image)
+        //        .WithMany(i => i.Comments);
+        //}
 
         private void OnEventAttended(DbModelBuilder modelBuilder)
         {
@@ -128,16 +126,16 @@ namespace SofiaDayAndNight.Data
             return base.SaveChanges();
         }
 
-        public void SetEntryState(object entity, EntityState entityState)
-        {
-            var entry = this.Entry(entity);
-            entry.State = entityState;
-        }
+        //public void SetEntryState(object entity, EntityState entityState)
+        //{
+        //    var entry = this.Entry(entity);
+        //    entry.State = entityState;
+        //}
 
-        public EntityState GetState<T>(T entity) where T : class
-        {
-            return this.Entry(entity).State;
-        }
+        //public EntityState GetState<T>(T entity) where T : class
+        //{
+        //    return this.Entry(entity).State;
+        //}
 
         private void ApplyAuditInfoRules()
         {

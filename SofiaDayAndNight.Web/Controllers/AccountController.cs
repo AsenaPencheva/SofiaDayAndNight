@@ -11,6 +11,8 @@ using Microsoft.Owin.Security;
 using SofiaDayAndNight.Web.Models;
 using SofiaDayAndNight.Web.Models.Account;
 using SofiaDayAndNight.Data.Models;
+using SofiaDayAndNight.Common.Enums;
+using System.Collections.Generic;
 
 namespace SofiaDayAndNight.Web.Controllers
 {
@@ -141,6 +143,9 @@ namespace SofiaDayAndNight.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            var userRoles = new List<UserRole>() { UserRole.Individual, UserRole.Organization };
+            ViewBag.UserRoles = userRoles;
+
             return View();
         }
 
@@ -154,24 +159,34 @@ namespace SofiaDayAndNight.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = model.Email, Email = model.Email };
+                var role = model.UserRole.ToString();
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    UserManager.AddToRole(user.Id, role);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
+                   // this.TempData["user"] = user;
+                    return RedirectToAction("ProfileForm", new { role = role });
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult ProfileForm(string role)
+        {
+            ViewBag.Role = role;
+            return View();
         }
 
         //

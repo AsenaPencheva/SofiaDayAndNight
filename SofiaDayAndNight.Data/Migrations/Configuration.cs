@@ -1,9 +1,19 @@
 namespace SofiaDayAndNight.Data.Migrations
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using System;
     using System.Data.Entity.Migrations;
+    using System.Linq;
 
-    public sealed class Configuration : DbMigrationsConfiguration<SofiaDayAndNightDbContext>
+    using SofiaDayAndNight.Data.Models;
+    using SofiaDayAndNight.Common.Enums;
+
+    public sealed class Configuration : DbMigrationsConfiguration<SofiaDayAndNight.Data.SofiaDayAndNightDbContext>
     {
+        private const string AdministratorUserName = "admin@test.com";
+        private const string AdministratorPassword = "123456";
+
         public Configuration()
         {
             this.AutomaticMigrationsEnabled = false;
@@ -12,23 +22,44 @@ namespace SofiaDayAndNight.Data.Migrations
 
         protected override void Seed(SofiaDayAndNightDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            this.SeedUsers(context);
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            base.Seed(context);
         }
 
-        private void SeedAdmin(SofiaDayAndNightDbContext context)
+        private void SeedUsers(SofiaDayAndNightDbContext context)
         {
+            var userManager = new UserManager<User>(new UserStore<User>(context));
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
 
+
+            //Create Role if it does not exist
+            if (!roleManager.Roles.Any())
+            {
+                roleManager.Create(new IdentityRole(UserRole.Admin.ToString()));
+                roleManager.Create(new IdentityRole(UserRole.Individual.ToString()));
+                roleManager.Create(new IdentityRole(UserRole.Organization.ToString()));
+            }
+
+            if (!context.Users.Any())
+            {
+                CreateNewUser(userManager, roleManager, UserRole.Admin.ToString(), AdministratorUserName, AdministratorPassword);
+            }
+        }
+        private static void CreateNewUser(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, string name, string email, string password)
+        {
+            //Create User with password
+            var user = new User();
+            user.UserName = "admin";
+            user.Email = email;
+            user.CreatedOn = DateTime.Now;
+            var adminresult = userManager.Create(user, password);
+
+            //Add User to Role
+            if (adminresult.Succeeded)
+            {
+                var result = userManager.AddToRole(user.Id, name);
+            }
         }
     }
 }

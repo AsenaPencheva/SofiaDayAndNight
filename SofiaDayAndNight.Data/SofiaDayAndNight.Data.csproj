@@ -57,51 +57,34 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IEfDbSetWrapper.cs" />
-    <Compile Include="Contracts\ISaveContext.cs" />
+    <Compile Include="Contracts\IUnitOfWork.cs" />
     <Compile Include="EfDbSetWrappers\EfDbSetWrapper.cs" />
-    <Compile Include="Contracts\ISofiaDayAndNightDbContext.cs" />
-    <Compile Include="Migrations\201709231139291_InitialCreate.cs" />
-    <Compile Include="Migrations\201709231139291_InitialCreate.Designer.cs">
-      <DependentUpon>201709231139291_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709241228249_event attendence tables.cs" />
-    <Compile Include="Migrations\201709241228249_event attendence tables.Designer.cs">
-      <DependentUpon>201709241228249_event attendence tables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709241243454_split individual and place from user.cs" />
-    <Compile Include="Migrations\201709241243454_split individual and place from user.Designer.cs">
-      <DependentUpon>201709241243454_split individual and place from user.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201709261239592_abstract models and dbContext fixed models.cs" />
-    <Compile Include="Migrations\201709261239592_abstract models and dbContext fixed models.Designer.cs">
-      <DependentUpon>201709261239592_abstract models and dbContext fixed models.cs</DependentUpon>
+    <Compile Include="Migrations\201709281423026_Initial.cs" />
+    <Compile Include="Migrations\201709281423026_Initial.Designer.cs">
+      <DependentUpon>201709281423026_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SofiaDayAndNightDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SofiaDayAndNight.Common\SofiaDayAndNight.Common.csproj">
+      <Project>{23a8556b-2f48-4337-aef2-7039deebd695}</Project>
+      <Name>SofiaDayAndNight.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SofiaDayAndNight.Data.Models\SofiaDayAndNight.Data.Models.csproj">
       <Project>{8E0B4541-6099-4BCA-960D-264B689CC109}</Project>
       <Name>SofiaDayAndNight.Data.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201709231139291_InitialCreate.resx">
-      <DependentUpon>201709231139291_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709241228249_event attendence tables.resx">
-      <DependentUpon>201709241228249_event attendence tables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709241243454_split individual and place from user.resx">
-      <DependentUpon>201709241243454_split individual and place from user.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709261239592_abstract models and dbContext fixed models.resx">
-      <DependentUpon>201709261239592_abstract models and dbContext fixed models.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201709281423026_Initial.resx">
+      <DependentUpon>201709281423026_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SofiaDayAndNight.Data.Contracts
+namespace SofiaDayAndNight.Data.Services.Contracts
 {
-   public interface ISaveContext
+    public interface IService
     {
-        int SaveChanges();
     }
 }

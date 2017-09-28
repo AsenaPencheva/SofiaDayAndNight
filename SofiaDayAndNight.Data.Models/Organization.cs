@@ -5,11 +5,13 @@ using SofiaDayAndNight.Data.Models.Abstracts;
 
 namespace SofiaDayAndNight.Data.Models
 {
-    public class Place : BaseModel
+    public class Organization : BaseModel
     {
-        [Required]
-        public int UserId { get; set; }
-
+        public Organization()
+        {
+            this.Events = new HashSet<Event>();
+            this.Followers = new HashSet<Individual>();
+        }
         public User User { get; set; }
 
         [MinLength(3)]
@@ -23,6 +25,10 @@ namespace SofiaDayAndNight.Data.Models
         public string Location { get; set; }
 
         //public int AgeRestriction { get; set; }
+
+        //public virtual Image ProfileImage { get; set; }
+
+        public virtual ICollection<Event> Events { get; set; }
 
         public virtual ICollection<Individual> Followers { get; set; }
     }

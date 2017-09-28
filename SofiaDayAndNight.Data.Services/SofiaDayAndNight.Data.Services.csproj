@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseService.cs" />
+    <Compile Include="Contracts\IService.cs" />
     <Compile Include="EventService.cs" />
     <Compile Include="IndividualService.cs" />
     <Compile Include="Models\IndividualModel.cs" />
@@ -74,9 +75,7 @@
       <Name>SofiaDayAndNight.Data</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contracts\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

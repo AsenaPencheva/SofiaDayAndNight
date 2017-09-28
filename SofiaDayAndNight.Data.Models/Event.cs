@@ -15,6 +15,7 @@ namespace SofiaDayAndNight.Data.Models
         {
             this.EventType = EventType.Other;
             this.Privacy = Privacy.OnlyFriends;
+            this.IndividualsAttended = new HashSet<Individual>();
         }
 
         [MinLength(3)]
@@ -43,17 +44,11 @@ namespace SofiaDayAndNight.Data.Models
 
         public EventType EventType { get; set; }
 
-        public int ImageId { get; set; }
-
-        public virtual Image Cover { get; set; }
-
-        public int MultimediaId { get; set; }
+        //public virtual Image Cover { get; set; }
 
         public virtual Multimedia Multimedia { get; set; }
 
-        public int PlaceId { get; set; }
-
-        public virtual Place Place { get; set; }
+        public virtual Organization Place { get; set; }
 
         public virtual ICollection<Individual> IndividualsAttended { get; set; }
     }

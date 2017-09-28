@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 
 using Bytes2you.Validation;
 using SofiaDayAndNight.Data.Contracts;
-using SofiaDayAndNight.Data.Contratcs;
 using SofiaDayAndNight.Data.Models.Contracts;
 
 namespace SofiaDayAndNight.Data.EfDbSetWrappers
@@ -13,10 +13,10 @@ namespace SofiaDayAndNight.Data.EfDbSetWrappers
     public class EfDbSetWrapper<T> : IEfDbSetWrapper<T>
          where T : class, IDeletable
     {
-        private readonly ISofiaDayAndNightDbContext efDbContext;
+        private readonly DbContext efDbContext;
         private readonly IDbSet<T> dbSet;
 
-        public EfDbSetWrapper(ISofiaDayAndNightDbContext efDbContext)
+        public EfDbSetWrapper(DbContext efDbContext)
         {
             Guard.WhenArgument(efDbContext, "efDbContext").IsNull().Throw();
 
@@ -44,26 +44,27 @@ namespace SofiaDayAndNight.Data.EfDbSetWrappers
 
         public void Add(T entity)
         {
-            var state = this.efDbContext.GetState<T>(entity);
-            if (state != EntityState.Detached)
+            DbEntityEntry entry = this.efDbContext.Entry(entity);
+
+            if (entry.State != EntityState.Detached)
             {
-                this.efDbContext.SetEntryState(entity, EntityState.Added);
+                entry.State = EntityState.Added;
             }
             else
             {
-                this.dbSet.Add(entity);
+                this.efDbContext.Set<T>().Add(entity);
             }
         }
 
         public void Update(T entity)
         {
-            var state = this.efDbContext.GetState<T>(entity);
-            if (state != EntityState.Detached)
+            DbEntityEntry entry = this.efDbContext.Entry(entity);
+            if (entry.State == EntityState.Detached)
             {
                 this.efDbContext.Set<T>().Attach(entity);
             }
 
-            this.efDbContext.SetEntryState(entity, EntityState.Added);
+            entry.State = EntityState.Modified;
         }
 
         public void Delete(T entity)
@@ -71,7 +72,8 @@ namespace SofiaDayAndNight.Data.EfDbSetWrappers
             entity.IsDeleted = true;
             entity.DeletedOn = DateTime.Now;
 
-           this.efDbContext.SetEntryState(entity, EntityState.Modified);
+            var entry = this.efDbContext.Entry(entity);
+            entry.State = EntityState.Modified;
         }
     }
 }

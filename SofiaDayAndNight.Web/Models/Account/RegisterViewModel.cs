@@ -21,6 +21,7 @@ namespace SofiaDayAndNight.Web.Models.Account
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        public UserType UserType { get; set; }
+        [Display(Name = "Choose profile type")]
+        public UserRole UserRole { get; set; }
     }
 }

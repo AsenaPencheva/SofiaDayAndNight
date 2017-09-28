@@ -11,10 +11,10 @@ namespace SofiaDayAndNight.Data.Services
 {
     public class PlaceService
     {
-        private readonly IEfDbSetWrapper<Place> placeSetWrapper;
-        private readonly ISaveContext dbContext;
+        private readonly IEfDbSetWrapper<Organization> placeSetWrapper;
+        private readonly IUnitOfWork dbContext;
 
-        public PlaceService(IEfDbSetWrapper<Place> placeSetWrapper, ISaveContext dbContext)
+        public PlaceService(IEfDbSetWrapper<Organization> placeSetWrapper, IUnitOfWork dbContext)
         {
             Guard.WhenArgument(placeSetWrapper, "placeSetWrapper").IsNull().Throw();
             Guard.WhenArgument(dbContext, "dbContext").IsNull().Throw();
@@ -23,19 +23,19 @@ namespace SofiaDayAndNight.Data.Services
             this.dbContext = dbContext;
         }
 
-        public Place GetById(Guid id)
+        public Organization GetById(Guid id)
         {
             var place = this.placeSetWrapper.GetById(id);
             return place;
         }
 
-        public void Create(Place place)
+        public void Create(Organization place)
         {
             this.placeSetWrapper.Add(place);
-            this.dbContext.SaveChanges();
+            this.dbContext.Commit();
         }
 
-        public IEnumerable<Place> GetPlacesByNameOrUsername(string searchTerm)
+        public IEnumerable<Organization> GetPlacesByNameOrUsername(string searchTerm)
         {
             var fullName = string.Empty;
             return string.IsNullOrEmpty(searchTerm) ? this.placeSetWrapper.All.ToList()
@@ -44,10 +44,10 @@ namespace SofiaDayAndNight.Data.Services
                 || (string.IsNullOrEmpty(i.User.UserName) ? false : i.User.UserName.Contains(searchTerm))).ToList();
         }
 
-        public void Update(Place place)
+        public void Update(Organization place)
         {
             this.placeSetWrapper.Update(place);
-            dbContext.SaveChanges();
+            dbContext.Commit();
         }
     }
 }

@@ -58,15 +58,11 @@
     <Compile Include="Contracts\IDeletable.cs" />
     <Compile Include="Contracts\IForbidabble.cs" />
     <Compile Include="Multimedia.cs" />
-    <Compile Include="MultimediaImage.cs" />
     <Compile Include="Comment.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="Individual.cs" />
-    <Compile Include="IndividualEvent.cs" />
-    <Compile Include="IndividualFriend.cs" />
-    <Compile Include="IndividualPlace.cs" />
-    <Compile Include="Place.cs" />
+    <Compile Include="Organization.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -246,11 +246,7 @@
     <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\ImageViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Notification\FriendRequest.cs" />
-    <Compile Include="Models\Notification\NotificationsViewModel.cs" />
     <Compile Include="Models\PlaceViewModel.cs" />
-    <Compile Include="Models\UserProfile\UserProfileViewModel.cs" />
-    <Compile Include="Models\UserProfile\UserPersonalInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -315,6 +311,8 @@
     <Content Include="Views\Users\UserDetails.cshtml" />
     <Content Include="Views\Events\EventDetails.cshtml" />
     <Content Include="Views\Events\AllEvents.cshtml" />
+    <Content Include="Views\Account\ProfileForm.cshtml" />
+    <Content Include="Views\Shared\_IndividualDetailsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -346,6 +344,10 @@
     <ProjectReference Include="..\SofiaDayAndNight.Data.Models\SofiaDayAndNight.Data.Models.csproj">
       <Project>{8E0B4541-6099-4BCA-960D-264B689CC109}</Project>
       <Name>SofiaDayAndNight.Data.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SofiaDayAndNight.Data.Services\SofiaDayAndNight.Data.Services.csproj">
+      <Project>{E9F5D3C8-DD88-42E4-96D8-7B1EEEB7EC3A}</Project>
+      <Name>SofiaDayAndNight.Data.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\SofiaDayAndNight.Data\SofiaDayAndNight.Data.csproj">
       <Project>{B008A818-4859-44AF-BD2D-D5ED0AB4A9EC}</Project>

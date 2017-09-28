@@ -7,9 +7,13 @@ namespace SofiaDayAndNight.Data.Models
 {
     public class Individual : BaseModel
     {
-        [Required]
-        public int UserId { get; set; }
-
+        public Individual()
+        {
+            this.Friends = new HashSet<Individual>();
+            this.Events = new HashSet<Event>();
+            this.EventsAttended = new HashSet<Event>();
+            this.Following = new HashSet<Organization>();
+        }
         public User User { get; set; }
 
         [MinLength(3)]
@@ -25,9 +29,13 @@ namespace SofiaDayAndNight.Data.Models
         [Required]
         public int Age { get; set; }
 
+        //public virtual Image ProfileImage { get; set; }
+
+        public virtual ICollection<Event> Events { get; set; }
+
         public virtual ICollection<Individual> Friends { get; set; }
 
-        public virtual ICollection<Place> Following { get; set; }
+        public virtual ICollection<Organization> Following { get; set; }
 
         public virtual ICollection<Event> EventsAttended { get; set; }
 
