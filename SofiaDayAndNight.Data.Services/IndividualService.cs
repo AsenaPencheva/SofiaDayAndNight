@@ -6,10 +6,11 @@ using Bytes2you.Validation;
 
 using SofiaDayAndNight.Data.Contracts;
 using SofiaDayAndNight.Data.Models;
+using SofiaDayAndNight.Data.Services.Contracts;
 
 namespace SofiaDayAndNight.Data.Services
 {
-    public class IndividualService
+    public class IndividualService : IIndividualService
     {
         private readonly IEfDbSetWrapper<Individual> individualSetWrapper;
         private readonly IUnitOfWork dbContext;
@@ -35,13 +36,13 @@ namespace SofiaDayAndNight.Data.Services
             this.dbContext.Commit();
         }
 
-        public IEnumerable<Individual> GetIndividualsByNameOrUsername(string searchTerm)
+        public IQueryable<Individual> GetIndividualsByNameOrUsername(string searchTerm)
         {
             var fullName = string.Empty;
-            return string.IsNullOrEmpty(searchTerm) ? this.individualSetWrapper.All.ToList()
+            return string.IsNullOrEmpty(searchTerm) ? this.individualSetWrapper.All
                 : this.individualSetWrapper.All.Where(i =>
                 (string.IsNullOrEmpty(this.GetFullName(i)) ? false : this.GetFullName(i).Contains(searchTerm))
-                || (string.IsNullOrEmpty(i.User.UserName) ? false : i.User.UserName.Contains(searchTerm))).ToList();
+                || (string.IsNullOrEmpty(i.User.UserName) ? false : i.User.UserName.Contains(searchTerm)));
         }
 
         public void AttendEvent(Guid individualId, Event eventToAttend)
@@ -69,6 +70,8 @@ namespace SofiaDayAndNight.Data.Services
             this.Update(current);
             this.Update(friendToAdd);
         }
+
+        //public void SendFriendRequest
 
         private string GetFullName(Individual individual)
         {

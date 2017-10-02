@@ -6,15 +6,16 @@ using Bytes2you.Validation;
 
 using SofiaDayAndNight.Data.Contracts;
 using SofiaDayAndNight.Data.Models;
+using SofiaDayAndNight.Data.Services.Contracts;
 
 namespace SofiaDayAndNight.Data.Services
 {
-    public class PlaceService
+    public class OrganizationService : IOrganizationService
     {
         private readonly IEfDbSetWrapper<Organization> placeSetWrapper;
         private readonly IUnitOfWork dbContext;
 
-        public PlaceService(IEfDbSetWrapper<Organization> placeSetWrapper, IUnitOfWork dbContext)
+        public OrganizationService(IEfDbSetWrapper<Organization> placeSetWrapper, IUnitOfWork dbContext)
         {
             Guard.WhenArgument(placeSetWrapper, "placeSetWrapper").IsNull().Throw();
             Guard.WhenArgument(dbContext, "dbContext").IsNull().Throw();
@@ -35,13 +36,13 @@ namespace SofiaDayAndNight.Data.Services
             this.dbContext.Commit();
         }
 
-        public IEnumerable<Organization> GetPlacesByNameOrUsername(string searchTerm)
+        public IQueryable<Organization> GetPlacesByNameOrUsername(string searchTerm)
         {
             var fullName = string.Empty;
-            return string.IsNullOrEmpty(searchTerm) ? this.placeSetWrapper.All.ToList()
+            return string.IsNullOrEmpty(searchTerm) ? this.placeSetWrapper.All
                 : this.placeSetWrapper.All.Where(i =>
                 (string.IsNullOrEmpty(i.Name) ? false : i.Name.Contains(searchTerm))
-                || (string.IsNullOrEmpty(i.User.UserName) ? false : i.User.UserName.Contains(searchTerm))).ToList();
+                || (string.IsNullOrEmpty(i.User.UserName) ? false : i.User.UserName.Contains(searchTerm)));
         }
 
         public void Update(Organization place)

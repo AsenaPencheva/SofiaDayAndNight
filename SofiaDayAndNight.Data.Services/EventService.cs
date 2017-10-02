@@ -36,31 +36,31 @@ namespace SofiaDayAndNight.Data.Services
             dbContext.Commit();
         }
 
-        public IEnumerable<Event> GetEventsByNameOrPlace(string searchTerm)
+        public IQueryable<Event> GetEventsByNameOrPlace(string searchTerm)
         {
-            return string.IsNullOrEmpty(searchTerm) ? this.eventsSetWrapper.All.ToList()
+            return string.IsNullOrEmpty(searchTerm) ? this.eventsSetWrapper.All
                 : this.eventsSetWrapper.All.Where(e =>
                 (string.IsNullOrEmpty(e.Title) ? false : e.Title.Contains(searchTerm))
                 ||
-                (string.IsNullOrEmpty(e.Place.Name) ? false : e.Place.Name.Contains(searchTerm))).ToList();
+                (string.IsNullOrEmpty(e.Place.Name) ? false : e.Place.Name.Contains(searchTerm)));
         }
 
-        public IEnumerable<Event> GetAllUpcomingEvents()
+        public IQueryable<Event> GetAllUpcomingEvents()
         {
             var currentDate = DateTime.Now;
-            return this.eventsSetWrapper.All.Where(e => currentDate < e.Begins).ToList();
+            return this.eventsSetWrapper.All.Where(e => currentDate < e.Begins);
         }
 
-        public IEnumerable<Event> GetAllCurrentEvents()
+        public IQueryable<Event> GetAllCurrentEvents()
         {
             var currentDate = DateTime.Now;
-            return this.eventsSetWrapper.All.Where(e => e.Begins < currentDate && currentDate < e.Ends).ToList();
+            return this.eventsSetWrapper.All.Where(e => e.Begins < currentDate && currentDate < e.Ends);
         }
 
-        public IEnumerable<Event> GetAllPassedEvents()
+        public IQueryable<Event> GetAllPassedEvents()
         {
             var currentDate = DateTime.Now;
-            return this.eventsSetWrapper.All.Where(e => e.Ends < currentDate).ToList();
+            return this.eventsSetWrapper.All.Where(e => e.Ends < currentDate);
         }
 
         public void Ban(Guid id)
