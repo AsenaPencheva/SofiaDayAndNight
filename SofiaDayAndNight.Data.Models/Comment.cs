@@ -11,6 +11,6 @@ namespace SofiaDayAndNight.Data.Models
         [Required(AllowEmptyStrings = false)]
         public string Content { get; set; }
 
-        //public virtual Image Image { get; set; }
+        public virtual Image Image { get; set; }
     }
 }

@@ -38,6 +38,10 @@ namespace SofiaDayAndNight.Data.Models
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
 
+        public virtual Individual Individual { get; set; }
+
+        public virtual Organization Organization { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

@@ -59,9 +59,13 @@
     <Compile Include="Contracts\IEfDbSetWrapper.cs" />
     <Compile Include="Contracts\IUnitOfWork.cs" />
     <Compile Include="EfDbSetWrappers\EfDbSetWrapper.cs" />
-    <Compile Include="Migrations\201709282035386_Initial.cs" />
-    <Compile Include="Migrations\201709282035386_Initial.Designer.cs">
-      <DependentUpon>201709282035386_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201710021224268_Initial.cs" />
+    <Compile Include="Migrations\201710021224268_Initial.Designer.cs">
+      <DependentUpon>201710021224268_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710022000215_Fixed relations.cs" />
+    <Compile Include="Migrations\201710022000215_Fixed relations.Designer.cs">
+      <DependentUpon>201710022000215_Fixed relations.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SofiaDayAndNightDbContext.cs" />
@@ -83,8 +87,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201709282035386_Initial.resx">
-      <DependentUpon>201709282035386_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201710021224268_Initial.resx">
+      <DependentUpon>201710021224268_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710022000215_Fixed relations.resx">
+      <DependentUpon>201710022000215_Fixed relations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -23,52 +23,69 @@ namespace SofiaDayAndNight.Data
 
         public virtual IDbSet<Multimedia> Multimedias { get; set; }
 
-        //public virtual IDbSet<Image> Images { get; set; }
+        public virtual IDbSet<Image> Images { get; set; }
 
         public virtual IDbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            this.OnMultimediaCreating(modelBuilder);
-            this.OnEventAttended(modelBuilder);
+            this.OnEventCreating(modelBuilder);
             this.OnIndividualFriend(modelBuilder);
             this.OnIndividualPlace(modelBuilder);
             this.OnIndividualFriendRequests(modelBuilder);
-            //this.OnImageComments(modelBuilder);
-            //this.OnImageEvent(modelBuilder);
-            //this.OnImageUser(modelBuilder);
+            this.OnUserCreating(modelBuilder);
+            this.OnImageComments(modelBuilder);
+            this.OnImageCreating(modelBuilder);
 
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
         }
 
+        private void OnUserCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Organization>()
+                .HasRequired(o => o.User)
+                .WithOptional(u => u.Organization);
+
+            modelBuilder.Entity<Individual>()
+              .HasRequired(i => i.User)
+              .WithOptional(u => u.Individual);
+        }
+
         private void OnIndividualFriendRequests(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Individual>()
-                .HasMany(i => i.Friends)
+                .HasMany(i => i.FriendRequests)
                 .WithMany()
                 .Map(m =>
                 {
-                    m.MapLeftKey("IndividualRefId");
-                    m.MapRightKey("RequestedFromRefId");
+                    m.MapLeftKey("IndividualId");
+                    m.MapRightKey("RequestedFromId");
                     m.ToTable("IndividualFriendRequests");
                 });
         }
 
-        //private void OnImageUser(DbModelBuilder modelBuilder)
-        //{
-        //    //modelBuilder.Entity<Image>()
-        //    //    .HasRequired(i => i.User)
-        //    //    .WithOptional(u=>u.ProfileImage);
-        //}
+        private void OnImageCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Individual>()
+                .HasKey(i => i.ImageId);
+            modelBuilder.Entity<Image>()
+                .HasOptional(i => i.Individual)
+                .WithRequired(i => i.ProfileImage);
 
-        //private void OnImageEvent(DbModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Image>()
-        //        .HasRequired(i => i.Event)
-        //        .WithOptional(e => e.Cover);
-        //}
+            modelBuilder.Entity<Organization>()
+               .HasKey(i => i.ImageId);
+            modelBuilder.Entity<Image>()
+                .HasOptional(i => i.Organization)
+                .WithRequired(o => o.ProfileImage);
+
+            modelBuilder.Entity<Event>()
+               .HasKey(i => i.ImageId);
+            modelBuilder.Entity<Image>()
+                .HasOptional(i => i.Event)
+                .WithRequired(e => e.Cover);
+        }
 
         private void OnIndividualPlace(DbModelBuilder modelBuilder)
         {
@@ -90,20 +107,20 @@ namespace SofiaDayAndNight.Data
                 .WithMany()
                 .Map(m =>
                 {
-                    m.MapLeftKey("IndividualRefId");
-                    m.MapRightKey("FriendRefId");
+                    m.MapLeftKey("IndividualId");
+                    m.MapRightKey("FriendId");
                     m.ToTable("IndividualFriends");
                 });
         }
 
-        //private void OnImageComments(DbModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Comment>()
-        //        .HasRequired(c => c.Image)
-        //        .WithMany(i => i.Comments);
-        //}
+        private void OnImageComments(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Comment>()
+                .HasRequired(c => c.Image)
+                .WithMany(i => i.Comments);
+        }
 
-        private void OnEventAttended(DbModelBuilder modelBuilder)
+        private void OnEventCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Event>()
                 .HasMany(s => s.IndividualsAttended)
@@ -114,13 +131,12 @@ namespace SofiaDayAndNight.Data
                     cs.MapRightKey("IndividualRefId");
                     cs.ToTable("EventAttended");
                 });
-        }
 
-        private void OnMultimediaCreating(DbModelBuilder modelBuilder)
-        {
             modelBuilder.Entity<Multimedia>()
-               .HasOptional(m => m.Event)
-               .WithRequired(e => e.Multimedia);
+                .HasKey(m => m.EventId);
+            modelBuilder.Entity<Multimedia>()
+                .HasRequired(m => m.Event)
+                .WithRequiredPrincipal(e => e.Multimedia);
         }
 
         public new IDbSet<T> Set<T>()

@@ -44,7 +44,8 @@ namespace SofiaDayAndNight.Data.Models
 
         public EventType EventType { get; set; }
 
-        //public virtual Image Cover { get; set; }
+        public Guid ImageId { get; set; }
+        public virtual Image Cover { get; set; }
 
         public virtual Multimedia Multimedia { get; set; }
 

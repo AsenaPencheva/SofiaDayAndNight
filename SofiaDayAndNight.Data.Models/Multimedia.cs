@@ -2,6 +2,7 @@
 
 using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Models.Abstracts;
+using System;
 
 namespace SofiaDayAndNight.Data.Models
 {
@@ -20,6 +21,7 @@ namespace SofiaDayAndNight.Data.Models
 
         //public virtual ICollection<Image> Images { get; set; }
 
+        public Guid EventId { get; set; }
         public virtual Event Event { get; set; }
     }
 }
