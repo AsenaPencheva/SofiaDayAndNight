@@ -67,6 +67,10 @@
     <Compile Include="Migrations\201710022000215_Fixed relations.Designer.cs">
       <DependentUpon>201710022000215_Fixed relations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710022223161_Fixed Comments Table.cs" />
+    <Compile Include="Migrations\201710022223161_Fixed Comments Table.Designer.cs">
+      <DependentUpon>201710022223161_Fixed Comments Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SofiaDayAndNightDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,6 +96,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710022000215_Fixed relations.resx">
       <DependentUpon>201710022000215_Fixed relations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710022223161_Fixed Comments Table.resx">
+      <DependentUpon>201710022223161_Fixed Comments Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -34,7 +34,7 @@ namespace SofiaDayAndNight.Data
             this.OnIndividualPlace(modelBuilder);
             this.OnIndividualFriendRequests(modelBuilder);
             this.OnUserCreating(modelBuilder);
-            this.OnImageComments(modelBuilder);
+            this.OnCommentsCreating(modelBuilder);
             this.OnImageCreating(modelBuilder);
 
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
@@ -85,6 +85,12 @@ namespace SofiaDayAndNight.Data
             modelBuilder.Entity<Image>()
                 .HasOptional(i => i.Event)
                 .WithRequired(e => e.Cover);
+
+            //modelBuilder.Entity<Comment>()
+            //  .HasKey(c => c.ImageId);
+            //modelBuilder.Entity<Image>()
+            //    .HasMany(i => i.Comments)
+            //    .WithRequired(c => c.Image);
         }
 
         private void OnIndividualPlace(DbModelBuilder modelBuilder)
@@ -113,11 +119,17 @@ namespace SofiaDayAndNight.Data
                 });
         }
 
-        private void OnImageComments(DbModelBuilder modelBuilder)
+        private void OnCommentsCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Comment>()
                 .HasRequired(c => c.Image)
-                .WithMany(i => i.Comments);
+                .WithMany(i => i.Comments)
+                .HasForeignKey(c => c.ImageId);
+
+            modelBuilder.Entity<Comment>()
+                 .HasRequired(c => c.Author)
+                 .WithMany(i => i.Commented)
+                 .HasForeignKey(c => c.IndividualId);
         }
 
         private void OnEventCreating(DbModelBuilder modelBuilder)

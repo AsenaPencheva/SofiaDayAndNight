@@ -14,6 +14,7 @@ namespace SofiaDayAndNight.Data.Models
             this.Events = new HashSet<Event>();
             this.EventsAttended = new HashSet<Event>();
             this.Following = new HashSet<Organization>();
+            this.Commented = new HashSet<Comment>();
         }
         public virtual User User { get; set; }
 
@@ -43,5 +44,6 @@ namespace SofiaDayAndNight.Data.Models
 
         public virtual ICollection<Event> EventsAttended { get; set; }
 
+        public virtual ICollection<Comment> Commented { get; set; }
     }
 }
