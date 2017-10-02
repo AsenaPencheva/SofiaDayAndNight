@@ -11,31 +11,34 @@ using SofiaDayAndNight.Data.Models.Contracts;
 namespace SofiaDayAndNight.Data.Models
 {
     public class User : IdentityUser, IAuditable, IDeletable, IForbidabble
+    {
+        public User()
         {
-            public User()
-            {
-                this.City = "Sofia";
-            }
+            this.City = "Sofia";
+        }
 
-            [MaxLength(100)]
-            public string City { get; set; }
+        [MaxLength(100)]
+        public string City { get; set; }
 
-            [Index]
-            public bool IsForbidden { get; set; }
+        [Index]
+        public bool IsForbidden { get; set; }
 
-            [Index]
-            public bool IsDeleted { get; set; }
+        [Index]
+        public bool IsDeleted { get; set; }
 
-            [DataType(DataType.DateTime)]
-            public DateTime? DeletedOn { get; set; }
+        [Index]
+        public bool IsCompleted { get; set; }
 
-            [DataType(DataType.DateTime)]
-            public DateTime? CreatedOn { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? DeletedOn { get; set; }
 
-            [DataType(DataType.DateTime)]
-            public DateTime? ModifiedOn { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? CreatedOn { get; set; }
 
-            public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
+        [DataType(DataType.DateTime)]
+        public DateTime? ModifiedOn { get; set; }
+
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);

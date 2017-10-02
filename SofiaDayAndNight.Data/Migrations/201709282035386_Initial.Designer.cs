@@ -13,7 +13,7 @@ namespace SofiaDayAndNight.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201709281423026_Initial"; }
+            get { return "201709282035386_Initial"; }
         }
         
         string IMigrationMetadata.Source

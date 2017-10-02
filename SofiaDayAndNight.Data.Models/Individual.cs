@@ -35,6 +35,8 @@ namespace SofiaDayAndNight.Data.Models
 
         public virtual ICollection<Individual> Friends { get; set; }
 
+        public virtual ICollection<Individual> FriendRequests { get; set; }
+
         public virtual ICollection<Organization> Following { get; set; }
 
         public virtual ICollection<Event> EventsAttended { get; set; }

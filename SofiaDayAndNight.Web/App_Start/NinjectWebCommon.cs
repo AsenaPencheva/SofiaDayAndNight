@@ -17,21 +17,26 @@ namespace SofiaDayAndNight.Web.App_Start
     using SofiaDayAndNight.Data.EfDbSetWrappers;
     using SofiaDayAndNight.Data.Services.Contracts;
     using AutoMapper;
+    using SofiaDayAndNight.Data.Services;
+    using Microsoft.AspNet.Identity;
+    using SofiaDayAndNight.Data.Models;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using System.Reflection;
 
-    public static class NinjectWebCommon 
+    public static class NinjectWebCommon
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-        
+
         /// <summary>
         /// Stops the application.
         /// </summary>
@@ -39,7 +44,7 @@ namespace SofiaDayAndNight.Web.App_Start
         {
             bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -68,6 +73,7 @@ namespace SofiaDayAndNight.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+
             kernel.Bind(x =>
             {
                 x.FromThisAssembly()
@@ -82,10 +88,12 @@ namespace SofiaDayAndNight.Web.App_Start
                  .BindDefaultInterface();
             });
 
-            kernel.Bind(typeof(DbContext), typeof(SofiaDayAndNightDbContext)).To<SofiaDayAndNightDbContext>().InRequestScope();
+            kernel.Bind(typeof(IdentityDbContext), typeof(SofiaDayAndNightDbContext)).To<SofiaDayAndNightDbContext>().InRequestScope();
             kernel.Bind(typeof(IEfDbSetWrapper<>)).To(typeof(EfDbSetWrapper<>));
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
-            kernel.Bind<IMapper>().To<Mapper>();
+
+            kernel.Bind<IMapper>().To<Mapper>().InSingletonScope();
+            kernel.Bind<IConfigurationProvider>().ToMethod(x => Mapper.Configuration);
         }
     }
 }

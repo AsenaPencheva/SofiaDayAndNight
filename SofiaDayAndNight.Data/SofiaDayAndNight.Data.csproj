@@ -59,9 +59,9 @@
     <Compile Include="Contracts\IEfDbSetWrapper.cs" />
     <Compile Include="Contracts\IUnitOfWork.cs" />
     <Compile Include="EfDbSetWrappers\EfDbSetWrapper.cs" />
-    <Compile Include="Migrations\201709281423026_Initial.cs" />
-    <Compile Include="Migrations\201709281423026_Initial.Designer.cs">
-      <DependentUpon>201709281423026_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201709282035386_Initial.cs" />
+    <Compile Include="Migrations\201709282035386_Initial.Designer.cs">
+      <DependentUpon>201709282035386_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SofiaDayAndNightDbContext.cs" />
@@ -83,8 +83,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201709281423026_Initial.resx">
-      <DependentUpon>201709281423026_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201709282035386_Initial.resx">
+      <DependentUpon>201709282035386_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

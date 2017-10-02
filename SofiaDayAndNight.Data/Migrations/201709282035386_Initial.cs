@@ -32,6 +32,7 @@ namespace SofiaDayAndNight.Data.Migrations
                         City = c.String(maxLength: 100),
                         IsForbidden = c.Boolean(nullable: false),
                         IsDeleted = c.Boolean(nullable: false),
+                        IsCompleted = c.Boolean(nullable: false),
                         DeletedOn = c.DateTime(),
                         CreatedOn = c.DateTime(),
                         ModifiedOn = c.DateTime(),
@@ -49,7 +50,8 @@ namespace SofiaDayAndNight.Data.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.IsForbidden)
-                .Index(t => t.IsDeleted);
+                .Index(t => t.IsDeleted)
+                .Index(t => t.IsCompleted);
             
             CreateTable(
                 "dbo.IdentityUserClaims",
@@ -262,6 +264,7 @@ namespace SofiaDayAndNight.Data.Migrations
             DropIndex("dbo.IdentityUserRoles", new[] { "UserId" });
             DropIndex("dbo.IdentityUserLogins", new[] { "User_Id" });
             DropIndex("dbo.IdentityUserClaims", new[] { "UserId" });
+            DropIndex("dbo.Users", new[] { "IsCompleted" });
             DropIndex("dbo.Users", new[] { "IsDeleted" });
             DropIndex("dbo.Users", new[] { "IsForbidden" });
             DropIndex("dbo.Comments", new[] { "Author_Id" });
