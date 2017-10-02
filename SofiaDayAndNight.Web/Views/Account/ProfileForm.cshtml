@@ -1,16 +1,2 @@
-﻿@using SofiaDayAndNight.Web.Models.Account
-@model IndividualViewModel
-@{
-	ViewBag.Title = "Profile Form";
-}
-
-<h2>Profile Form</h2>
-<div class="row">
-	@using (Html.BeginForm("ProfileForm", "Account", FormMethod.Post, null))
-	{
-		<div class="col-md-4">
-			@Html.Partial("_" + (string)ViewBag.Role + "DetailsPartial")
-		</div>
-		<button type="submit">Submit!</button>
-	}
-</div>
+﻿<h2>Profile Form</h2>
+@Html.Partial("~/Areas/"+ (string)ViewBag.Role + "Area/Views/Shared/_" + (string)ViewBag.Role + "DetailsPartial.cshtml")

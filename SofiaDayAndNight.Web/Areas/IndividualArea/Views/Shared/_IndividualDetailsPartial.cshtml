@@ -1,0 +1,39 @@
+﻿@using SofiaDayAndNight.Web.Areas.IndividualArea.Models
+@model IndividualViewModel
+@using (Html.BeginForm("Submit", "Individual", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+{
+	@Html.ValidationSummary("", new { @class = "text-danger" })
+	<div class="form-group">
+		@Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.EditorFor(m => m.FirstName, new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.EditorFor(m => m.LastName, new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Age, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.EditorFor(m => m.Age, new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.Label("Profile Image", new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			<input type="file" id="Image" name="upload" />
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-offset-2 col-md-10">
+			<input type="submit" class="btn btn-default" value="Submit" />
+		</div>
+	</div>
+}
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}

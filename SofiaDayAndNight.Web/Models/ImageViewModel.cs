@@ -1,22 +1,43 @@
-﻿using SofiaDayAndNight.Web.Infrastructure;
-using System.Collections.Generic;
-using SofiaDayAndNight.Data.Models;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
+using SofiaDayAndNight.Common.Enums;
+using SofiaDayAndNight.Data.Models;
+using SofiaDayAndNight.Web.Infrastructure;
 
 namespace SofiaDayAndNight.Web.Models
 {
-    public class ImageViewModel //: IMapFrom<Image>
+    public class ImageViewModel : IMapFrom<Image>
     {
-        //public int Id { get; set; }
+        public ImageViewModel()
+        {
+            //this.Comments = new HashSet<CommentViewModel>();
+            this.Privacy = Privacy.OnlyFriends;
+        }
 
-        ////public Privacy Privacy { get; set; }
+        [Required(AllowEmptyStrings = false)]
+        public string Name { get; set; }
 
-        //public int Likes { get; set; }
+        [Required(AllowEmptyStrings = false)]
+        public string ContentType { get; set; }
 
-        //public int Dislikes { get; set; }
+        [Required]
+        public byte[] Data { get; set; }
 
-        //public AlbumViewModel Album { get; set; }
+        public Privacy Privacy { get; set; }
 
-        //public ICollection<CommentViewModel> Comments { get; set; }
+        public int Likes { get; set; }
+
+        public int Dislikes { get; set; }
+
+        //public Event Event { get; set; }
+
+        //public virtual Individual Individual { get; set; }
+
+        //public virtual Organization Organization { get; set; }
+
+        //public virtual Multimedia Multimedia { get; set; }
+
+        //public  IEnumerable<CommentViewModel> Comments { get; set; }
     }
 }

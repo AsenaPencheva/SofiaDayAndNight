@@ -88,7 +88,7 @@ namespace SofiaDayAndNight.Web.App_Start
                  .BindDefaultInterface();
             });
 
-            kernel.Bind(typeof(IdentityDbContext), typeof(SofiaDayAndNightDbContext)).To<SofiaDayAndNightDbContext>().InRequestScope();
+            kernel.Bind(typeof(DbContext), typeof(SofiaDayAndNightDbContext)).To<SofiaDayAndNightDbContext>().InRequestScope();
             kernel.Bind(typeof(IEfDbSetWrapper<>)).To(typeof(EfDbSetWrapper<>));
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
 
