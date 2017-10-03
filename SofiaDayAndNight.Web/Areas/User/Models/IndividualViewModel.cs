@@ -6,11 +6,10 @@ using System.Web.Mvc;
 using AutoMapper;
 
 using SofiaDayAndNight.Data.Models;
-using SofiaDayAndNight.Web.Areas.OrganizationArea.Models;
 using SofiaDayAndNight.Web.Infrastructure;
 using SofiaDayAndNight.Web.Models;
 
-namespace SofiaDayAndNight.Web.Areas.IndividualArea.Models
+namespace SofiaDayAndNight.Web.Areas.User.Models
 {
     public class IndividualViewModel : IMapFrom<Individual>, IHaveCustomMappings
     {

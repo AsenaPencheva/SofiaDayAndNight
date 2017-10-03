@@ -1,22 +1,22 @@
 ﻿using System.Web.Mvc;
 
-namespace SofiaDayAndNight.Web.Areas.IndividualArea
+namespace SofiaDayAndNight.Web.Areas.User
 {
-    public class IndividualAreaAreaRegistration : AreaRegistration 
+    public class UserAreaRegistration : AreaRegistration 
     {
         public override string AreaName 
         {
             get 
             {
-                return "IndividualArea";
+                return "User";
             }
         }
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
-                "IndividualArea_default",
-                "IndividualArea/{controller}/{action}/{id}",
+                "User_default",
+                "User/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }

@@ -220,17 +220,13 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Areas\IndividualArea\IndividualAreaAreaRegistration.cs" />
-    <Compile Include="Areas\OrganizationArea\Controllers\OrganizationController.cs" />
-    <Compile Include="Areas\OrganizationArea\Models\OrganizationViewModel.cs" />
-    <Compile Include="Areas\OrganizationArea\OrganizationAreaRegistration.cs" />
+    <Compile Include="Areas\User\UserAreaRegistration.cs" />
+    <Compile Include="Areas\User\Controllers\OrganizationController.cs" />
+    <Compile Include="Areas\User\Models\OrganizationViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Areas\IndividualArea\Controllers\IndividualController.cs" />
+    <Compile Include="Areas\User\Controllers\IndividualController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\PlacesController.cs" />
-    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -246,13 +242,12 @@
     <Compile Include="Models\Account\ResetPasswordViewModel.cs" />
     <Compile Include="Models\Account\SendCodeViewModel.cs" />
     <Compile Include="Models\Account\VerifyCodeViewModel.cs" />
-    <Compile Include="Models\AlbumViewModel.cs" />
+    <Compile Include="Models\MultimediaViewModel.cs" />
     <Compile Include="Models\CommentViewModel.cs" />
     <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\ImageViewModel.cs" />
-    <Compile Include="Areas\IndividualArea\Models\IndividualViewModel.cs" />
+    <Compile Include="Areas\User\Models\IndividualViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -268,18 +263,14 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Areas\OrganizationArea\Views\web.config" />
-    <Content Include="Areas\OrganizationArea\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\OrganizationArea\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\OrganizationArea\Views\Shared\_OrganizationDetailsPartial.cshtml" />
-    <Content Include="Areas\IndividualArea\Views\web.config" />
-    <Content Include="Areas\IndividualArea\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\IndividualArea\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\IndividualArea\Views\Individual\Index.cshtml" />
-    <Content Include="Areas\IndividualArea\Views\Shared\_IndividualProfile.cshtml" />
-    <Content Include="Areas\OrganizationArea\Views\Index.cshtml" />
-    <Content Include="Areas\OrganizationArea\Views\Shared\_OrganizationProfile.cshtml" />
-    <Content Include="Areas\OrganizationArea\Views\Organization\Index.cshtml" />
+    <Content Include="Areas\User\Views\Shared\_OrganizationDetailsPartial.cshtml" />
+    <Content Include="Areas\User\Views\web.config" />
+    <Content Include="Areas\User\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\User\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\User\Views\Shared\_IndividualProfile.cshtml" />
+    <Content Include="Areas\User\Views\Shared\_OrganizationProfile.cshtml" />
+    <Content Include="Areas\User\Views\Individual\Index.cshtml" />
+    <Content Include="Areas\User\Views\Organization\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -327,7 +318,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Users\UserDetails.cshtml" />
     <Content Include="Views\Account\ProfileForm.cshtml" />
-    <Content Include="Areas\IndividualArea\Views\Shared\_IndividualDetailsPartial.cshtml" />
+    <Content Include="Areas\User\Views\Shared\_IndividualDetailsPartial.cshtml" />
     <Content Include="Views\EditorTemplates\IndividualViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>

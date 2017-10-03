@@ -103,14 +103,13 @@ namespace SofiaDayAndNight.Web.Controllers
 
             if (user.IsCompleted)
             {
-                return RedirectToAction("Index", role, new { user = user, area = role + "Area" }); // load profile
+                return RedirectToAction("Index", role, new { user = user, area = "User" }); // load profile
             }
             else
             {
                 this.TempData["user"] = user;
                 return RedirectToAction("ProfileForm", new { role = role });
             }
-
         }
 
         //
