@@ -44,6 +44,8 @@
     <Compile Include="Attributes\DateRangeAttribute.cs" />
     <Compile Include="Attributes\RoleAttribute.cs" />
     <Compile Include="Enums\EventType.cs" />
+    <Compile Include="Enums\IndividualStatus.cs" />
+    <Compile Include="Enums\OrganizationStatus.cs" />
     <Compile Include="Enums\Privacy.cs" />
     <Compile Include="Enums\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

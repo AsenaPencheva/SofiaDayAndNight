@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Bytes2you.Validation;
-
+using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Contracts;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Services.Contracts;
@@ -24,9 +24,19 @@ namespace SofiaDayAndNight.Data.Services
             this.dbContext = dbContext;
         }
 
+        public IndividualService()
+        {
+        }
+
         public Individual GetById(Guid id)
         {
             var individual = this.individualSetWrapper.GetById(id);
+            return individual;
+        }
+
+        public Individual GetByUser(string userId)
+        {
+            var individual = this.individualSetWrapper.All.FirstOrDefault(i => i.User.Id == userId);
             return individual;
         }
 
@@ -71,8 +81,6 @@ namespace SofiaDayAndNight.Data.Services
             this.Update(friendToAdd);
         }
 
-        //public void SendFriendRequest
-
         private string GetFullName(Individual individual)
         {
             return individual.FirstName + " " + individual.LastName;
@@ -82,6 +90,45 @@ namespace SofiaDayAndNight.Data.Services
         {
             this.individualSetWrapper.Update(individual);
             this.dbContext.Commit();
+        }
+
+        public IndividualStatus GetStatus(string currentUsername, Guid id)
+        {
+            var current = this.GetByUsername(currentUsername);
+            if (current.Id == id)
+            {
+                return IndividualStatus.IsCurrent;
+            }
+           else if (current.Friends.Where(x => x.Id == id).Count() > 0)
+            {
+                return IndividualStatus.IsFriend;
+            }
+           else if (current.FriendRequested.Where(x => x.Id == id).Count() > 0)
+            {
+                return IndividualStatus.IsRequested;
+            }
+            else
+            {
+                return IndividualStatus.None;
+            }
+        }
+
+        public void SendFriendRequest(string currentUsername, Guid requestedId)
+        {
+            var current = this.GetByUsername(currentUsername);
+            var friendToAdd = this.GetById(requestedId);
+
+            current.FriendRequested.Add(friendToAdd);
+            friendToAdd.FriendRequests.Add(current);
+
+            this.Update(current);
+            this.Update(friendToAdd);
+        }
+
+        public Individual GetByUsername(string usename)
+        {
+            var individual = this.individualSetWrapper.All.FirstOrDefault(i => i.User.UserName == usename);
+            return individual;
         }
     }
 }

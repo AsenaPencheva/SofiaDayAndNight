@@ -11,6 +11,8 @@ namespace SofiaDayAndNight.Data.Models
         public Individual()
         {
             this.Friends = new HashSet<Individual>();
+            this.FriendRequests = new HashSet<Individual>();
+            this.FriendRequested = new HashSet<Individual>();
             this.Events = new HashSet<Event>();
             this.EventsAttended = new HashSet<Event>();
             this.Following = new HashSet<Organization>();
@@ -39,6 +41,8 @@ namespace SofiaDayAndNight.Data.Models
         public virtual ICollection<Individual> Friends { get; set; }
 
         public virtual ICollection<Individual> FriendRequests { get; set; }
+
+        public virtual ICollection<Individual> FriendRequested { get; set; }
 
         public virtual ICollection<Organization> Following { get; set; }
 

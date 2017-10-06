@@ -64,6 +64,16 @@ namespace SofiaDayAndNight.Data
                     m.MapRightKey("RequestedFromId");
                     m.ToTable("IndividualFriendRequests");
                 });
+
+            modelBuilder.Entity<Individual>()
+             .HasMany(i => i.FriendRequested)
+             .WithMany()
+             .Map(m =>
+             {
+                 m.MapLeftKey("IndividualId");
+                 m.MapRightKey("RequestedToId");
+                 m.ToTable("IndividualFriendRequested");
+             });
         }
 
         private void OnImageCreating(DbModelBuilder modelBuilder)
