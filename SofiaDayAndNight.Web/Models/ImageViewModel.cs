@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Web.Infrastructure;
+using System;
+using System.Web.Mvc;
 
 namespace SofiaDayAndNight.Web.Models
 {
@@ -14,6 +16,9 @@ namespace SofiaDayAndNight.Web.Models
             //this.Comments = new HashSet<CommentViewModel>();
             this.Privacy = Privacy.OnlyFriends;
         }
+
+        [HiddenInput(DisplayValue = false)]
+        public Guid Id { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         public string Name { get; set; }

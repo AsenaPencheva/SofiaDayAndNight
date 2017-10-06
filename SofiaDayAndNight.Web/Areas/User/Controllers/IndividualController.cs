@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Services;
 using SofiaDayAndNight.Data.Services.Contracts;
@@ -9,6 +10,7 @@ using SofiaDayAndNight.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -26,10 +28,24 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             this.mapper = mapper;
         }
 
-        public ActionResult Index(IndividualViewModel model)
+        public ActionResult ProfileDetails(string username)
         {
-            ViewBag.Name = model.FirstName;
-            return View();
+            if (username == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var individual = this.individualService.GetByUsername(username);
+            if (individual == null)
+            {
+                return HttpNotFound();
+            }
+
+            var model = this.mapper.Map<IndividualViewModel>(individual);
+
+            model.IndividualStatus = this.individualService.GetStatus(this.User.Identity.Name, model.Id);
+
+            return this.View(model);
         }
 
         [HttpPost]
@@ -65,8 +81,31 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             user.IsCompleted = true;
             System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().Update(user);
 
-            model= this.mapper.Map<IndividualViewModel>(individual);
-            return this.RedirectToAction("Index", model);
+            return RedirectToAction("ProfileDetails", new { area = "User", username = user.UserName });
         }
+
+        [HttpPost]
+        public ActionResult SendFriendRequest(Guid id)
+        {
+            this.individualService.SendFriendRequest(this.User.Identity.Name, id);
+
+            return this.RedirectToAction("ProfileDetails", new { username = this.User.Identity.Name });
+        }
+
+        //[HttpPost]
+        //public ActionResult CancelFriendRequest(Guid id)
+        //{
+        //    this.individualService.SendFriendRequest(this.User.Identity.Name, id);
+
+        //    return this.RedirectToAction("ProfileDetails", new { id = id });
+        //}
+
+        //[HttpPost]
+        //public ActionResult CancelFriendship(Guid id)
+        //{
+        //    this.individualService.SendFriendRequest(this.User.Identity.Name, id);
+
+        //    return this.RedirectToAction("ProfileDetails", new { id = id });
+        //}
     }
 }

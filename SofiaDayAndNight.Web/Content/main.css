@@ -1,0 +1,25 @@
+﻿.body-content {
+	background-color: #f5f2f0 !important;
+}
+
+
+a ,button{
+	color: #331100 !important;
+}
+
+h1 {
+	background-color: #907A65;
+	color: #331100;
+	text-align: center;
+	padding: 20px;
+	font-family: Snell Roundhand, cursive;
+}
+
+.item div {
+	display: flex;
+	justify-content: center;
+}
+
+.navbar-brand {
+	font-family: Snell Roundhand, cursive;
+}

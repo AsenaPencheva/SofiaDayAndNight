@@ -4,10 +4,11 @@ namespace SofiaDayAndNight.Web.Models.Account
 {
     public class LoginViewModel
     {
-        [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [MinLength(3)]
+        [MaxLength(50)]
+        [Required(AllowEmptyStrings = false)]
+        [Display(Name = "Username")]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

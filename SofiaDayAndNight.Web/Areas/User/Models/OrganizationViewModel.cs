@@ -8,6 +8,7 @@ using AutoMapper;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Web.Infrastructure;
 using SofiaDayAndNight.Web.Models;
+using SofiaDayAndNight.Common.Enums;
 
 namespace SofiaDayAndNight.Web.Areas.User.Models
 {
@@ -38,7 +39,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Models
         [Required]
         public string Location { get; set; }
 
-        //public int AgeRestriction { get; set; }
+        public OrganizationStatus OrganizationStatus { get; set; }
 
         public ImageViewModel ProfileImage { get; set; }
 

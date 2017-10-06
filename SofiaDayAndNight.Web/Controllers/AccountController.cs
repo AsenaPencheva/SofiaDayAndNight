@@ -79,7 +79,7 @@ namespace SofiaDayAndNight.Web.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -100,14 +100,12 @@ namespace SofiaDayAndNight.Web.Controllers
         {
             var user = UserManager.FindByName(User.Identity.Name);
             var role = this.UserManager.GetRoles(user.Id).First();
-
             if (user.IsCompleted)
             {
-                return RedirectToAction("Index", role, new { user = user, area = "User" }); // load profile
+                return RedirectToAction("ProfileDetails", role, new { username = this.User.Identity.Name, area = "User" }); // load profile
             }
             else
             {
-                this.TempData["user"] = user;
                 return RedirectToAction("ProfileForm", new { role = role });
             }
         }
@@ -175,7 +173,7 @@ namespace SofiaDayAndNight.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, Email = model.Email, CreatedOn = DateTime.Now };
+                var user = new User { UserName = model.Username, Email = model.Email, CreatedOn = DateTime.Now };
                 var role = model.UserRole.ToString();
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

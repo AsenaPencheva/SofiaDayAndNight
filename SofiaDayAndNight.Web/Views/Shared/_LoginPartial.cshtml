@@ -1,22 +1,50 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-    @Html.AntiForgeryToken()
+	using (Ajax.BeginForm("Search",
+		"User",
+		new { area = "User" },
+		new AjaxOptions
+		{
+			UpdateTargetId = "results",
+			InsertionMode = InsertionMode.Replace
+		},
+		new { @class = "navbar-form navbar-left" }))
+	{
+		<div class="form-group">
+			<input name="searchTerm" class="form-control" type="text" placeholder="Search" />
+		</div>
+		<button class="btn btn-outline-primary" type="submit">Search</button>
+	}
+	using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+	{
+		@Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + (string)ViewBag.Name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
-    }
+		<ul class="nav navbar-nav navbar-right">
+			<li>
+				@if (this.User.IsInRole("Individual"))
+				{
+					@Html.ActionLink("Hello " + this.User.Identity.Name, "ProfileDetails", "Individual", new { area = "User", username = this.User.Identity.Name }, null)
+				}
+				@if (this.User.IsInRole("Organization"))
+				{
+					@Html.ActionLink("Hello " + this.User.Identity.Name, "ProfileDetails", "Organization", new { area = "User", username = this.User.Identity.Name }, null)
+				}
+				@*@if (this.User.IsInRole("Admin"))
+				{
+					@Html.ActionLink("Hello " + this.User.Identity.Name, "ProfileDetails", "Organization", new { area = "User", username = this.User.Identity.Name }, null)
+				}*@
+			</li>
+
+
+			<li><a href="javascript:document.getElementById('logoutForm').submit()"> Log off</a></li>
+		</ul>
+	}
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+	<ul class="nav navbar-nav navbar-right">
+		<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+		<li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+	</ul>
 }

@@ -8,6 +8,7 @@ using AutoMapper;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Web.Infrastructure;
 using SofiaDayAndNight.Web.Models;
+using SofiaDayAndNight.Common.Enums;
 
 namespace SofiaDayAndNight.Web.Areas.User.Models
 {
@@ -15,10 +16,11 @@ namespace SofiaDayAndNight.Web.Areas.User.Models
     {
         public IndividualViewModel()
         {
-            this.Friends = new HashSet<IndividualViewModel>();
-            this.FriendRequests = new HashSet<IndividualViewModel>();
-            this.Following = new HashSet<OrganizationViewModel>();
-
+            //this.Friends = new HashSet<IndividualViewModel>();
+            //this.FriendRequests = new HashSet<IndividualViewModel>();
+            //this.FriendRequested = new HashSet<IndividualViewModel>();
+            //this.Following = new HashSet<OrganizationViewModel>();
+    
             this.Id = Guid.NewGuid();
         }
 
@@ -28,6 +30,8 @@ namespace SofiaDayAndNight.Web.Areas.User.Models
         public string UserName { get; set; }
 
         public string City { get; set; }
+
+        public IndividualStatus IndividualStatus { get; set; }
 
         [MinLength(3)]
         [MaxLength(50)]
@@ -44,11 +48,13 @@ namespace SofiaDayAndNight.Web.Areas.User.Models
 
         public ImageViewModel ProfileImage { get; set; }
 
-        public IEnumerable<IndividualViewModel> Friends { get; set; }
+        //public IEnumerable<IndividualViewModel> Friends { get; set; }
 
-        public IEnumerable<IndividualViewModel> FriendRequests { get; set; }
+        //public IEnumerable<IndividualViewModel> FriendRequests { get; set; }
 
-        public IEnumerable<OrganizationViewModel> Following { get; set; }
+        //public IEnumerable<IndividualViewModel> FriendRequested { get; set; }
+
+        //public IEnumerable<OrganizationViewModel> Following { get; set; }
 
         //public IEnumerable<EventViewModel> EventsAttended { get; set; }
 

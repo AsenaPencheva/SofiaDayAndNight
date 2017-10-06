@@ -1,0 +1,25 @@
+﻿<div class="card text-center">
+	<div class="card-header">
+		<ul class="nav nav-tabs card-header-tabs">
+			@if (this.User.IsInRole("Individual"))
+			{
+				<li class="nav-item active">
+					@Ajax.ActionLink("Personal Details", "ProfileDetails", "Individual", new { username = this.User.Identity.Name },
+		 new AjaxOptions
+		 {
+			 UpdateTargetId = "individual-details",
+			 HttpMethod = "GET",
+			 InsertionMode = InsertionMode.Replace
+		 }, new { @class = "btn btn-primary" })
+				</li>
+			}
+			@*<li class="nav-item">
+					@Html.ActionLink("Friends Requests", "List", "Individual", routeValues: null, htmlAttributes: new { id = "individuals-list" })
+				</li>
+				<li class="nav-item">
+					@Html.ActionLink("Events", "Events", "Individual", routeValues: null, htmlAttributes: new { id = "events" })
+				</li>*@
+		</ul>
+		<div id="individual-details">@Html.Partial("_IndividualProfilePartial")</div>
+	</div>
+</div>

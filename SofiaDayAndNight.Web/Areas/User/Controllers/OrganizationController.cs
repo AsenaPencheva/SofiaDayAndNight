@@ -8,6 +8,7 @@ using SofiaDayAndNight.Web.Areas.User.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -26,12 +27,25 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         }
 
         // GET: Organization/Organization
-        public ActionResult Index(OrganizationViewModel model)
+        public ActionResult ProfileDetails(string username)
         {
-            ViewBag.Name = model.Name;
-            return View();
-        }
+            if (username == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
+            var organization = this.organizationService.GetByUsername(username);
+            if (organization == null)
+            {
+                return HttpNotFound();
+            }
+
+            var model = this.mapper.Map<OrganizationViewModel>(organization);
+
+            model.OrganizationStatus = this.organizationService.GetStatus(this.User.Identity.Name, model.Id);
+
+            return this.View(model);
+        }
 
         [HttpPost]
         public ActionResult Submit(OrganizationViewModel model, HttpPostedFileBase upload)
@@ -60,12 +74,13 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             }
 
             organization.User = user;
-            
+
+            //this.individualService.Create(individual);
             user.Organization = organization;
             user.IsCompleted = true;
             System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().Update(user);
 
-            return this.RedirectToAction("Index");
+            return RedirectToAction("ProfileDetails", new { area = "User", username = user.UserName });
         }
     }
 }
