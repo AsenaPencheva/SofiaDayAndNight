@@ -38,7 +38,7 @@ namespace SofiaDayAndNight.Data.Models
 
         public virtual Organization Organization { get; set; }
 
-        public virtual Multimedia Multimedia { get; set; }
+        public virtual ICollection<Multimedia> Multimedias { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
     }

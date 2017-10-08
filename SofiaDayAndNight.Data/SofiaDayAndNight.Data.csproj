@@ -75,6 +75,10 @@
     <Compile Include="Migrations\201710061058155_Update Individual Table.Designer.cs">
       <DependentUpon>201710061058155_Update Individual Table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710072358129_Update Multimedia Table.cs" />
+    <Compile Include="Migrations\201710072358129_Update Multimedia Table.Designer.cs">
+      <DependentUpon>201710072358129_Update Multimedia Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SofiaDayAndNightDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -106,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710061058155_Update Individual Table.resx">
       <DependentUpon>201710061058155_Update Individual Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710072358129_Update Multimedia Table.resx">
+      <DependentUpon>201710072358129_Update Multimedia Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

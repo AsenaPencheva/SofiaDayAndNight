@@ -36,6 +36,7 @@ namespace SofiaDayAndNight.Data.Models
         [DateRange]
         public DateTime Begins { get; set; }
 
+        [DateRange]
         public DateTime Ends { get; set; }
 
         public int Likes { get; set; }
@@ -47,6 +48,7 @@ namespace SofiaDayAndNight.Data.Models
         public Guid ImageId { get; set; }
         public virtual Image Cover { get; set; }
 
+        public Guid MultimediaId { get; set; }
         public virtual Multimedia Multimedia { get; set; }
 
         public virtual Organization Place { get; set; }

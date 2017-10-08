@@ -57,11 +57,11 @@
     <Compile Include="Contracts\IAuditable.cs" />
     <Compile Include="Contracts\IDeletable.cs" />
     <Compile Include="Contracts\IForbidabble.cs" />
-    <Compile Include="Multimedia.cs" />
     <Compile Include="Comment.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="Individual.cs" />
+    <Compile Include="Multimedia.cs" />
     <Compile Include="Organization.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

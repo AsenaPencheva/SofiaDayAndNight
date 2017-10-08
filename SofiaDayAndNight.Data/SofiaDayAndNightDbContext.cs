@@ -96,11 +96,15 @@ namespace SofiaDayAndNight.Data
                 .HasOptional(i => i.Event)
                 .WithRequired(e => e.Cover);
 
-            //modelBuilder.Entity<Comment>()
-            //  .HasKey(c => c.ImageId);
-            //modelBuilder.Entity<Image>()
-            //    .HasMany(i => i.Comments)
-            //    .WithRequired(c => c.Image);
+            modelBuilder.Entity<Multimedia>()
+               .HasMany(m => m.Images)
+               .WithMany(i=>i.Multimedias)
+               .Map(m =>
+               {
+                   m.MapLeftKey("MultimediaId");
+                   m.MapRightKey("ImageId");
+                   m.ToTable("MultimediaImages");
+               });
         }
 
         private void OnIndividualPlace(DbModelBuilder modelBuilder)
