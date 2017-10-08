@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SofiaDayAndNight.Common.Enums
+﻿namespace SofiaDayAndNight.Common.Enums
 {
     public enum IndividualStatus
     {
@@ -12,5 +6,6 @@ namespace SofiaDayAndNight.Common.Enums
         IsCurrent = 1,
         IsFriend = 2,
         IsRequested = 3,
+        HasRequest = 4,
     }
 }

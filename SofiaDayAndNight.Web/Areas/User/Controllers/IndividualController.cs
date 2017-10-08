@@ -6,6 +6,8 @@ using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Services;
 using SofiaDayAndNight.Data.Services.Contracts;
 using SofiaDayAndNight.Web.Areas.User.Models;
+using SofiaDayAndNight.Web.Helpers;
+using SofiaDayAndNight.Web.Infrastructure;
 using SofiaDayAndNight.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -21,11 +23,13 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
     {
         private readonly IIndividualService individualService;
         private readonly IMapper mapper;
+        private readonly IPhotoHelper photoHelper;
 
-        public IndividualController(IIndividualService individualService, IMapper mapper)
+        public IndividualController(IIndividualService individualService, IMapper mapper,IPhotoHelper photoHelper)
         {
             this.individualService = individualService;
             this.mapper = mapper;
+            this.photoHelper = photoHelper;
         }
 
         public ActionResult ProfileDetails(string username)
@@ -36,14 +40,16 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             }
 
             var individual = this.individualService.GetByUsername(username);
+        
             if (individual == null)
             {
                 return HttpNotFound();
             }
-
+            this.Dispose();
             var model = this.mapper.Map<IndividualViewModel>(individual);
 
-            model.IndividualStatus = this.individualService.GetStatus(this.User.Identity.Name, model.Id);
+            // error if ViewBag.UserId is null
+            model.IndividualStatus = this.individualService.GetStatus(this.User.Identity.GetUserId(), model.Id);
 
             return this.View(model);
         }
@@ -62,16 +68,9 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             individual.CreatedOn = DateTime.Now;
             if (upload != null && upload.ContentLength > 0)
             {
-                var image = new Image
-                {
-                    Name = System.IO.Path.GetFileName(upload.FileName),
-                    ContentType = upload.ContentType
-                };
-                using (var reader = new System.IO.BinaryReader(upload.InputStream))
-                {
-                    image.Data = reader.ReadBytes(upload.ContentLength);
-                }
-                individual.ProfileImage = image;
+                var image = this.photoHelper.UploadImage(upload);
+               
+                individual.ProfileImage = this.mapper.Map<Image>(image);
             }
 
             individual.User = user;
@@ -85,27 +84,84 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         }
 
         [HttpPost]
-        public ActionResult SendFriendRequest(Guid id)
+        public ActionResult SendFriendRequest(string username)
         {
-            this.individualService.SendFriendRequest(this.User.Identity.Name, id);
+            this.individualService.SendFriendRequest(this.User.Identity.Name, username);
+
+            if (Request.IsAjaxRequest())
+            {
+                var model = this.mapper.Map<IndividualViewModel>(this.individualService.GetByUsername(username));
+                model.IndividualStatus = IndividualStatus.IsRequested;
+
+                return this.PartialView("_IndividualInfoPartial", model);
+            }
 
             return this.RedirectToAction("ProfileDetails", new { username = this.User.Identity.Name });
         }
 
-        //[HttpPost]
-        //public ActionResult CancelFriendRequest(Guid id)
-        //{
-        //    this.individualService.SendFriendRequest(this.User.Identity.Name, id);
+        [HttpPost]
+        public ActionResult CancelFriendRequest(string username)
+        {
+            this.individualService.CancelFriendRequest(this.User.Identity.Name, username);
 
-        //    return this.RedirectToAction("ProfileDetails", new { id = id });
-        //}
+            if (Request.IsAjaxRequest())
+            {
+                var model = this.mapper.Map<IndividualViewModel>(this.individualService.GetByUsername(username));
+                model.IndividualStatus = IndividualStatus.None;
 
-        //[HttpPost]
-        //public ActionResult CancelFriendship(Guid id)
-        //{
-        //    this.individualService.SendFriendRequest(this.User.Identity.Name, id);
+                return this.PartialView("_IndividualInfoPartial", model);
+            }
 
-        //    return this.RedirectToAction("ProfileDetails", new { id = id });
-        //}
+            return this.RedirectToAction("ProfileDetails", new { username = this.User.Identity.Name });
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmFriendship(string username)
+        {
+            this.individualService.ConfirmFriendship(this.User.Identity.Name, username);
+
+            if (Request.IsAjaxRequest())
+            {
+                var model = this.mapper.Map<IndividualViewModel>(this.individualService.GetByUsername(username));
+                model.IndividualStatus = IndividualStatus.IsFriend;
+
+                return this.PartialView("_IndividualInfoPartial", model);
+            }
+
+            return this.RedirectToAction("ProfileDetails", new { username = this.User.Identity.Name });
+        }
+
+        [HttpPost]
+        public ActionResult CancelFriendship(string username)
+        {
+            this.individualService.RemoveFriendship(this.User.Identity.Name, username);
+
+            if (Request.IsAjaxRequest())
+            {
+                var model = this.mapper.Map<IndividualViewModel>(this.individualService.GetByUsername(username));
+                model.IndividualStatus = IndividualStatus.None;
+
+                return this.PartialView("_IndividualInfoPartial", model);
+            }
+
+            return this.RedirectToAction("ProfileDetails", new { username= this.User.Identity.Name });
+        }
+
+
+        public ActionResult FriendsRequest(string username)
+        {
+            var friendsList = this.individualService.GetFriendsRequests(username)
+                .Select(x => this.mapper.Map<IndividualViewModel>(x)).ToList();
+
+            return this.PartialView("_RequestsListPartial", friendsList);
+        }
+
+        public ActionResult Friends(string username)
+        {
+            var friendsList = this.individualService.GetFriends(username)
+                .Select(x => this.mapper.Map<IndividualViewModel>(x)).ToList();
+
+            return this.PartialView("_FriendsListPartial", friendsList);
+        }
     }
 }

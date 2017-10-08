@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Web.Infrastructure;
-using System;
-using System.Web.Mvc;
 
 namespace SofiaDayAndNight.Web.Models
 {

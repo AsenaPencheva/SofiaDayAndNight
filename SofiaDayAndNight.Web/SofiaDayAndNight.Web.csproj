@@ -222,7 +222,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\User\Controllers\EventController.cs" />
     <Compile Include="Areas\User\Controllers\ImageController.cs" />
-    <Compile Include="Areas\User\Controllers\UserController.cs" />
+    <Compile Include="Areas\User\Models\EventViewModel.cs" />
     <Compile Include="Areas\User\Models\FriendsListViewModel.cs" />
     <Compile Include="Areas\User\UserAreaRegistration.cs" />
     <Compile Include="Areas\User\Controllers\OrganizationController.cs" />
@@ -234,6 +234,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\IPhotoHelper.cs" />
+    <Compile Include="Helpers\PhotoHelper.cs" />
+    <Compile Include="Infrastructure\AjaxOnlyAttribute.cs" />
     <Compile Include="Infrastructure\IHaveCustomMappings.cs" />
     <Compile Include="Infrastructure\IMapFrom.cs" />
     <Compile Include="Infrastructure\QueryableExtensions.cs" />
@@ -248,7 +251,6 @@
     <Compile Include="Models\Account\VerifyCodeViewModel.cs" />
     <Compile Include="Models\MultimediaViewModel.cs" />
     <Compile Include="Models\CommentViewModel.cs" />
-    <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\ImageViewModel.cs" />
     <Compile Include="Areas\User\Models\IndividualViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -279,14 +281,27 @@
     <Content Include="Areas\User\Views\Individual\ProfileDetails.cshtml" />
     <Content Include="Areas\User\Views\Organization\ProfileDetails.cshtml" />
     <Content Include="Areas\User\Views\Shared\_ProfileNavigationPartial.cshtml" />
+    <Content Include="Areas\User\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\User\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\User\Views\Shared\_FriendsListPartial.cshtml" />
+    <Content Include="Areas\User\Views\Shared\_FriendPartial.cshtml" />
+    <Content Include="Areas\User\Views\Shared\_RequestsListPartial.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\MicrosoftAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftAjax.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -332,7 +347,6 @@
     <Folder Include="Areas\User\Views\Event\" />
     <Folder Include="Areas\User\Views\Image\" />
     <Folder Include="Areas\User\Views\User\" />
-    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

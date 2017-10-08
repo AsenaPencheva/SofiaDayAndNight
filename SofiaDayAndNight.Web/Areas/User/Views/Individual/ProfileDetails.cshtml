@@ -1,27 +1,55 @@
-﻿@{
+﻿@using SofiaDayAndNight.Web.Areas.User.Models
+@using SofiaDayAndNight.Common.Enums
+@{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@model IndividualViewModel
 
 <div class="row">
 	<div class="panel panel-default">
 		<div class="panel-heading">  <h4>Profile</h4></div>
-		<div class="panel-body">
+		<div class="panel-body" id="details">
 			@Html.Partial("_IndividualInfoPartial")
-
-			<div class="col-md-2 col-xs-12 col-sm-6 col-lg-2">
-				
-				
-				@*@if (Model.IndividualStatus == IndividualStatus.IsCurrent)
-				{
-					@Html.ActionLink("FriendsRequest", "FriendsRequest", new { username = Model.UserName }, new { @class = "btn btn-primary" });
-					@Html.ActionLink("Friends", "FriendsList", new { username = Model.UserName }, new { @class = "btn btn-primary" });
-				}*@
-
-
-				@Html.ActionLink("Events", "EventsList", "Event", new { username = Model.UserName }, new { @class = "btn btn-primary" })
-				@Html.ActionLink("Following", "FollowingList", "Organization", new { username = Model.UserName }, new { @class = "btn btn-primary" })
-
+			<div class="card text-center col-md-4 col-xs-12 col-sm-6 col-lg-4">
+				<div class="card-header">
+					<ul class="nav nav-tabs card-header-tabs">
+						@if (Model.IndividualStatus == IndividualStatus.IsCurrent)
+						{
+							<li class="nav-item">
+								@Ajax.ActionLink("View Friend Requests",
+				   "FriendsRequest",
+				   "Individual",
+				   new { username = Model.UserName, area = "User" },
+				   new AjaxOptions
+				   {
+					   //InsertionMode = InsertionMode.InsertAfter,
+					   UpdateTargetId = "friends",
+					   InsertionMode = InsertionMode.Replace,
+					   //OnSuccess = "showHidePublications"
+				   }, null)
+							</li>
+							<li class="nav-item">
+								@Ajax.ActionLink("View Friends",
+				   "Friends",
+				   "Individual",
+				   new { username = Model.UserName, area = "User" },
+				   new AjaxOptions
+				   {
+					   UpdateTargetId = "friends",
+					   InsertionMode = InsertionMode.Replace,
+				   }, null)
+							</li>
+						}
+					</ul>
+				</div>
+				<ul id="friends" class="list-group"></ul>
 			</div>
 		</div>
 	</div>
+</div>
+@Html.ActionLink("Events", "EventsList", "Event", new { username = Model.UserName }, new { @class = "btn btn-primary" })
+@Html.ActionLink("Following", "FollowingList", "Organization", new { username = Model.UserName }, new { @class = "btn btn-primary" })
+<div class="row" id="user-events">
+</div>
+<div class="row" id="user-following">
 </div>

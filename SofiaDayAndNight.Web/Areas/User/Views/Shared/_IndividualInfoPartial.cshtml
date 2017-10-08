@@ -13,13 +13,13 @@
 			using (Ajax.BeginForm(
 				"SendFriendRequest",
 				"Individual",
-				new { id = Model.Id,area = "User" },
+				new { username = Model.UserName, area = "User" },
 				new AjaxOptions
 				{
+					UpdateTargetId="details",
 					HttpMethod = "Post"
 				}))
 			{
-				<input type="text" value="@Model.Id" />
 				<button class="btn btn-primary" type="submit">Send Request</button>
 			}
 		}
@@ -28,13 +28,13 @@
 			using (Ajax.BeginForm(
 				"CancelFriendRequest",
 				"Individual",
-				new { area = "User" },
+				new { username = Model.UserName, area = "User" },
 				new AjaxOptions
 				{
+					UpdateTargetId = "details",
 					HttpMethod = "Post"
 				}))
 			{
-				@Html.DisplayFor(x => Model.Id)
 				<button class="btn btn-primary" type="submit">Cancel Request</button>
 			}
 
@@ -44,15 +44,36 @@
 			using (Ajax.BeginForm(
 				"CancelFriendship",
 				"Individual",
-				new {id= Model.Id, area = "User" },
+				new { username = Model.UserName, area = "User" },
 				new AjaxOptions
 				{
+					UpdateTargetId = "details",
 					HttpMethod = "Post"
 				}))
 			{
 				<button class="btn btn-primary" type="submit">Remove Friend</button>
 			}
 		}
+		@if (Model.IndividualStatus == IndividualStatus.HasRequest)
+		{
+			using (Ajax.BeginForm(
+				"ConfirmFriendship",
+				"Individual",
+				new { username = Model.UserName, area = "User" },
+				new AjaxOptions
+				{
+					UpdateTargetId = "details",
+					HttpMethod = "Post"
+				}))
+			{
+				<button class="btn btn-primary" type="submit">Confirm Friend</button>
+			}
+		}
+		@if (Model.IndividualStatus == IndividualStatus.IsCurrent)
+		{
+			Html.ActionLink("Creaye Event", "Create","Event", new { area = "User",id=Model.Id },null);
+		}
+
 	</div>
 	<hr>
 	<ul class="container details">

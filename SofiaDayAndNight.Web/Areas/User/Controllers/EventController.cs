@@ -8,8 +8,8 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
 {
     public class EventController : Controller
     {
-        // GET: User/Event
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Create()
         {
             return View();
         }

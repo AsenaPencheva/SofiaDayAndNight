@@ -100,6 +100,7 @@ namespace SofiaDayAndNight.Web.Controllers
         {
             var user = UserManager.FindByName(User.Identity.Name);
             var role = this.UserManager.GetRoles(user.Id).First();
+            ViewData["userId"] = user.Id;
             if (user.IsCompleted)
             {
                 return RedirectToAction("ProfileDetails", role, new { username = this.User.Identity.Name, area = "User" }); // load profile
@@ -180,7 +181,7 @@ namespace SofiaDayAndNight.Web.Controllers
                 {
                     UserManager.AddToRole(user.Id, role);
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
+                    ViewData["userId"] = user.Id;
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

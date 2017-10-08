@@ -1,20 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
-using SofiaDayAndNight.Common.Enums;
+using AutoMapper;
+
+using SofiaDayAndNight.Web.Infrastructure;
+using SofiaDayAndNight.Data.Models;
+using SofiaDayAndNight.Web.Models;
 
 namespace SofiaDayAndNight.Web.Areas.User.Models
 {
-    public class FriendsListViewModel
+    public class FriendsListViewModel : IMapFrom<Individual>, IHaveCustomMappings
     {
-        public FriendsListViewModel()
+        public Guid Id { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string City { get; set; }
+
+        public int Age { get; set; }
+
+        public ImageViewModel ProfileImage { get; set; }
+
+        public void CreateMappings(IMapperConfigurationExpression configuration)
         {
-            this.FriendsConnectionList = new HashSet<IndividualViewModel>();
+            configuration.CreateMap<Individual, IndividualViewModel>()
+                .ForMember(viewModel => viewModel.City, cfg => cfg.MapFrom(model => model.User.City));
         }
-
-        public string UserName { get; set; }
-
-        public IndividualStatus IndividualStatus { get; set; }
-
-        public HashSet<IndividualViewModel> FriendsConnectionList { get; private set; }
     }
 }
