@@ -1,6 +1,6 @@
 ﻿@using SofiaDayAndNight.Web.Areas.User.Models
 @model IndividualViewModel
-@using (Html.BeginForm("Submit", "Individual", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Submit", "Individual",new { area="User"}, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
 	@Html.AntiForgeryToken()
 	@Html.ValidationSummary("", new { @class = "text-danger" })

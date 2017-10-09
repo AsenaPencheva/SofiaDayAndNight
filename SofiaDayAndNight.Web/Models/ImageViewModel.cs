@@ -12,7 +12,7 @@ namespace SofiaDayAndNight.Web.Models
     {
         public ImageViewModel()
         {
-            //this.Comments = new HashSet<CommentViewModel>();
+            this.Id = Guid.NewGuid();
             this.Privacy = Privacy.OnlyFriends;
         }
 

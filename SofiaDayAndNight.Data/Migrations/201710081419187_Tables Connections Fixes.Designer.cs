@@ -7,13 +7,13 @@ namespace SofiaDayAndNight.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class UpdateMultimediaTable : IMigrationMetadata
+    public sealed partial class TablesConnectionsFixes : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateMultimediaTable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(TablesConnectionsFixes));
         
         string IMigrationMetadata.Id
         {
-            get { return "201710072358129_Update Multimedia Table"; }
+            get { return "201710081419187_Tables Connections Fixes"; }
         }
         
         string IMigrationMetadata.Source

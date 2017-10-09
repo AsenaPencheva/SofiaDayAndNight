@@ -6,22 +6,31 @@ using Bytes2you.Validation;
 
 using SofiaDayAndNight.Data.Contracts;
 using SofiaDayAndNight.Data.Models;
+using SofiaDayAndNight.Data.Services.Contracts;
 
 namespace SofiaDayAndNight.Data.Services
 {
-    public class EventService
+    public class EventService : IEventService
     {
         private readonly IEfDbSetWrapper<Event> eventsSetWrapper;
-
+        private readonly IEfDbSetWrapper<Individual> individualSetWrapper;
+        private readonly IEfDbSetWrapper<Organization> organizationSetWrapper;
         private readonly IUnitOfWork dbContext;
 
-        public EventService(IEfDbSetWrapper<Event> eventsSetWrapper, IUnitOfWork dbContext)
+        public EventService(IEfDbSetWrapper<Event> eventsSetWrapper,
+            IEfDbSetWrapper<Individual> individualSetWrapper,
+            IEfDbSetWrapper<Organization> organizationSetWrapper, 
+            IUnitOfWork dbContext)
         {
             Guard.WhenArgument(eventsSetWrapper, "EventsSetWrapper").IsNull().Throw();
+            Guard.WhenArgument(individualSetWrapper, "individualSetWrapper").IsNull().Throw();
+            Guard.WhenArgument(organizationSetWrapper, "organizationSetWrapper").IsNull().Throw();
             Guard.WhenArgument(dbContext, "dbContext").IsNull().Throw();
 
             this.dbContext = dbContext;
             this.eventsSetWrapper = eventsSetWrapper;
+            this.individualSetWrapper = individualSetWrapper;
+            this.organizationSetWrapper = organizationSetWrapper;
         }
 
         public Event GetById(Guid id)
@@ -30,19 +39,25 @@ namespace SofiaDayAndNight.Data.Services
             return currentEvent;
         }
 
-        public void Create(Event newEvent)
+        public void OrganizationCreate(Event newEvent, Guid id)
+        {
+           var organization= this.organizationSetWrapper.GetById(id);
+            organization.Events.Add(newEvent);
+            this.eventsSetWrapper.Add(newEvent);
+            dbContext.Commit();
+        }
+
+        public void IndividualCreate(Event newEvent)
         {
             this.eventsSetWrapper.Add(newEvent);
             dbContext.Commit();
         }
 
-        public IQueryable<Event> GetEventsByNameOrPlace(string searchTerm)
+        public IQueryable<Event> GetEventsByName(string searchTerm)
         {
             return string.IsNullOrEmpty(searchTerm) ? this.eventsSetWrapper.All
                 : this.eventsSetWrapper.All.Where(e =>
-                (string.IsNullOrEmpty(e.Title) ? false : e.Title.Contains(searchTerm))
-                ||
-                (string.IsNullOrEmpty(e.Place.Name) ? false : e.Place.Name.Contains(searchTerm)));
+                (string.IsNullOrEmpty(e.Title) ? false : e.Title.Contains(searchTerm)));
         }
 
         public IQueryable<Event> GetAllUpcomingEvents()

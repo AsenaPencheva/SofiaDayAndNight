@@ -33,7 +33,6 @@ namespace SofiaDayAndNight.Data.Models
         [Required]
         public int Age { get; set; }
 
-        public Guid ImageId { get; set; }
         public virtual Image ProfileImage { get; set; }
 
         public virtual ICollection<Event> Events { get; set; }

@@ -222,6 +222,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\User\Controllers\EventController.cs" />
     <Compile Include="Areas\User\Controllers\ImageController.cs" />
+    <Compile Include="Areas\User\Models\EventsListViewModel.cs" />
     <Compile Include="Areas\User\Models\EventViewModel.cs" />
     <Compile Include="Areas\User\Models\FriendsListViewModel.cs" />
     <Compile Include="Areas\User\UserAreaRegistration.cs" />
@@ -236,7 +237,7 @@
     </Compile>
     <Compile Include="Helpers\IPhotoHelper.cs" />
     <Compile Include="Helpers\PhotoHelper.cs" />
-    <Compile Include="Infrastructure\AjaxOnlyAttribute.cs" />
+    <Compile Include="Helpers\AjaxOnlyAttribute.cs" />
     <Compile Include="Infrastructure\IHaveCustomMappings.cs" />
     <Compile Include="Infrastructure\IMapFrom.cs" />
     <Compile Include="Infrastructure\QueryableExtensions.cs" />
@@ -260,6 +261,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\event.css" />
     <Content Include="Content\images\sofia.jpg" />
     <Content Include="Content\images\sofia_2.jpg" />
     <Content Include="Content\images\sofia_3.jpg" />
@@ -286,6 +288,10 @@
     <Content Include="Areas\User\Views\Shared\_FriendsListPartial.cshtml" />
     <Content Include="Areas\User\Views\Shared\_FriendPartial.cshtml" />
     <Content Include="Areas\User\Views\Shared\_RequestsListPartial.cshtml" />
+    <Content Include="Areas\User\Views\Event\Create.cshtml" />
+    <Content Include="Areas\User\Views\Shared\_EventsListPartial.cshtml" />
+    <Content Include="Areas\User\Views\Shared\_EventPartial.cshtml" />
+    <Content Include="Areas\User\Views\Event\EventDetails.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -344,7 +350,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\User\Views\Event\" />
     <Folder Include="Areas\User\Views\Image\" />
     <Folder Include="Areas\User\Views\User\" />
   </ItemGroup>

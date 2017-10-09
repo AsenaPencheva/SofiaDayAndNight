@@ -14,7 +14,7 @@ namespace SofiaDayAndNight.Data.EfDbSetWrappers
          where T : class, IDeletable
     {
         private readonly DbContext efDbContext;
-        private readonly IDbSet<T> dbSet;
+        private readonly DbSet<T> dbSet;
 
         public EfDbSetWrapper(DbContext efDbContext)
         {
@@ -52,7 +52,7 @@ namespace SofiaDayAndNight.Data.EfDbSetWrappers
             }
             else
             {
-                this.efDbContext.Set<T>().Add(entity);
+                this.dbSet.Add(entity);
             }
         }
 
@@ -61,7 +61,7 @@ namespace SofiaDayAndNight.Data.EfDbSetWrappers
             DbEntityEntry entry = this.efDbContext.Entry(entity);
             if (entry.State == EntityState.Detached)
             {
-                this.efDbContext.Set<T>().Attach(entity);
+                this.dbSet.Attach(entity);
             }
 
             entry.State = EntityState.Modified;

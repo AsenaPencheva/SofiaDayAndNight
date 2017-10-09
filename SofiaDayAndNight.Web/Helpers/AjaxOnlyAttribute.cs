@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace SofiaDayAndNight.Web.Infrastructure
+namespace SofiaDayAndNight.Web.Helpers
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class AjaxOnlyAttribute : ActionFilterAttribute

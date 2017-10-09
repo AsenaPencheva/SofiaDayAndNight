@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Bytes2you.Validation;
+
 using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Contracts;
 using SofiaDayAndNight.Data.Models;
@@ -23,48 +24,78 @@ namespace SofiaDayAndNight.Data.Services
             this.individualSetWrapper = individualSetWrapper;
             this.dbContext = dbContext;
         }
-       
-        public Individual GetById(Guid id)
+
+        public Individual GetById(Guid? id)
         {
-            var individual = this.individualSetWrapper.GetById(id);
+            Individual individual = null;
+            if (id.HasValue)
+            {
+                individual = this.individualSetWrapper.GetById(id.Value);
+            }
+
             return individual;
         }
 
         public Individual GetByUsername(string usename)
         {
-            var individual = this.individualSetWrapper.All.FirstOrDefault(i => i.User.UserName == usename);
+            Individual individual = null;
+            if (!string.IsNullOrEmpty(usename))
+            {
+                individual = this.individualSetWrapper.All.FirstOrDefault(i => i.User.UserName == usename);
+            }
             return individual;
         }
 
         public Individual GetByUser(string userId)
         {
+            // if userId is null!!!
             var individual = this.individualSetWrapper.All.FirstOrDefault(i => i.User.Id == userId);
             return individual;
         }
 
-        public void Create(Individual individual)
-        {
-            this.individualSetWrapper.Add(individual);
-            this.dbContext.Commit();
-        }
+        //public void Create(Individual individual)
+        //{
+        //    this.individualSetWrapper.Add(individual);
+        //    this.dbContext.Commit();
+        //}
 
-        public IEnumerable<Individual> GetIndividualsByNameOrUsername(string searchTerm)
-        {
-            var fullName = string.Empty;
-            return string.IsNullOrEmpty(searchTerm) ? this.individualSetWrapper.All
-                : this.individualSetWrapper.All.Where(i =>
-                (string.IsNullOrEmpty(this.GetFullName(i)) ? false : this.GetFullName(i).Contains(searchTerm))
-                || (string.IsNullOrEmpty(i.User.UserName) ? false : i.User.UserName.Contains(searchTerm)));
-        }
+        //public IEnumerable<Individual> GetIndividualsByNameOrUsername(string searchTerm)
+        //{
+        //    var fullName = string.Empty;
+        //    return string.IsNullOrEmpty(searchTerm) ? this.individualSetWrapper.All
+        //        : this.individualSetWrapper.All.Where(i =>
+        //        (string.IsNullOrEmpty(this.GetFullName(i)) ? false : this.GetFullName(i).Contains(searchTerm))
+        //        || (string.IsNullOrEmpty(i.User.UserName) ? false : i.User.UserName.Contains(searchTerm)));
+        //}
 
-        public IEnumerable<Individual> GetFriendsRequests (string username)
+        public IEnumerable<Individual> GetFriendsRequests(string username)
         {
-            return this.GetByUsername(username).FriendRequests.ToList();
+            var result = new List<Individual>();
+            if (!string.IsNullOrEmpty(username))
+            {
+                var individual = this.GetByUsername(username);
+                if (individual != null)
+                {
+                    result = individual.FriendRequests.ToList();
+                }
+            }
+
+            return result;
         }
 
         public IEnumerable<Individual> GetFriends(string username)
         {
-            return this.GetByUsername(username).Friends.ToList();
+            var result = new List<Individual>();
+            if (!string.IsNullOrEmpty(username))
+            {
+                var individual = this.GetByUsername(username);
+                if (individual != null)
+                {
+                    result = individual.Friends.ToList();
+                }
+            }
+
+            return result;
         }
 
         public void AttendEvent(Guid individualId, Event eventToAttend)
@@ -80,7 +111,7 @@ namespace SofiaDayAndNight.Data.Services
             individual.Following.Add(placeToFollow);
             this.Update(individual);
         }
-        
+
         private string GetFullName(Individual individual)
         {
             return individual.FirstName + " " + individual.LastName;
@@ -94,27 +125,30 @@ namespace SofiaDayAndNight.Data.Services
 
         public IndividualStatus GetStatus(string currentUserId, Guid id)
         {
+            // Guid?
             var current = this.GetByUser(currentUserId);
-            if (current.Id == id)
+            if (current != null)
             {
-                return IndividualStatus.IsCurrent;
+                if (current.Id == id)
+                {
+                    return IndividualStatus.IsCurrent;
+                }
+                else if (current.Friends.Where(x => x.Id == id).Count() > 0)
+                {
+                    return IndividualStatus.IsFriend;
+                }
+                else if (current.FriendRequested.Where(x => x.Id == id).Count() > 0)
+                {
+                    return IndividualStatus.IsRequested;
+                }
+                else if (current.FriendRequests.Where(x => x.Id == id).Count() > 0)
+                {
+                    return IndividualStatus.HasRequest;
+                }
             }
-            else if (current.Friends.Where(x => x.Id == id).Count() > 0)
-            {
-                return IndividualStatus.IsFriend;
-            }
-            else if (current.FriendRequested.Where(x => x.Id == id).Count() > 0)
-            {
-                return IndividualStatus.IsRequested;
-            }
-            else if (current.FriendRequests.Where(x => x.Id == id).Count() > 0)
-            {
-                return IndividualStatus.HasRequest;
-            }
-            else
-            {
-                return IndividualStatus.None;
-            }
+
+            return IndividualStatus.None;
+
         }
 
         public void SendFriendRequest(string currentUser, string usename)
@@ -129,7 +163,7 @@ namespace SofiaDayAndNight.Data.Services
             this.Update(friendToAdd);
         }
 
-      
+
         public void CancelFriendRequest(string currentUsername, string username)
         {
             var current = this.GetByUsername(currentUsername);
@@ -168,6 +202,53 @@ namespace SofiaDayAndNight.Data.Services
             this.Update(friendToRemove);
         }
 
-      
+        public void CreateEvent(Event eventModel, string creator)
+        {
+            var multimedia = new Multimedia();
+            eventModel.Multimedia = multimedia;
+            var individual = this.GetByUsername(creator);
+            individual.Events.Add(eventModel);
+            this.Update(individual);
+        }
+
+        public IEnumerable<Event> GetEvents(string username)
+        {
+            var individual = this.GetByUsername(username);
+
+            return individual.Events.ToList();
+        }
+
+        public IEnumerable<Event> GetUpcomingEvents(string username)
+        {
+            var currentDate = DateTime.Now;
+            //var individual = this.GetByUsername(username);
+
+            return this.individualSetWrapper.All
+                .Where(x => x.User.UserName == username).FirstOrDefault()
+                .Events.Where(e => currentDate < e.Begins).ToList();
+
+            //return individual.Events.Where(e => currentDate < e.Begins).ToList();
+        }
+
+        public IEnumerable<Event> GetCurrentEvents(string username)
+        {
+            var currentDate = DateTime.Now;
+            var individual = this.GetByUsername(username);
+
+
+            return individual.Events.Where(e => e.Begins < currentDate && currentDate < e.Ends).ToList();
+        }
+
+        public IEnumerable<Event> GetPassedEvents(string username)
+        {
+            var currentDate = DateTime.Now;
+            var individual = this.GetByUsername(username);
+
+            return this.individualSetWrapper.All
+               .Where(x => x.User.UserName == username).FirstOrDefault()
+               .Events.Where(e => e.Ends < currentDate).ToList();
+
+            //return individual.Events.Where(e => e.Ends < currentDate).ToList();
+        }
     }
 }

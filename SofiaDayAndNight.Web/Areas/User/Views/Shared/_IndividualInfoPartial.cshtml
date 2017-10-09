@@ -16,7 +16,7 @@
 				new { username = Model.UserName, area = "User" },
 				new AjaxOptions
 				{
-					UpdateTargetId="details",
+					UpdateTargetId = "details",
 					HttpMethod = "Post"
 				}))
 			{
@@ -71,7 +71,7 @@
 		}
 		@if (Model.IndividualStatus == IndividualStatus.IsCurrent)
 		{
-			Html.ActionLink("Creaye Event", "Create","Event", new { area = "User",id=Model.Id },null);
+			@Html.ActionLink("Create Event", "Create", "Event", new { area = "User", username = Model.UserName }, new { @class = "btn btn-primary" })
 		}
 
 	</div>

@@ -11,12 +11,12 @@ namespace SofiaDayAndNight.Data.Services.Contracts
     public interface IIndividualService
     {
         void AttendEvent(Guid individualId, Event eventToAttend);
-        void Create(Individual individual);
+        //void Create(Individual individual);
         void FollowPlace(Guid individualId, Organization placeToFollow);
         Individual GetByUsername(string usename);
-        Individual GetById(Guid id);
+        Individual GetById(Guid? id);
         Individual GetByUser(string userId);
-        IEnumerable<Individual> GetIndividualsByNameOrUsername(string searchTerm);
+        //IEnumerable<Individual> GetIndividualsByNameOrUsername(string searchTerm);
         void Update(Individual individual);
         IndividualStatus GetStatus(string currentUserId, Guid id);
         void SendFriendRequest(string currentUsername, string usename);
@@ -25,5 +25,10 @@ namespace SofiaDayAndNight.Data.Services.Contracts
         void RemoveFriendship(string currentUsername, string username);
         IEnumerable<Individual> GetFriendsRequests(string username);
         IEnumerable<Individual> GetFriends(string username);
+        void CreateEvent(Event eventModel, string creator);
+        IEnumerable<Event> GetEvents(string username);
+        IEnumerable<Event> GetUpcomingEvents(string username);
+        IEnumerable<Event> GetPassedEvents(string username);
+        IEnumerable<Event> GetCurrentEvents(string username);
     }
 }

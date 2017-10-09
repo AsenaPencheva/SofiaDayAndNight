@@ -27,7 +27,6 @@ namespace SofiaDayAndNight.Data.Models
 
         //public int AgeRestriction { get; set; }
 
-        public Guid ImageId { get; set; }
         public virtual Image ProfileImage { get; set; }
 
         public virtual ICollection<Event> Events { get; set; }

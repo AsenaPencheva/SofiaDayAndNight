@@ -13,5 +13,6 @@ namespace SofiaDayAndNight.Data.Services.Contracts
         void Update(Organization place);
         Organization GetByUsername(string username);
         OrganizationStatus GetStatus(string username, Guid id);
+        void CreateEvent(Event eventModel, Guid creatorId);
     }
 }

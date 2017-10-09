@@ -95,8 +95,6 @@ namespace SofiaDayAndNight.Web.App_Start
 
             kernel.Bind<IMapper>().To<Mapper>().InSingletonScope();
             kernel.Bind<IConfigurationProvider>().ToMethod(x => Mapper.Configuration);
-
-            kernel.Bind<IPhotoHelper>().To<PhotoHelper>().InSingletonScope();
         }
     }
 }

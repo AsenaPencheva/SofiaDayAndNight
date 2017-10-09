@@ -16,8 +16,8 @@ namespace SofiaDayAndNight.Web.Areas.User
         {
             context.MapRoute(
                 "User_default",
-                "User/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                "User/{controller}/{action}",
+                new { action = "Index"}
             );
         }
     }

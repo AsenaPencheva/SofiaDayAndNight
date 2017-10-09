@@ -67,5 +67,12 @@ namespace SofiaDayAndNight.Data.Services
                 return OrganizationStatus.None;
 
         }
+
+        public void CreateEvent(Event eventModel, Guid creatorId)
+        {
+            var organization = this.organizationSetWrapper.GetById(creatorId);
+            organization.Events.Add(eventModel);
+            this.Update(organization);
+        }
     }
 }

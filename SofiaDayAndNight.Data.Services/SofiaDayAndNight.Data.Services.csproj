@@ -61,6 +61,7 @@
     <Compile Include="EventService.cs" />
     <Compile Include="Contracts\IIndividualService.cs" />
     <Compile Include="Contracts\IImageService.cs" />
+    <Compile Include="Contracts\IEventService.cs" />
     <Compile Include="ImageService.cs" />
     <Compile Include="IndividualService.cs" />
     <Compile Include="Contracts\IOrganizationService.cs" />

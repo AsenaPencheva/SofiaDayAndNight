@@ -28,6 +28,9 @@ namespace SofiaDayAndNight.Web
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/main.css"));
+
+            bundles.Add(new StyleBundle("~/Content/event").Include(
+                     "~/Content/event.css"));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+
 using SofiaDayAndNight.Data.Models;
 
 namespace SofiaDayAndNight.Data.Services.Contracts
@@ -6,5 +7,6 @@ namespace SofiaDayAndNight.Data.Services.Contracts
     public interface IImageService
     {
         Image GetById(Guid id);
+        void Create(Image image);
     }
 }

@@ -47,9 +47,38 @@
 		</div>
 	</div>
 </div>
-@Html.ActionLink("Events", "EventsList", "Event", new { username = Model.UserName }, new { @class = "btn btn-primary" })
-@Html.ActionLink("Following", "FollowingList", "Organization", new { username = Model.UserName }, new { @class = "btn btn-primary" })
-<div class="row" id="user-events">
-</div>
-<div class="row" id="user-following">
+<div class="row">
+	<div class="panel panel-default">
+		<div class="card text-center col-md-12 col-xs-12 col-sm-12 col-lg-12">
+			<div class="card-header">
+				<ul class="nav nav-tabs card-header-tabs">
+					<li class="nav-item">
+						@Ajax.ActionLink("Events",
+				   "EventsList",
+				   "Individual",
+				   new { username = Model.UserName, area = "User" },
+				   new AjaxOptions
+				   {
+					   //InsertionMode = InsertionMode.InsertAfter,
+					   UpdateTargetId = "result",
+					   InsertionMode = InsertionMode.Replace,
+					   //OnSuccess = "showHidePublications"
+				   }, null)
+					</li>
+					<li class="nav-item">
+						@Ajax.ActionLink("Following",
+				   "FollowingList",
+				   "Individual",
+				   new { username = Model.UserName, area = "User" },
+				   new AjaxOptions
+				   {
+					   UpdateTargetId = "result",
+					   InsertionMode = InsertionMode.Replace,
+				   }, null)
+					</li>
+				</ul>
+			</div>
+			<div id="result"></div>
+		</div>
+	</div>
 </div>

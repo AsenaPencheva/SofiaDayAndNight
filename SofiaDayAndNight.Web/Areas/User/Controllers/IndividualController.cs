@@ -22,12 +22,14 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
     public class IndividualController : Controller
     {
         private readonly IIndividualService individualService;
+        private readonly IImageService imageService;
         private readonly IMapper mapper;
         private readonly IPhotoHelper photoHelper;
 
-        public IndividualController(IIndividualService individualService, IMapper mapper,IPhotoHelper photoHelper)
+        public IndividualController(IIndividualService individualService, IImageService imageService, IMapper mapper,IPhotoHelper photoHelper)
         {
             this.individualService = individualService;
+            this.imageService = imageService;
             this.mapper = mapper;
             this.photoHelper = photoHelper;
         }
@@ -45,7 +47,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             {
                 return HttpNotFound();
             }
-            this.Dispose();
+
             var model = this.mapper.Map<IndividualViewModel>(individual);
 
             // error if ViewBag.UserId is null
@@ -68,9 +70,10 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             individual.CreatedOn = DateTime.Now;
             if (upload != null && upload.ContentLength > 0)
             {
-                var image = this.photoHelper.UploadImage(upload);
+                var imageViewModel = this.photoHelper.UploadImage(upload);
                
-                individual.ProfileImage = this.mapper.Map<Image>(image);
+                var image= this.mapper.Map<Image>(imageViewModel);
+                individual.ProfileImage = image;
             }
 
             individual.User = user;
@@ -83,7 +86,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             return RedirectToAction("ProfileDetails", new { area = "User", username = user.UserName });
         }
 
-        [HttpPost]
+        [HttpPost] 
         public ActionResult SendFriendRequest(string username)
         {
             this.individualService.SendFriendRequest(this.User.Identity.Name, username);
@@ -150,6 +153,12 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
 
         public ActionResult FriendsRequest(string username)
         {
+            if (!Request.IsAjaxRequest())
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return this.Content("This action can be invoke only by AJAX call");
+            }
+
             var friendsList = this.individualService.GetFriendsRequests(username)
                 .Select(x => this.mapper.Map<IndividualViewModel>(x)).ToList();
 
@@ -158,10 +167,30 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
 
         public ActionResult Friends(string username)
         {
+            if (!Request.IsAjaxRequest())
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return this.Content("This action can be invoke only by AJAX call");
+            }
+
             var friendsList = this.individualService.GetFriends(username)
                 .Select(x => this.mapper.Map<IndividualViewModel>(x)).ToList();
 
             return this.PartialView("_FriendsListPartial", friendsList);
+        }
+
+        [AjaxOnly]
+        public ActionResult EventsList(string username)
+        {
+            var passedEvents = this.individualService.GetPassedEvents(username)
+               .Select(x => this.mapper.Map<EventViewModel>(x)).ToList();
+
+            var model = new EventsListViewModel();
+            model.PassedEvents = passedEvents;
+            model.OngoingEvents= passedEvents;
+            model.UpCommingEvents = passedEvents;
+
+            return this.PartialView("_EventsListPartial", model);
         }
     }
 }

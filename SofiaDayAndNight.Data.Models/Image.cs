@@ -12,6 +12,7 @@ namespace SofiaDayAndNight.Data.Models
         public Image()
         {
             this.Comments = new HashSet<Comment>();
+            this.Multimedias = new HashSet<Multimedia>();
             this.Privacy = Privacy.OnlyFriends;
         }
 
@@ -32,7 +33,7 @@ namespace SofiaDayAndNight.Data.Models
 
         public int Dislikes { get; set; }
 
-        public Event Event { get; set; }
+        public virtual Event Event { get; set; }
 
         public virtual Individual Individual { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿@using SofiaDayAndNight.Web.Areas.User.Models
 @model OrganizationViewModel
-@using (Html.BeginForm("Submit", "Organization", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Submit", "Organization",new { area="User"}, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
 	@Html.AntiForgeryToken()
 	@Html.ValidationSummary("", new { @class = "text-danger" })
