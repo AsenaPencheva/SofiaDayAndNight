@@ -28,9 +28,9 @@ namespace SofiaDayAndNight.Data.Services
             this.dbContext.Commit();
         }
 
-        public Image GetById(Guid id)
+        public Image GetById(Guid? id)
         {
-            var image = this.imageSetWrapper.GetById(id);
+            var image = this.imageSetWrapper.GetById(id.Value);
             return image;
         }
     }

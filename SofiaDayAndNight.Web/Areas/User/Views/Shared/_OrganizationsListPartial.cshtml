@@ -1,0 +1,27 @@
+﻿@using SofiaDayAndNight.Web.Areas.User.Models
+@model OrganizationsListViewModel
+
+<br />
+<div class="row">
+	<h4>Organizations</h4>
+	<ul class="list-group">
+		@foreach (var organization in Model.Organizations)
+		{
+			<li class="col-md-4 col-xs-12 col-sm-6 col-lg-4 list-group-item list-group-item-action flex-column align-items-start">
+					<div class="d-flex w-100 justify-content-between ">
+						@Html.Partial("~/Areas/User/Views/Shared/_OrganizationPartial.cshtml", organization)
+						<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+							@using (Html.BeginForm("Unfollow", "Organization", new { id = organization.Id, area = "User" }, FormMethod.Post))
+							{
+								<button type="submit" class="btn btn-primary btn-sm">Unfollow</button>
+							}
+							<br />
+							@Html.ActionLink("View Profile", "ProfileDetails", "Organization",
+						new { username = organization.UserName, area = "User" }, new { @class = "btn btn-primary btn-sm" })
+						</div>
+					</div>
+			</li>
+		}
+	</ul>
+</div>
+

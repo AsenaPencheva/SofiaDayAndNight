@@ -1,6 +1,7 @@
 ﻿@using SofiaDayAndNight.Web.Areas.User.Models
 @model EventsListViewModel
-
+@Styles.Render("~/Content/event")
+<br />
 <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
 	<h4>Current Events</h4>
 	<ul class="event-list">
@@ -8,7 +9,7 @@
 		{
 			<li>
 				<a href="@Url.Action("EventDetails", "Event", new { area = "User", id = e.Id })">
-					@Html.Partial("_EventPartial", e)
+					@Html.Partial("~/Areas/User/Views/Shared/_EventPartial.cshtml", e)
 				</a>
 			</li>
 		}
@@ -21,7 +22,7 @@
 		{
 			<li>
 				<a href="@Url.Action("EventDetails", "Event", new { area = "User", id = e.Id })">
-					@Html.Partial("_EventPartial", e)
+					@Html.Partial("~/Areas/User/Views/Shared/_EventPartial.cshtml", e)
 				</a>
 			</li>
 		}
@@ -34,7 +35,7 @@
 		{
 			<li>
 				<a href="@Url.Action("EventDetails", "Event", new { area = "User", id = e.Id })">
-					@Html.Partial("_EventPartial", e)
+					@Html.Partial("~/Areas/User/Views/Shared/_EventPartial.cshtml", e)
 				</a>
 			</li>
 		}

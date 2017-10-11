@@ -1,55 +1,57 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+	ViewBag.Title = "Home Page";
 }
-<h1>Share your moments everyday and everynight</h1>
+<div id="wrapper">
+	<h1>Share your moments everyday and everynight</h1>
 
-<div id="home-carousel" class="carousel" slide” data-ride="carousel">
-	<!– Indicators –>
-	<ol class="carousel-indicators">
-		<li data-target="#home-carousel" data-slide-to="0" class=”active”></li>
-		<li data-target="#home-carousel" data-slide-to="1"></li>
-		<li data-target="#home-carousel" data-slide-to="2"></li>
-		<li data-target="#home-carousel" data-slide-to="3"></li>
-	</ol><!– Wrapper for slides –>
-	<div class="carousel-inner" role="listbox">
-		<div class="item active">
-			<div><img src="~/Content/images/rsz_sofia.jpg" alt="Sofia"></div>		
+	<div id="home-carousel" class="carousel" slide” data-ride="carousel">
+		<!– Indicators –>
+		<ol class="carousel-indicators">
+			<li data-target="#home-carousel" data-slide-to="0" class=”active”></li>
+			<li data-target="#home-carousel" data-slide-to="1"></li>
+			<li data-target="#home-carousel" data-slide-to="2"></li>
+			<li data-target="#home-carousel" data-slide-to="3"></li>
+		</ol><!– Wrapper for slides –>
+		<div class="carousel-inner" role="listbox">
+			<div class="item active">
+				<div><img src="~/Content/images/rsz_sofia.jpg" alt="Sofia"></div>
+			</div>
+
+			<div class="item">
+				<div><img src="~/Content/images/rsz_sofia_2.jpg" alt="Sofia"></div>
+			</div>
+
+			<div class="item">
+				<div><img src="~/Content/images/rsz_sofia_3.jpg" alt="Sofia"></div>
+			</div>
+
+			<div class="item">
+				<div><img src="~/Content/images/rsz_sofia_4.jpg" alt="Sofia"></div>
+			</div>
 		</div>
 
-		<div class="item">
-			<div><img src="~/Content/images/rsz_sofia_2.jpg" alt="Sofia"></div>
-		</div>
-
-		<div class="item">
-			<div><img src="~/Content/images/rsz_sofia_3.jpg" alt="Sofia"></div>
-		</div>
-
-		<div class="item">
-			<div><img src="~/Content/images/rsz_sofia_4.jpg" alt="Sofia"></div>
-		</div>
+		<!– Left and right controls –>
+		<a class="left carousel-control" href="#home-carousel" role="button" data-slide="prev">
+			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span>
+		</a>
+		<a class="right carousel-control" href="#home-carousel" role="button" data-slide="next">
+			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+		</a>
 	</div>
-
-	<!– Left and right controls –>
-	<a class="left carousel-control" href="#home-carousel" role="button" data-slide="prev">
-		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-		<span class="sr-only">Previous</span>
-	</a>
-	<a class="right carousel-control" href="#home-carousel" role="button" data-slide="next">
-		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-		<span class="sr-only">Next</span>
-	</a>
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Event 1</h2>
-        <p>
-           Description:
+	<div class="col-md-4">
+		<h2>Event 1</h2>
+		<p>
+			Description:
 			Starts:
 			Ends:
-        </p>
-        <p><a class="btn btn-default" href="#">Attend</a></p>
-    </div>
+		</p>
+		<p><a class="btn btn-default" href="#">Attend</a></p>
+	</div>
 	<div class="col-md-4">
 		<h2>Event 2</h2>
 		<p>

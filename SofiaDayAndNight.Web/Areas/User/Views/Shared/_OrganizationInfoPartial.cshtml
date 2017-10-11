@@ -8,14 +8,15 @@
 <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
 	<div class="container">
 		<h2>@Html.DisplayFor(model => model.Name)</h2>
-		@if (Model.OrganizationStatus == OrganizationStatus.None)
+		@if (User.IsInRole(UserRole.Individual.ToString()) && Model.OrganizationStatus == OrganizationStatus.None)
 		{
 			using (Ajax.BeginForm(
 				"Follow",
-				"Individual",
+				"Organization",
 				new { id = Model.Id, area = "User" },
 				new AjaxOptions
 				{
+					UpdateTargetId = "details",
 					HttpMethod = "Post"
 				}))
 			{
@@ -25,19 +26,23 @@
 		@if (Model.OrganizationStatus == OrganizationStatus.IsFollowed)
 		{
 			using (Ajax.BeginForm(
-				"UnFollow",
-				"Individual",
-				new { area = "User" },
+				"Unfollow",
+				"Organization",
+				new { id = Model.Id, area = "User" },
 				new AjaxOptions
 				{
+					UpdateTargetId = "details",
 					HttpMethod = "Post"
 				}))
 			{
-				@Html.DisplayFor(model => model.Id)
 				<button class="btn btn-primary" type="submit">UnFollow</button>
 			}
 		}
-		
+		@if (Model.OrganizationStatus == OrganizationStatus.isCurrent)
+		{
+			@Html.ActionLink("Create Event", "Create", "Event", new { area = "User", username = Model.UserName }, new { @class = "btn btn-primary" })
+		}
+
 	</div>
 	<hr>
 	<ul class="container details">

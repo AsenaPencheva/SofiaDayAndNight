@@ -14,65 +14,177 @@ namespace SofiaDayAndNight.Data.Services
     {
         private readonly IEfDbSetWrapper<Organization> organizationSetWrapper;
         private readonly IUnitOfWork dbContext;
+        private readonly IIndividualService individualService;
 
-        public OrganizationService(IEfDbSetWrapper<Organization> organizationSetWrapper, IUnitOfWork dbContext)
+        public OrganizationService(IIndividualService individualService, IEfDbSetWrapper<Organization> organizationSetWrapper, IUnitOfWork dbContext)
         {
             Guard.WhenArgument(organizationSetWrapper, "organizationSetWrapper").IsNull().Throw();
             Guard.WhenArgument(dbContext, "dbContext").IsNull().Throw();
 
             this.organizationSetWrapper = organizationSetWrapper;
             this.dbContext = dbContext;
+            this.individualService = individualService;
         }
 
-        public Organization GetById(Guid id)
+        public Organization GetById(Guid? id)
         {
-            var place = this.organizationSetWrapper.GetById(id);
-            return place;
+            Organization organization = null;
+            if (id.HasValue)
+            {
+                organization = this.organizationSetWrapper.GetById(id.Value);
+            }
+
+            return organization;
         }
 
-        public void Create(Organization place)
-        {
-            this.organizationSetWrapper.Add(place);
-            this.dbContext.Commit();
-        }
+        //public void Create(Organization place)
+        //{
+        //    this.organizationSetWrapper.Add(place);
+        //    this.dbContext.Commit();
+        //}
 
-        public IQueryable<Organization> GetPlacesByNameOrUsername(string searchTerm)
+        public IEnumerable<Organization> GetPlacesByNameOrUsername(string searchTerm)
         {
-            var fullName = string.Empty;
-            return string.IsNullOrEmpty(searchTerm) ? this.organizationSetWrapper.All
-                : this.organizationSetWrapper.All.Where(i =>
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return new List<Organization>();
+            }
+            return this.organizationSetWrapper.All.Where(i =>
                 (string.IsNullOrEmpty(i.Name) ? false : i.Name.Contains(searchTerm))
-                || (string.IsNullOrEmpty(i.User.UserName) ? false : i.User.UserName.Contains(searchTerm)));
+                || (string.IsNullOrEmpty(i.User.UserName) ? false : i.User.UserName.Contains(searchTerm))).ToList();
         }
 
-        public void Update(Organization place)
+        public void Update(Organization organization)
         {
-            this.organizationSetWrapper.Update(place);
-            dbContext.Commit();
+            if (organization != null)
+            {
+                this.organizationSetWrapper.Update(organization);
+                dbContext.Commit();
+            }
         }
 
         public Organization GetByUsername(string username)
         {
-            var organization = this.organizationSetWrapper.All.FirstOrDefault(i => i.User.UserName == username);
+            Organization organization = null;
+            if (!string.IsNullOrEmpty(username))
+            {
+                organization = this.organizationSetWrapper.All.FirstOrDefault(i => i.User.UserName == username);
+            }
+
             return organization;
         }
 
-        public OrganizationStatus GetStatus(string currentUsername, Guid id)
+        public Organization GetByUser(string userId)
         {
-            var organization = this.GetById(id);
-            //if (organization.Followers.Where(x => x.User.UserName == currentUsername).Count() > 0)
-            //{
-            //    return OrganizationStatus.IsFollowed;
-            //}          
-                return OrganizationStatus.None;
-
+            Organization organization = null;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                organization = this.organizationSetWrapper.All.FirstOrDefault(i => i.User.Id == userId);
+            }
+            return organization;
         }
 
-        public void CreateEvent(Event eventModel, Guid creatorId)
+        public OrganizationStatus GetStatus(string currentUserId, Guid? id)
         {
-            var organization = this.organizationSetWrapper.GetById(creatorId);
-            organization.Events.Add(eventModel);
-            this.Update(organization);
+            if (id.HasValue)
+            {
+                var organization = this.organizationSetWrapper.GetById(id.Value);
+                if (organization != null)
+                {
+                    if (organization.User.Id == currentUserId)
+                    {
+                        return OrganizationStatus.isCurrent;
+                    }
+                    else if (organization.Followers.Where(x => x.User.Id == currentUserId).Count() > 0)
+                    {
+                        return OrganizationStatus.IsFollowed;
+                    }
+                }
+            }
+
+            return OrganizationStatus.None;
+        }
+
+        public void CreateEvent(Event eventModel, string creator)
+        {
+            if (!string.IsNullOrEmpty(creator) && eventModel != null)
+            {
+                var multimedia = new Multimedia();
+                eventModel.Multimedia = multimedia;
+                var organization = this.GetByUsername(creator);
+                if (organization != null)
+                {
+                    organization.Events.Add(eventModel);
+                    this.Update(organization);
+                }
+            }
+        }
+
+        public void Follow(string currentId, Guid? id)
+        {
+            if (!string.IsNullOrEmpty(currentId) && id.HasValue)
+            {
+                var current = this.individualService.GetByUser(currentId);
+                var organization = this.GetById(id);
+
+                if (current != null && organization != null)
+                {
+                    organization.Followers.Add(current);
+                    this.Update(organization);
+                }               
+            }     
+        }
+
+        public void Unfollow(string currentId, Guid? id)
+        {
+            if (!string.IsNullOrEmpty(currentId) && id.HasValue)
+            {
+                var current = this.individualService.GetByUser(currentId);
+                var organization = this.GetById(id);
+
+                if (current != null && organization != null)
+                {
+                    organization.Followers.Remove(current);
+                    this.Update(organization);
+                }
+            }
+        }
+
+        public IEnumerable<Event> GetPassedEvents(string username)
+        {
+            var currentDate = DateTime.Now;
+            var individual = this.GetByUsername(username);
+
+            return this.organizationSetWrapper.All
+               .Where(x => x.User.UserName == username).FirstOrDefault()
+               .Events.Where(e => e.Ends < currentDate).ToList();
+        }
+
+        public IEnumerable<Event> GetCurrentEvents(string username)
+        {
+            var currentDate = DateTime.Now;
+            var individual = this.GetByUsername(username);
+
+            return this.organizationSetWrapper.All
+             .Where(x => x.User.UserName == username).FirstOrDefault()
+             .Events.Where(e => e.Begins < currentDate && currentDate < e.Ends).ToList();
+        }
+
+        public IEnumerable<Event> GetUpcomingEvents(string username)
+        {
+            var currentDate = DateTime.Now;
+            //var individual = this.GetByUsername(username);
+
+            return this.organizationSetWrapper.All
+                .Where(x => x.User.UserName == username).FirstOrDefault()
+                .Events.Where(e => currentDate < e.Begins).ToList();
+        }
+
+        public IEnumerable<Individual> GetFollowers(string username)
+        {
+            var individual = this.GetByUsername(username);
+
+            return individual.Followers.ToList();
         }
     }
 }

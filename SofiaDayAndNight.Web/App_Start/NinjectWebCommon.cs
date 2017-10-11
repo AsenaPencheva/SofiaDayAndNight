@@ -23,6 +23,7 @@ namespace SofiaDayAndNight.Web.App_Start
     using Microsoft.AspNet.Identity.EntityFramework;
     using System.Reflection;
     using SofiaDayAndNight.Web.Helpers;
+    using SofiaDayAndNight.Common;
 
     public static class NinjectWebCommon
     {
@@ -95,6 +96,8 @@ namespace SofiaDayAndNight.Web.App_Start
 
             kernel.Bind<IMapper>().To<Mapper>().InSingletonScope();
             kernel.Bind<IConfigurationProvider>().ToMethod(x => Mapper.Configuration);
+
+            kernel.Bind<DateTimeProvider>().To<DefaultDateTimeProvider>();
         }
     }
 }

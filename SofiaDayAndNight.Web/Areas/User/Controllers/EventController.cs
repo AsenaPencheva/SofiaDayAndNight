@@ -35,8 +35,9 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         public ActionResult Create(string username)
         {
             var model = new EventViewModel();
+            model.CreatorUserName = username;
 
-            TempData["creatorId"] = username;
+            //TempData["creator"] = username;
             return View(model);
         }
 
@@ -57,24 +58,24 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
                 eventModel.Cover = this.mapper.Map<Image>(image);
             }
 
-            var creatorId = TempData["creatorId"].ToString();
+            var username = model.CreatorUserName;
             if (this.User.IsInRole(UserRole.Individual.ToString()))
             {
-                this.individualService.CreateEvent(eventModel, creatorId);
+                this.individualService.CreateEvent(eventModel, username);
                 return RedirectToAction("ProfileDetails", "Individual", new { area = "User", username = this.User.Identity.Name });
             }
             else if (this.User.IsInRole(UserRole.Organization.ToString()))
             {
-                this.organizationService.CreateEvent(eventModel, Guid.Parse(creatorId));
+                this.organizationService.CreateEvent(eventModel, username);
                 return RedirectToAction("ProfileDetails", "Organization", new { area = "User", username = this.User.Identity.Name });
             }
 
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
-        public ActionResult EventDetails(Guid id)
+        public ActionResult EventDetails(Guid? id)
         {
-            var eventModel = this.eventService.GetById(id);
+            var eventModel = this.eventService.GetById(id.Value);
             var model = this.mapper.Map<EventViewModel>(eventModel);
 
             return this.View(model);

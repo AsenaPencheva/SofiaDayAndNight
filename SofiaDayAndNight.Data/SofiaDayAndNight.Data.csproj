@@ -79,6 +79,10 @@
     <Compile Include="Migrations\201710081419187_Tables Connections Fixes.Designer.cs">
       <DependentUpon>201710081419187_Tables Connections Fixes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710091838084_updates.cs" />
+    <Compile Include="Migrations\201710091838084_updates.Designer.cs">
+      <DependentUpon>201710091838084_updates.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SofiaDayAndNightDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -113,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710081419187_Tables Connections Fixes.resx">
       <DependentUpon>201710081419187_Tables Connections Fixes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710091838084_updates.resx">
+      <DependentUpon>201710091838084_updates.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

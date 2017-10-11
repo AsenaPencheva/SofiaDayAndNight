@@ -49,9 +49,9 @@ namespace SofiaDayAndNight.Data.Models
 
         public virtual Multimedia Multimedia { get; set; }
 
-        //public virtual Individual Individual { get; set; }
+        public virtual Individual Individual { get; set; }
 
-        //public virtual Organization Organization { get; set; }
+        public virtual Organization Organization { get; set; }
 
         public virtual ICollection<Individual> IndividualsAttended { get; set; }
     }

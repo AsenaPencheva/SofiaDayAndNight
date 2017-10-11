@@ -43,11 +43,13 @@
   <ItemGroup>
     <Compile Include="Attributes\DateRangeAttribute.cs" />
     <Compile Include="Attributes\RoleAttribute.cs" />
+    <Compile Include="DefaultDateTimeProvider.cs" />
     <Compile Include="Enums\EventType.cs" />
     <Compile Include="Enums\IndividualStatus.cs" />
     <Compile Include="Enums\OrganizationStatus.cs" />
     <Compile Include="Enums\Privacy.cs" />
     <Compile Include="Enums\UserRole.cs" />
+    <Compile Include="DateTimeProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

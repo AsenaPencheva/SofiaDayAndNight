@@ -53,11 +53,10 @@ namespace SofiaDayAndNight.Data.Services
             dbContext.Commit();
         }
 
-        public IQueryable<Event> GetEventsByName(string searchTerm)
+        public IEnumerable<Event> GetEventsByName(string searchTerm)
         {
-            return string.IsNullOrEmpty(searchTerm) ? this.eventsSetWrapper.All
-                : this.eventsSetWrapper.All.Where(e =>
-                (string.IsNullOrEmpty(e.Title) ? false : e.Title.Contains(searchTerm)));
+            return this.eventsSetWrapper.All.Where(e =>
+                (string.IsNullOrEmpty(e.Title) ? false : e.Title.Contains(searchTerm))).ToList();
         }
 
         public IQueryable<Event> GetAllUpcomingEvents()

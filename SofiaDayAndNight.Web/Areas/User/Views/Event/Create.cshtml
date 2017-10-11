@@ -10,6 +10,12 @@
 @using (Html.BeginForm("Create", "Event",new { area="User"}, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
 	@Html.AntiForgeryToken()
+	<div class="form-group">
+		@Html.LabelFor(m => m.CreatorUserName, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.HiddenFor(m => m.CreatorUserName, new { @class = "form-control" })
+		</div>
+	</div>
 	@Html.ValidationSummary("", new { @class = "text-danger" })
 	<div class="form-group">
 		@Html.LabelFor(m => m.Title, new { @class = "col-md-2 control-label" })

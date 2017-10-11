@@ -2,6 +2,7 @@
 using System.Linq;
 
 using SofiaDayAndNight.Data.Models;
+using System.Collections.Generic;
 
 namespace SofiaDayAndNight.Data.Services.Contracts
 {
@@ -12,7 +13,7 @@ namespace SofiaDayAndNight.Data.Services.Contracts
         IQueryable<Event> GetAllPassedEvents();
         IQueryable<Event> GetAllUpcomingEvents();
         Event GetById(Guid id);
-        IQueryable<Event> GetEventsByName(string searchTerm);
+        IEnumerable<Event> GetEventsByName(string searchTerm);
         void IndividualCreate(Event newEvent);
         void OrganizationCreate(Event newEvent, Guid id);
         void Unban(Guid id);

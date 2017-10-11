@@ -66,14 +66,14 @@ namespace SofiaDayAndNight.Data
                 });
 
             modelBuilder.Entity<Individual>()
-             .HasMany(i => i.FriendRequested)
-             .WithMany()
-             .Map(m =>
-             {
-                 m.MapLeftKey("IndividualId");
-                 m.MapRightKey("RequestedToId");
-                 m.ToTable("IndividualFriendRequested");
-             });
+                .HasMany(i => i.FriendRequested)
+                .WithMany()
+                .Map(m =>
+                {
+                    m.MapLeftKey("IndividualId");
+                    m.MapRightKey("RequestedToId");
+                    m.ToTable("IndividualFriendRequested");
+                });
         }
 
         private void OnImageCreating(DbModelBuilder modelBuilder)
@@ -89,40 +89,10 @@ namespace SofiaDayAndNight.Data
                .Map(i => i.MapKey("ImageId"));
 
             modelBuilder.Entity<Event>()
-             .HasRequired(i => i.Cover)
-             .WithOptional(i => i.Event)
-             .Map(i => i.MapKey("ImageId"));
-
-            //modelBuilder.Entity<Individual>()
-            //            .HasRequired(i => i.ProfileImage)
-            //            .WithOptional(i => i.Individual)
-            //            .Map(i => i.MapKey("ImageId"));
-
-            //modelBuilder.Entity<Image>()
-            //            .HasOptional(i => i.Individual)
-            //            .WithRequired(i=>i.ProfileImage)
-            //            .Map(i => i.MapKey("IndividualId"));
-
-            //modelBuilder.Entity<Organization>()
-            //            .HasRequired(i => i.ProfileImage)
-            //            .WithOptional(i => i.Organization)
-            //            .Map(i => i.MapKey("ImageId"));
-
-            //modelBuilder.Entity<Image>()
-            //            .HasOptional(i => i.Organization)
-            //            .WithRequired(i => i.ProfileImage)
-            //            .Map(i => i.MapKey("OrganizationId"));
-
-            //modelBuilder.Entity<Event>()
-            //            .HasRequired(i => i.Cover)
-            //            .WithOptional(i => i.Event)
-            //            .Map(i => i.MapKey("ImageId"));
-
-            //modelBuilder.Entity<Image>()
-            //            .HasOptional(i => i.Event)
-            //            .WithRequired(i => i.Cover)
-            //            .Map(i => i.MapKey("EventId"));
-
+                .HasRequired(i => i.Cover)
+                .WithOptional(i => i.Event)
+                .Map(i => i.MapKey("ImageId"));
+                       
             modelBuilder.Entity<Multimedia>()
                .HasMany(m => m.Images)
                .WithMany(i => i.Multimedias)
@@ -189,6 +159,16 @@ namespace SofiaDayAndNight.Data
                     cs.MapRightKey("IndividualRefId");
                     cs.ToTable("EventAttended");
                 });
+
+            modelBuilder.Entity<Event>()
+                .HasOptional(e => e.Individual)
+                .WithMany(i => i.Events)
+                .Map(i => i.MapKey("IndividualId"));
+
+            modelBuilder.Entity<Event>()
+                .HasOptional(o => o.Organization)
+                .WithMany(i => i.Events)
+                .Map(i => i.MapKey("OrganizationId"));
         }
 
         public new DbSet<T> Set<T>()

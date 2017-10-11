@@ -19,7 +19,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             this.mapper = mapper;
         }
         // GET: User/Image
-        public ActionResult Index(Guid id)
+        public ActionResult Index(Guid? id)
         {
             var imageToRetrieve = imageService.GetById(id);
             return File(imageToRetrieve.Data, imageToRetrieve.ContentType);

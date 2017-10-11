@@ -13,7 +13,7 @@
 			using (Ajax.BeginForm(
 				"SendFriendRequest",
 				"Individual",
-				new { username = Model.UserName, area = "User" },
+				new { id = Model.Id, area = "User" },
 				new AjaxOptions
 				{
 					UpdateTargetId = "details",
@@ -28,7 +28,7 @@
 			using (Ajax.BeginForm(
 				"CancelFriendRequest",
 				"Individual",
-				new { username = Model.UserName, area = "User" },
+				new { id = Model.Id, area = "User" },
 				new AjaxOptions
 				{
 					UpdateTargetId = "details",
@@ -44,7 +44,7 @@
 			using (Ajax.BeginForm(
 				"CancelFriendship",
 				"Individual",
-				new { username = Model.UserName, area = "User" },
+				new { id = Model.Id, area = "User" },
 				new AjaxOptions
 				{
 					UpdateTargetId = "details",
@@ -59,7 +59,7 @@
 			using (Ajax.BeginForm(
 				"ConfirmFriendship",
 				"Individual",
-				new { username = Model.UserName, area = "User" },
+				new { id = Model.Id, area = "User" },
 				new AjaxOptions
 				{
 					UpdateTargetId = "details",

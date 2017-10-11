@@ -68,6 +68,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
 
             var individual = this.mapper.Map<Individual>(model);
             individual.CreatedOn = DateTime.Now;
+            // add default photo
             if (upload != null && upload.ContentLength > 0)
             {
                 var imageViewModel = this.photoHelper.UploadImage(upload);
@@ -87,13 +88,13 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         }
 
         [HttpPost] 
-        public ActionResult SendFriendRequest(string username)
+        public ActionResult SendFriendRequest(Guid? id)
         {
-            this.individualService.SendFriendRequest(this.User.Identity.Name, username);
+            this.individualService.SendFriendRequest(this.User.Identity.GetUserId(), id);
 
             if (Request.IsAjaxRequest())
             {
-                var model = this.mapper.Map<IndividualViewModel>(this.individualService.GetByUsername(username));
+                var model = this.mapper.Map<IndividualViewModel>(this.individualService.GetById(id));
                 model.IndividualStatus = IndividualStatus.IsRequested;
 
                 return this.PartialView("_IndividualInfoPartial", model);
@@ -103,13 +104,13 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         }
 
         [HttpPost]
-        public ActionResult CancelFriendRequest(string username)
+        public ActionResult CancelFriendRequest(Guid? id)
         {
-            this.individualService.CancelFriendRequest(this.User.Identity.Name, username);
+            this.individualService.CancelFriendRequest(this.User.Identity.GetUserId(), id);
 
             if (Request.IsAjaxRequest())
             {
-                var model = this.mapper.Map<IndividualViewModel>(this.individualService.GetByUsername(username));
+                var model = this.mapper.Map<IndividualViewModel>(this.individualService.GetById(id));
                 model.IndividualStatus = IndividualStatus.None;
 
                 return this.PartialView("_IndividualInfoPartial", model);
@@ -119,13 +120,13 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         }
 
         [HttpPost]
-        public ActionResult ConfirmFriendship(string username)
+        public ActionResult ConfirmFriendship(Guid? id)
         {
-            this.individualService.ConfirmFriendship(this.User.Identity.Name, username);
+            this.individualService.ConfirmFriendship(this.User.Identity.GetUserId(), id);
 
             if (Request.IsAjaxRequest())
             {
-                var model = this.mapper.Map<IndividualViewModel>(this.individualService.GetByUsername(username));
+                var model = this.mapper.Map<IndividualViewModel>(this.individualService.GetById(id));
                 model.IndividualStatus = IndividualStatus.IsFriend;
 
                 return this.PartialView("_IndividualInfoPartial", model);
@@ -135,13 +136,13 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         }
 
         [HttpPost]
-        public ActionResult CancelFriendship(string username)
+        public ActionResult CancelFriendship(Guid? id)
         {
-            this.individualService.RemoveFriendship(this.User.Identity.Name, username);
+            this.individualService.RemoveFriendship(this.User.Identity.GetUserId(), id);
 
             if (Request.IsAjaxRequest())
             {
-                var model = this.mapper.Map<IndividualViewModel>(this.individualService.GetByUsername(username));
+                var model = this.mapper.Map<IndividualViewModel>(this.individualService.GetById(id));
                 model.IndividualStatus = IndividualStatus.None;
 
                 return this.PartialView("_IndividualInfoPartial", model);
@@ -150,14 +151,14 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             return this.RedirectToAction("ProfileDetails", new { username= this.User.Identity.Name });
         }
 
-
+        [AjaxOnly]
         public ActionResult FriendsRequest(string username)
         {
-            if (!Request.IsAjaxRequest())
-            {
-                Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                return this.Content("This action can be invoke only by AJAX call");
-            }
+            //if (!Request.IsAjaxRequest())
+            //{
+            //    Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            //    return this.Content("This action can be invoke only by AJAX call");
+            //}
 
             var friendsList = this.individualService.GetFriendsRequests(username)
                 .Select(x => this.mapper.Map<IndividualViewModel>(x)).ToList();
@@ -165,13 +166,14 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             return this.PartialView("_RequestsListPartial", friendsList);
         }
 
+        [AjaxOnly]
         public ActionResult Friends(string username)
         {
-            if (!Request.IsAjaxRequest())
-            {
-                Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                return this.Content("This action can be invoke only by AJAX call");
-            }
+            //if (!Request.IsAjaxRequest())
+            //{
+            //    Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            //    return this.Content("This action can be invoke only by AJAX call");
+            //}
 
             var friendsList = this.individualService.GetFriends(username)
                 .Select(x => this.mapper.Map<IndividualViewModel>(x)).ToList();
@@ -185,12 +187,28 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             var passedEvents = this.individualService.GetPassedEvents(username)
                .Select(x => this.mapper.Map<EventViewModel>(x)).ToList();
 
+            var currentEvents = this.individualService.GetCurrentEvents(username)
+              .Select(x => this.mapper.Map<EventViewModel>(x)).ToList();
+
+            var upcommingEvents = this.individualService.GetUpcomingEvents(username)
+            .Select(x => this.mapper.Map<EventViewModel>(x)).ToList();
+
             var model = new EventsListViewModel();
             model.PassedEvents = passedEvents;
-            model.OngoingEvents= passedEvents;
-            model.UpCommingEvents = passedEvents;
+            model.OngoingEvents= currentEvents;
+            model.UpCommingEvents = upcommingEvents;
 
             return this.PartialView("_EventsListPartial", model);
+        }
+
+        [AjaxOnly]
+        public ActionResult FollowingList(string username)
+        {
+            var model = new OrganizationsListViewModel();
+            model.Username = username;
+            model.Organizations = this.individualService.GetFollowingOrganization(username).Select(x=>this.mapper.Map<OrganizationViewModel>(x));                        
+
+            return this.PartialView("_OrganizationsListPartial", model);
         }
     }
 }

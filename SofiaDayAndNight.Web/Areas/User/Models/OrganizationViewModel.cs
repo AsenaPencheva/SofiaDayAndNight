@@ -12,7 +12,7 @@ using SofiaDayAndNight.Common.Enums;
 
 namespace SofiaDayAndNight.Web.Areas.User.Models
 {
-    public class OrganizationViewModel : IMapFrom<Organization>
+    public class OrganizationViewModel : IMapFrom<Organization>,IHaveCustomMappings
     {
         public OrganizationViewModel()
         {

@@ -1,15 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-	using (Ajax.BeginForm("Search",
-		"User",
-		new { area = "User" },
-		new AjaxOptions
-		{
-			UpdateTargetId = "results",
-			InsertionMode = InsertionMode.Replace
-		},
-		new { @class = "navbar-form navbar-left" }))
+	using (Html.BeginForm("Search", "Home", new { area = "" }, FormMethod.Get, new { @class = "navbar-form navbar-left" }))
 	{
 		<div class="form-group">
 			<input name="searchTerm" class="form-control" type="text" placeholder="Search" />

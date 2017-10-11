@@ -23,7 +23,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Models
 
         public string Description { get; set; }
 
-        //public string creatorUserName { get; set; }
+        public string CreatorUserName { get; set; }
 
         //public int AgeRestriction { get; set; } // if not = 0
 
@@ -43,7 +43,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Models
 
         public ImageViewModel Cover { get; set; }
 
-        //public ImageViewModel Creator { get; set; }
+        public ImageViewModel Creator { get; set; }
 
         //public IEnumerable<CommentViewModel> Comments { get; set; }
 

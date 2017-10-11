@@ -8,6 +8,7 @@ using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Contracts;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Services.Contracts;
+using SofiaDayAndNight.Common;
 
 namespace SofiaDayAndNight.Data.Services
 {
@@ -16,7 +17,8 @@ namespace SofiaDayAndNight.Data.Services
         private readonly IEfDbSetWrapper<Individual> individualSetWrapper;
         private readonly IUnitOfWork dbContext;
 
-        public IndividualService(IEfDbSetWrapper<Individual> individualSetWrapper, IUnitOfWork dbContext)
+        public IndividualService(IEfDbSetWrapper<Individual> individualSetWrapper,
+            IUnitOfWork dbContext)
         {
             Guard.WhenArgument(individualSetWrapper, "individualSetWrapper").IsNull().Throw();
             Guard.WhenArgument(dbContext, "dbContext").IsNull().Throw();
@@ -43,13 +45,18 @@ namespace SofiaDayAndNight.Data.Services
             {
                 individual = this.individualSetWrapper.All.FirstOrDefault(i => i.User.UserName == usename);
             }
+
             return individual;
         }
 
         public Individual GetByUser(string userId)
         {
-            // if userId is null!!!
-            var individual = this.individualSetWrapper.All.FirstOrDefault(i => i.User.Id == userId);
+            Individual individual = null;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                individual = this.individualSetWrapper.All.FirstOrDefault(i => i.User.Id == userId);
+            }
+
             return individual;
         }
 
@@ -59,14 +66,17 @@ namespace SofiaDayAndNight.Data.Services
         //    this.dbContext.Commit();
         //}
 
-        //public IEnumerable<Individual> GetIndividualsByNameOrUsername(string searchTerm)
-        //{
-        //    var fullName = string.Empty;
-        //    return string.IsNullOrEmpty(searchTerm) ? this.individualSetWrapper.All
-        //        : this.individualSetWrapper.All.Where(i =>
-        //        (string.IsNullOrEmpty(this.GetFullName(i)) ? false : this.GetFullName(i).Contains(searchTerm))
-        //        || (string.IsNullOrEmpty(i.User.UserName) ? false : i.User.UserName.Contains(searchTerm)));
-        //}
+        public IEnumerable<Individual> GetIndividualsByNameOrUsername(string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return new List<Individual>();
+            }
+
+            return this.individualSetWrapper.All.Where(i =>
+                (string.IsNullOrEmpty(i.FirstName + i.LastName) ? false : (i.FirstName + " " + i.LastName).Contains(searchTerm))
+                || (string.IsNullOrEmpty(i.User.UserName) ? false : i.User.UserName.Contains(searchTerm))).ToList();
+        }
 
         public IEnumerable<Individual> GetFriendsRequests(string username)
         {
@@ -98,32 +108,42 @@ namespace SofiaDayAndNight.Data.Services
             return result;
         }
 
-        public void AttendEvent(Guid individualId, Event eventToAttend)
+        public void AttendEvent(Guid? individualId, Event eventToAttend)
         {
-            var individual = this.GetById(individualId);
-            individual.EventsAttended.Add(eventToAttend);
-            this.Update(individual);
+            if (individualId.HasValue && eventToAttend != null)
+            {
+                var individual = this.GetById(individualId);
+                if (individual != null)
+                {
+                    individual.EventsAttended.Add(eventToAttend);
+                    this.Update(individual);
+                }
+            }
         }
 
-        public void FollowPlace(Guid individualId, Organization placeToFollow)
+        public void FollowPlace(Guid? individualId, Organization placeToFollow)
         {
-            var individual = this.GetById(individualId);
-            individual.Following.Add(placeToFollow);
-            this.Update(individual);
-        }
-
-        private string GetFullName(Individual individual)
-        {
-            return individual.FirstName + " " + individual.LastName;
+            if (individualId.HasValue && placeToFollow != null)
+            {
+                var individual = this.GetById(individualId);
+                if (individual != null)
+                {
+                    individual.Following.Add(placeToFollow);
+                    this.Update(individual);
+                }
+            }
         }
 
         public void Update(Individual individual)
         {
-            this.individualSetWrapper.Update(individual);
-            this.dbContext.Commit();
+            if (individual != null)
+            {
+                this.individualSetWrapper.Update(individual);
+                this.dbContext.Commit();
+            }          
         }
 
-        public IndividualStatus GetStatus(string currentUserId, Guid id)
+        public IndividualStatus GetStatus(string currentUserId, Guid? id)
         {
             // Guid?
             var current = this.GetByUser(currentUserId);
@@ -148,107 +168,153 @@ namespace SofiaDayAndNight.Data.Services
             }
 
             return IndividualStatus.None;
-
         }
 
-        public void SendFriendRequest(string currentUser, string usename)
+        public void SendFriendRequest(string currentUserId, Guid? id)
         {
-            var current = this.GetByUsername(currentUser);
-            var friendToAdd = this.GetByUsername(usename);
+            if (!string.IsNullOrEmpty(currentUserId) && id.HasValue)
+            {
+                var current = this.GetByUser(currentUserId);
+                var friendToAdd = this.GetById(id);
+                if (current != null && friendToAdd != null)
+                {
+                    current.FriendRequested.Add(friendToAdd);
+                    friendToAdd.FriendRequests.Add(current);
 
-            current.FriendRequested.Add(friendToAdd);
-            friendToAdd.FriendRequests.Add(current);
-
-            this.Update(current);
-            this.Update(friendToAdd);
+                    this.Update(current);
+                    this.Update(friendToAdd);
+                }
+            }
         }
 
-
-        public void CancelFriendRequest(string currentUsername, string username)
+        public void CancelFriendRequest(string currentUserId, Guid? id)
         {
-            var current = this.GetByUsername(currentUsername);
-            var friendToRemove = this.GetByUsername(username);
+            if (!string.IsNullOrEmpty(currentUserId) && id.HasValue)
+            {
+                var current = this.GetByUser(currentUserId);
+                var friendToRemove = this.GetById(id);
+                if (current != null && friendToRemove != null)
+                {
+                    current.FriendRequested.Remove(friendToRemove);
+                    friendToRemove.FriendRequests.Remove(current);
 
-            current.FriendRequested.Remove(friendToRemove);
-            friendToRemove.FriendRequests.Remove(current);
-
-            this.Update(current);
-            this.Update(friendToRemove);
+                    this.Update(current);
+                    this.Update(friendToRemove);
+                }
+            }
         }
 
-        public void ConfirmFriendship(string currentUsername, string username)
+        public void ConfirmFriendship(string currentUserId, Guid? id)
         {
-            var current = this.GetByUsername(currentUsername);
-            var friendToAdd = this.GetByUsername(username);
+            if (!string.IsNullOrEmpty(currentUserId) && id.HasValue)
+            {
+                var current = this.GetByUser(currentUserId);
+                var friendToAdd = this.GetById(id);
+                if (current != null && friendToAdd != null)
+                {
+                    current.FriendRequests.Remove(friendToAdd);
+                    friendToAdd.FriendRequested.Remove(current);
+                    current.Friends.Add(friendToAdd);
+                    friendToAdd.Friends.Add(current);
 
-            current.FriendRequests.Remove(friendToAdd);
-            friendToAdd.FriendRequested.Remove(current);
-            current.Friends.Add(friendToAdd);
-            friendToAdd.Friends.Add(current);
-
-            this.Update(current);
-            this.Update(friendToAdd);
+                    this.Update(current);
+                    this.Update(friendToAdd);
+                }
+            }
         }
 
-        public void RemoveFriendship(string currentUsername, string username)
+        public void RemoveFriendship(string currentUserId, Guid? id)
         {
-            var current = this.GetByUsername(currentUsername);
-            var friendToRemove = this.GetByUsername(username);
+            if (!string.IsNullOrEmpty(currentUserId) && id.HasValue)
+            {
+                var current = this.GetByUser(currentUserId);
+                var friendToRemove = this.GetById(id);
+                if (current != null && friendToRemove != null)
+                {
+                    current.Friends.Remove(friendToRemove);
+                    friendToRemove.Friends.Remove(current);
 
-            current.Friends.Remove(friendToRemove);
-            friendToRemove.Friends.Remove(current);
-
-            this.Update(current);
-            this.Update(friendToRemove);
+                    this.Update(current);
+                    this.Update(friendToRemove);
+                }
+            }
         }
 
         public void CreateEvent(Event eventModel, string creator)
         {
-            var multimedia = new Multimedia();
-            eventModel.Multimedia = multimedia;
-            var individual = this.GetByUsername(creator);
-            individual.Events.Add(eventModel);
-            this.Update(individual);
-        }
-
-        public IEnumerable<Event> GetEvents(string username)
-        {
-            var individual = this.GetByUsername(username);
-
-            return individual.Events.ToList();
+            if (!string.IsNullOrEmpty(creator) && eventModel != null)
+            {
+                var multimedia = new Multimedia();
+                eventModel.Multimedia = multimedia;
+                var individual = this.GetByUsername(creator);
+                if (individual != null)
+                {
+                    individual.Events.Add(eventModel);
+                    this.Update(individual);
+                }
+            }
         }
 
         public IEnumerable<Event> GetUpcomingEvents(string username)
         {
-            var currentDate = DateTime.Now;
-            //var individual = this.GetByUsername(username);
+            if (!string.IsNullOrEmpty(username))
+            {
+                var currentDate = DateTimeProvider.Current.UtcNow;
+                //var individual = this.GetByUsername(username);
 
-            return this.individualSetWrapper.All
-                .Where(x => x.User.UserName == username).FirstOrDefault()
-                .Events.Where(e => currentDate < e.Begins).ToList();
+                return this.individualSetWrapper.All
+                   .FirstOrDefault(x => x.User.UserName == username) != null ?
+                   this.individualSetWrapper.All
+                   .FirstOrDefault(x => x.User.UserName == username)
+                    .Events.Where(e => currentDate < e.Begins).ToList() : new List<Event>();
+            }
 
-            //return individual.Events.Where(e => currentDate < e.Begins).ToList();
+            return new List<Event>();
         }
 
         public IEnumerable<Event> GetCurrentEvents(string username)
         {
-            var currentDate = DateTime.Now;
-            var individual = this.GetByUsername(username);
+            if (!string.IsNullOrEmpty(username))
+            {
+                var currentDate = DateTimeProvider.Current.UtcNow;
 
+                return this.individualSetWrapper.All
+                 .Where(x => x.User.UserName == username).FirstOrDefault() != null ?
+                  this.individualSetWrapper.All
+                 .Where(x => x.User.UserName == username).FirstOrDefault()
+                 .Events.Where(e => e.Begins < currentDate && currentDate < e.Ends).ToList() : new List<Event>();
+            }
 
-            return individual.Events.Where(e => e.Begins < currentDate && currentDate < e.Ends).ToList();
+            return new List<Event>();
         }
 
         public IEnumerable<Event> GetPassedEvents(string username)
         {
-            var currentDate = DateTime.Now;
-            var individual = this.GetByUsername(username);
+            if (!string.IsNullOrEmpty(username))
+            {
+                var currentDate = DateTimeProvider.Current.UtcNow;
 
-            return this.individualSetWrapper.All
+                return this.individualSetWrapper.All
+               .Where(x => x.User.UserName == username).FirstOrDefault()!=null?
+                    this.individualSetWrapper.All
                .Where(x => x.User.UserName == username).FirstOrDefault()
-               .Events.Where(e => e.Ends < currentDate).ToList();
+               .Events.Where(e => e.Ends < currentDate).ToList():new List<Event>();
+            }
 
-            //return individual.Events.Where(e => e.Ends < currentDate).ToList();
+            return new List<Event>();
+        }
+
+        public IEnumerable<Organization> GetFollowingOrganization(string username)
+        {
+            if (!string.IsNullOrEmpty(username))
+            {
+                var individual = this.GetByUsername(username);
+                if (individual != null)
+                {
+                    return individual.Following.ToList();
+                }
+            }
+            return new List<Organization>();
         }
     }
 }

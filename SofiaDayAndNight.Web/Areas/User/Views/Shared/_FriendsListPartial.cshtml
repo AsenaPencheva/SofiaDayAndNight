@@ -7,7 +7,7 @@
 	<li class="list-group-item list-group-item-action flex-column align-items-start">
 		<div class="d-flex w-100 justify-content-between ">
 			@Html.Partial("_FriendPartial", friend)
-			@using (Html.BeginForm("CancelFriendship", "Individual", new { username = friend.UserName, area = "User" }, FormMethod.Post))
+			@using (Html.BeginForm("CancelFriendship", "Individual", new { id = friend.Id, area = "User" }, FormMethod.Post))
 			{
 				<button type="submit" class="btn btn-primary btn-sm">Remove Friend</button>
 			}
