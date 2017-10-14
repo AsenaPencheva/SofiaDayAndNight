@@ -1,0 +1,47 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+	<div class="panel panel-default">
+		<div class="panel-heading">  <h4>Profile</h4></div>
+		<div class="panel-body" id="details">
+			@Html.Partial("_OrganizationInfoPartial")
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="panel panel-default">
+		<div class="card text-center col-md-12 col-xs-12 col-sm-12 col-lg-12">
+			<div class="card-header">
+				<ul class="nav nav-tabs card-header-tabs">
+					<li class="nav-item">
+						@Ajax.ActionLink("Events",
+				   "EventsList",
+				   "Organization",
+				   new { username = Model.UserName, area = "User" },
+				   new AjaxOptions
+				   {
+					   //InsertionMode = InsertionMode.InsertAfter,
+					   UpdateTargetId = "result",
+					   InsertionMode = InsertionMode.Replace,
+					   //OnSuccess = "showHidePublications"
+				   }, null)
+					</li>
+					<li class="nav-item">
+						@Ajax.ActionLink("Followers",
+				   "FollowersList",
+				   "Organization",
+				   new { username = Model.UserName, area = "User" },
+				   new AjaxOptions
+				   {
+					   UpdateTargetId = "result",
+					   InsertionMode = InsertionMode.Replace,
+				   }, null)
+					</li>
+				</ul>
+			</div>
+			<div id="result"></div>
+		</div>
+	</div>
+</div>

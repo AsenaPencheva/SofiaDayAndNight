@@ -1,0 +1,11 @@
+﻿@using SofiaDayAndNight.Web.Models
+@model ResultViewModel
+
+<h2>Results:</h2>
+
+@Html.Partial("_IndividualsListPartial",Model.IndividualsList.Friends)
+
+@Html.Partial("_OrganizationListPartial", Model.IndividualsList.Friends)
+
+@Html.Partial("_EventsListPartial", Model.IndividualsList.Friends)
+

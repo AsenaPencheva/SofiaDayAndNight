@@ -1,0 +1,84 @@
+﻿@using SofiaDayAndNight.Web.Areas.User.Models
+@using SofiaDayAndNight.Common.Enums
+@model IndividualViewModel
+
+<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+	<img src="~/Image?id=@Model.ProfileImage.Id" alt="image" id="profile-image1" class="img-circle img-responsive">
+</div>
+<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+	<div class="container">
+		<h2>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h2>
+		@if (Model.IndividualStatus == IndividualStatus.None)
+		{
+			using (Ajax.BeginForm(
+				"SendFriendRequest",
+				"Individual",
+				new { id = Model.Id, area = "User" },
+				new AjaxOptions
+				{
+					UpdateTargetId = "details",
+					HttpMethod = "Post"
+				}))
+			{
+				<button class="btn btn-primary" type="submit">Send Request</button>
+			}
+		}
+		@if (Model.IndividualStatus == IndividualStatus.IsRequested)
+		{
+			using (Ajax.BeginForm(
+				"CancelFriendRequest",
+				"Individual",
+				new { id = Model.Id, area = "User" },
+				new AjaxOptions
+				{
+					UpdateTargetId = "details",
+					HttpMethod = "Post"
+				}))
+			{
+				<button class="btn btn-primary" type="submit">Cancel Request</button>
+			}
+
+		}
+		@if (Model.IndividualStatus == IndividualStatus.IsFriend)
+		{
+			using (Ajax.BeginForm(
+				"CancelFriendship",
+				"Individual",
+				new { id = Model.Id, area = "User" },
+				new AjaxOptions
+				{
+					UpdateTargetId = "details",
+					HttpMethod = "Post"
+				}))
+			{
+				<button class="btn btn-primary" type="submit">Remove Friend</button>
+			}
+		}
+		@if (Model.IndividualStatus == IndividualStatus.HasRequest)
+		{
+			using (Ajax.BeginForm(
+				"ConfirmFriendship",
+				"Individual",
+				new { id = Model.Id, area = "User" },
+				new AjaxOptions
+				{
+					UpdateTargetId = "details",
+					HttpMethod = "Post"
+				}))
+			{
+				<button class="btn btn-primary" type="submit">Confirm Friend</button>
+			}
+		}
+		@if (Model.IndividualStatus == IndividualStatus.IsCurrent)
+		{
+			@Html.ActionLink("Create Event", "Create", "Event", new { area = "User", username = Model.UserName }, new { @class = "btn btn-primary" })
+		}
+
+	</div>
+	<hr>
+	<ul class="container details">
+		<li><p><span class="glyphicon glyphicon-user one" style="width:50px;"></span>@Html.DisplayFor(model => model.UserName)</p></li>
+		<li><p><span class="glyphicon glyphicon-home one" style="width:50px;"></span>@Html.DisplayFor(model => model.City)</p></li>
+	</ul>
+	<hr>
+</div>

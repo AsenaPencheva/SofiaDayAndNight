@@ -1,0 +1,21 @@
+﻿@using SofiaDayAndNight.Web.Areas.User.Models
+@model IEnumerable<IndividualViewModel>
+
+<br />
+@foreach (var friend in Model)
+{
+	<li class="list-group-item list-group-item-action flex-column align-items-start">
+		<div class="d-flex w-100 justify-content-between ">
+			@Html.Partial("_FriendPartial", friend)
+			@using (Html.BeginForm("ConfirmFriendship", "Individual", new { id = friend.Id, area = "User" }, FormMethod.Post))
+			{
+				<button type="submit" class="btn btn-primary btn-sm">Confirm Friend</button>
+			}
+			<br />
+			@Html.ActionLink("View Profile", "FrofileDetails", "Individual",
+					new { username = friend.UserName, area = "User" }, new { @class = "btn btn-primary btn-sm" })
+
+		</div>
+	</li>
+}
+

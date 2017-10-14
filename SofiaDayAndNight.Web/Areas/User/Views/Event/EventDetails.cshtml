@@ -1,0 +1,14 @@
+﻿@using SofiaDayAndNight.Web.Areas.User.Models
+@{
+	ViewBag.Title = "Event";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model EventViewModel
+@Styles.Render("~/Content/event")
+
+<div id="event">
+	@Html.Partial("_EventPartial", Model)
+	@Html.ActionLink("View Images", "Multimedia", "Image",
+				new { username = Model.Id, area = "" }, new { @class = "btn btn-primary btn-sm" })
+</div>
+

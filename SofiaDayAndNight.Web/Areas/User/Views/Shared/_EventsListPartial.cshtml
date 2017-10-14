@@ -1,0 +1,43 @@
+﻿@using SofiaDayAndNight.Web.Areas.User.Models
+@model EventsListViewModel
+@Styles.Render("~/Content/event")
+<br />
+<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+	<h4>Current Events</h4>
+	<ul class="event-list">
+		@foreach (var e in Model.OngoingEvents)
+		{
+			<li>
+				<a href="@Url.Action("EventDetails", "Event", new { area = "User", id = e.Id })">
+					@Html.Partial("~/Areas/User/Views/Shared/_EventPartial.cshtml", e)
+				</a>
+			</li>
+		}
+	</ul>
+</div>
+<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+	<h4>Upcomming Events</h4>
+	<ul class="event-list">
+		@foreach (var e in Model.UpCommingEvents)
+		{
+			<li>
+				<a href="@Url.Action("EventDetails", "Event", new { area = "User", id = e.Id })">
+					@Html.Partial("~/Areas/User/Views/Shared/_EventPartial.cshtml", e)
+				</a>
+			</li>
+		}
+	</ul>
+</div>
+<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+	<h4>Passed Events</h4>
+	<ul class="event-list">
+		@foreach (var e in Model.PassedEvents)
+		{
+			<li>
+				<a href="@Url.Action("EventDetails", "Event", new { area = "User", id = e.Id })">
+					@Html.Partial("~/Areas/User/Views/Shared/_EventPartial.cshtml", e)
+				</a>
+			</li>
+		}
+	</ul>
+</div>

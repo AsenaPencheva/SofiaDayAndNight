@@ -1,0 +1,84 @@
+﻿@using SofiaDayAndNight.Web.Areas.User.Models
+@using SofiaDayAndNight.Common.Enums
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IndividualViewModel
+
+<div class="row">
+	<div class="panel panel-default">
+		<div class="panel-heading">  <h4>Profile</h4></div>
+		<div class="panel-body" id="details">
+			@Html.Partial("_IndividualInfoPartial")
+			<div class="card text-center col-md-4 col-xs-12 col-sm-6 col-lg-4">
+				<div class="card-header">
+					<ul class="nav nav-tabs card-header-tabs">
+						@if (Model.IndividualStatus == IndividualStatus.IsCurrent)
+						{
+							<li class="nav-item">
+								@Ajax.ActionLink("View Friend Requests",
+				   "FriendsRequest",
+				   "Individual",
+				   new { username = Model.UserName, area = "User" },
+				   new AjaxOptions
+				   {
+					   //InsertionMode = InsertionMode.InsertAfter,
+					   UpdateTargetId = "friends",
+					   InsertionMode = InsertionMode.Replace,
+					   //OnSuccess = "showHidePublications"
+				   }, null)
+							</li>
+							<li class="nav-item">
+								@Ajax.ActionLink("View Friends",
+				   "Friends",
+				   "Individual",
+				   new { username = Model.UserName, area = "User" },
+				   new AjaxOptions
+				   {
+					   UpdateTargetId = "friends",
+					   InsertionMode = InsertionMode.Replace,
+				   }, null)
+							</li>
+						}
+					</ul>
+				</div>
+				<ul id="friends" class="list-group"></ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="panel panel-default">
+		<div class="card text-center col-md-12 col-xs-12 col-sm-12 col-lg-12">
+			<div class="card-header">
+				<ul class="nav nav-tabs card-header-tabs">
+					<li class="nav-item">
+						@Ajax.ActionLink("Events",
+				   "EventsList",
+				   "Individual",
+				   new { username = Model.UserName, area = "User" },
+				   new AjaxOptions
+				   {
+					   //InsertionMode = InsertionMode.InsertAfter,
+					   UpdateTargetId = "result",
+					   InsertionMode = InsertionMode.Replace,
+					   //OnSuccess = "showHidePublications"
+				   }, null)
+					</li>
+					<li class="nav-item">
+						@Ajax.ActionLink("Following",
+				   "FollowingList",
+				   "Individual",
+				   new { username = Model.UserName, area = "User" },
+				   new AjaxOptions
+				   {
+					   UpdateTargetId = "result",
+					   InsertionMode = InsertionMode.Replace,
+				   }, null)
+					</li>
+				</ul>
+			</div>
+			<div id="result"></div>
+		</div>
+	</div>
+</div>

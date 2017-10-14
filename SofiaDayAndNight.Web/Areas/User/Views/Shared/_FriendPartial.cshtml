@@ -1,0 +1,12 @@
+﻿@using SofiaDayAndNight.Web.Areas.User.Models
+@model IndividualViewModel
+
+
+<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+	<img src="~/Image?id=@Model.ProfileImage.Id" alt="image" id="profile-image1" class="img-circle img-responsive">
+</div>
+<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+	<h4>@Html.DisplayFor(model => model.FirstName)</h4>
+	<h4>@Html.DisplayFor(model => model.LastName)</h4>
+</div>
+

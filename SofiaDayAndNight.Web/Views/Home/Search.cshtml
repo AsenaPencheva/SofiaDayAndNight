@@ -1,0 +1,11 @@
+﻿@using SofiaDayAndNight.Web.Models
+@model ResultViewModel
+
+<h2>Results:</h2>
+
+@Html.Partial("~/Areas/User/Views/Shared/_IndividualsListPartial.cshtml", Model.IndividualsList)
+
+@Html.Partial("~/Areas/User/Views/Shared/_OrganizationsListPartial.cshtml", Model.OrganizationsList)
+
+@Html.Partial("~/Areas/User/Views/Shared/_EventsListPartial.cshtml", Model.EventsList)
+

@@ -1,0 +1,71 @@
+﻿@using SofiaDayAndNight.Web.Areas.User.Models
+@using SofiaDayAndNight.Common.Enums
+@model EventViewModel
+@{
+	ViewBag.Title = "Event";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create Event</h2>
+@using (Html.BeginForm("Create", "Event",new { area="User"}, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+{
+	@Html.AntiForgeryToken()
+	<div class="form-group">
+		@Html.LabelFor(m => m.CreatorUserName, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.HiddenFor(m => m.CreatorUserName, new { @class = "form-control" })
+		</div>
+	</div>
+	@Html.ValidationSummary("", new { @class = "text-danger" })
+	<div class="form-group">
+		@Html.LabelFor(m => m.Title, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.EditorFor(m => m.Title, new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.EditorFor(m => m.Description, new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Privacy, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.DropDownListFor(x => x.Privacy, EnumHelper.GetSelectList(typeof(Privacy)), new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.EventType, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.DropDownListFor(x => x.EventType, EnumHelper.GetSelectList(typeof(EventType)), new { @class = "form-control" })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.Label("Cover", new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			<input type="file" id="Image" name="upload" />
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.Label("Begins", new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.TextBoxFor(m => m.Begins, "{0:dd/MM/yyyy}", new { maxlength = 10 })
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.Label("Ends", new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.TextBoxFor(m => m.Ends, "{0:dd/MM/yyyy}", new { maxlength = 10 })
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-offset-2 col-md-10">
+			<input type="submit" class="btn btn-default" value="Submit" />
+		</div>
+	</div>
+}
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
