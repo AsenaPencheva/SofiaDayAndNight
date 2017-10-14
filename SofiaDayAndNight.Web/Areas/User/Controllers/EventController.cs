@@ -1,16 +1,16 @@
-﻿using AutoMapper;
-using Microsoft.AspNet.Identity.Owin;
+﻿using System;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+
+using AutoMapper;
+using Bytes2you.Validation;
+
 using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Services.Contracts;
 using SofiaDayAndNight.Web.Areas.User.Models;
 using SofiaDayAndNight.Web.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
 
 namespace SofiaDayAndNight.Web.Areas.User.Controllers
 {
@@ -25,15 +25,27 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
 
         public EventController(IEventService eventService,IIndividualService individualService,IOrganizationService organizationService, IMapper mapper, IPhotoHelper photoHelper)
         {
+            Guard.WhenArgument(individualService, "individualService").IsNull().Throw();
+            Guard.WhenArgument(organizationService, "organizationService").IsNull().Throw();
+            Guard.WhenArgument(eventService, "eventService").IsNull().Throw();
+            Guard.WhenArgument(mapper, "mapper").IsNull().Throw();
+            Guard.WhenArgument(photoHelper, "photoHelper").IsNull().Throw();
+
             this.individualService = individualService;
             this.organizationService = organizationService;
             this.eventService = eventService;
             this.mapper = mapper;
             this.photoHelper = photoHelper;
         }
+
         [HttpGet]
         public ActionResult Create(string username)
         {
+            if (string.IsNullOrEmpty(username))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             var model = new EventViewModel();
             model.CreatorUserName = username;
 
@@ -48,6 +60,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             {
                 return View(model);
             }
+
             var eventModel = this.mapper.Map<Event>(model);
             eventModel.CreatedOn = DateTime.Now;
 
@@ -75,7 +88,12 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
 
         public ActionResult EventDetails(Guid? id)
         {
-            var eventModel = this.eventService.GetById(id.Value);
+            var eventModel = this.eventService.GetById(id);
+            if (eventModel == null)
+            {
+                return HttpNotFound();
+            }
+
             var model = this.mapper.Map<EventViewModel>(eventModel);
 
             return this.View(model);

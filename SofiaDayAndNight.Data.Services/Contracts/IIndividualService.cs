@@ -23,6 +23,7 @@ namespace SofiaDayAndNight.Data.Services.Contracts
         void CancelFriendRequest(string currentUserId, Guid? id);
         void ConfirmFriendship(string currentUserId, Guid? id);
         void RemoveFriendship(string currentUserId, Guid? id);
+        IEnumerable<Individual> GetAll();
         IEnumerable<Individual> GetFriendsRequests(string username);
         IEnumerable<Individual> GetFriends(string username);
         void CreateEvent(Event eventModel, string creator);

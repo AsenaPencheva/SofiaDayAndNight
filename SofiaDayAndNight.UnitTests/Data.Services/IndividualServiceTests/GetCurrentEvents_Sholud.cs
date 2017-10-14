@@ -1,14 +1,14 @@
-﻿using Moq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using Moq;
 using NUnit.Framework;
+
 using SofiaDayAndNight.Common;
 using SofiaDayAndNight.Data.Contracts;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SofiaDayAndNight.UnitTests.Data.Services.IndividualServiceTests
 {

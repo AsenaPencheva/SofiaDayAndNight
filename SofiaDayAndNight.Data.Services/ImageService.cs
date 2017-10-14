@@ -24,13 +24,21 @@ namespace SofiaDayAndNight.Data.Services
 
         public void Create(Image image)
         {
-            this.imageSetWrapper.Add(image);
-            this.dbContext.Commit();
+            if (image != null)
+            {
+                this.imageSetWrapper.Add(image);
+                this.dbContext.Commit();
+            }           
         }
 
         public Image GetById(Guid? id)
         {
-            var image = this.imageSetWrapper.GetById(id.Value);
+            Image image = null;
+            if (id.HasValue)
+            {
+                image = this.imageSetWrapper.GetById(id.Value);
+            }
+
             return image;
         }
     }

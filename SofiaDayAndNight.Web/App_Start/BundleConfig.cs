@@ -31,6 +31,23 @@ namespace SofiaDayAndNight.Web
 
             bundles.Add(new StyleBundle("~/Content/event").Include(
                      "~/Content/event.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/kendo").Include(
+                       "~/Scripts/kendo/kendo.all.min.js",
+                       "~/Scripts/kendo/kendo.aspnetmvc.min.js"));
+
+            bundles.Add(new StyleBundle("~/Content/kendo/css").Include(
+                        "~/Content/kendo/kendo.common-bootstrap.min.css",
+                        "~/Content/kendo/kendo.uniform.min.css",
+                        "~/Content/kendo/kendo.bootstrap.min.css"));
+
+            // Clear all items from the default ignore list to allow minified CSS and JavaScript files to be included in debug mode
+            bundles.IgnoreList.Clear();
+
+            // Add back the default ignore list rules sans the ones which affect minified files and debug mode
+            bundles.IgnoreList.Ignore("*.intellisense.js");
+            bundles.IgnoreList.Ignore("*-vsdoc.js");
+            bundles.IgnoreList.Ignore("*.debug.js", OptimizationMode.WhenEnabled);
         }
     }
 }

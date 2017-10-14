@@ -1,0 +1,73 @@
+﻿@model IEnumerable<IndividualViewModel>
+
+<div class="row text-center">
+	<div class="col-md-12">
+		<h3 class="header-page">Individuals</h3>
+		@(Html.Kendo().Grid(Model)
+		.Name("grid-individuals")
+		.Columns(columns =>
+		{
+			columns.Bound(e => e.UserName).Width(110);
+			columns.Bound(e => e.FirstName).Width(110);
+			columns.Bound(e => e.LastName).Width(110);
+			columns.Bound(e => e.City).Width(80);
+			columns.Bound(e => e.Age).Width(50);
+			columns.Command(command => command.Edit()).Width(220);
+		})
+		//.ToolBar(toolbar => toolbar.Create())
+		.Editable(editable => editable.Mode(GridEditMode.PopUp))
+		.Sortable()
+		.Pageable()
+		.Scrollable()
+		.ClientDetailTemplateId("individual-template")
+		.HtmlAttributes(new { style = "height:600px;" })
+		.DataSource(dataSource => dataSource
+			.Ajax()
+			.PageSize(6)
+			.Events(events => events.Error("error_handler"))
+			.Model(model =>
+			{
+				model.Id(p => p.Id);
+				model.Field(p => p.Id).Editable(false);
+			})
+			//.Create(update => update.Action("EditingPopup_Create", "Admin"))
+			//.Read(read => read.Action("HierarchyBinding_Individuals", "Admin"))
+			.Update(update => update.Action("EditingPopup_UpdateIndividual", "Admin"))
+		//.Destroy(update => update.Action("EditingPopup_Destroy", "Admin"))
+		)
+		.Events(events => events.DataBound("dataBound"))
+		)
+	</div>
+</div>
+
+<script id="individual-template" type="text/kendo-tmpl">
+	@(Html.Kendo().Grid<EventViewModel>()
+			.Name("grid-individual_#=Id#") // template expression, to be evaluated in the master context
+			.Columns(columns =>
+			{
+				columns.Bound(e => e.Id).Width(220);
+				columns.Bound(e => e.Title).Width(110);
+				columns.Bound(e => e.Privacy).Width(110);
+				columns.Bound(e => e.Begins).Width(110);
+				columns.Bound(e => e.Ends).Width(110);
+				columns.Bound(e => e.Description);
+				columns.Command(command => command.Edit()).Width(220);
+			})
+			.Editable(editable => editable.Mode(GridEditMode.PopUp))
+			.DataSource(dataSource => dataSource
+				.Ajax()
+				.PageSize(10)
+				.Events(events => events.Error("error_handler"))
+				.Model(model =>
+				{
+					model.Id(p => p.Id);
+					model.Field(p => p.Id).Editable(false);
+				})
+				.Read(read => read.Action("HierarchyBinding_IndividualEvents", "Admin", new { id = "#=Id#" }))
+				.Update(update => update.Action("EditingPopup_UpdateEvent", "Admin"))
+			)
+			.Pageable()
+			.Sortable()
+			.ToClientTemplate()
+	)
+</script>

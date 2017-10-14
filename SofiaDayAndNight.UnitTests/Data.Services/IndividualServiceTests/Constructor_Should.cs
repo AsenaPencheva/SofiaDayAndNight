@@ -1,13 +1,11 @@
-﻿using System.Data.Entity;
+﻿using System;
 
 using Moq;
 using NUnit.Framework;
 
-using SofiaDayAndNight.Data;
 using SofiaDayAndNight.Data.Contracts;
-using System;
-using SofiaDayAndNight.Data.Services;
 using SofiaDayAndNight.Data.Models;
+using SofiaDayAndNight.Data.Services;
 
 namespace SofiaDayAndNight.UnitTests.Data.Services.IndividualServiceTests
 {

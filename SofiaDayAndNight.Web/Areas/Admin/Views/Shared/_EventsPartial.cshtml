@@ -1,0 +1,39 @@
+﻿@model IEnumerable<EventViewModel>
+
+<div class="row text-center">
+	<div class="col-md-12">
+		<h3 class="header-page">Events</h3>
+		@(Html.Kendo().Grid(Model)
+	.Name("grid-events")
+	.Columns(columns =>
+	{
+		columns.Bound(e => e.Title).Width(110);
+		columns.Bound(e => e.CreatorUserName).Width(110);
+		columns.Bound(e => e.Privacy).Width(110);
+		columns.Bound(e => e.Begins).Width(110);
+		columns.Bound(e => e.Ends).Width(110);
+		columns.Bound(e => e.Description);
+		columns.Bound(e => e.AccessType);
+		columns.Command(command =>
+		{
+			command.Edit();
+		}).Width(220);
+	})
+	//.ToolBar(toolbar => toolbar.Create())
+	.Editable(editable => editable.Mode(GridEditMode.PopUp))
+	.Sortable()
+	.Pageable()
+	.Scrollable()
+	//.ClientDetailTemplateId("organization-template")
+	.HtmlAttributes(new { style = "height:600px;" })
+	.DataSource(dataSource => dataSource
+		.Ajax()
+		.PageSize(6)
+		.Events(events => events.Error("error_handler"))
+		.Model(model => model.Id(i => i.Id))
+		//.Create(update => update.Action("EditingPopup_Create", "Admin"))
+		//.Read(read => read.Action("HierarchyBinding_Individuals", "Admin"))
+		.Update(update => update.Action("EditingPopup_UpdateEvent", "Admin")))
+		)
+	</div>
+</div>

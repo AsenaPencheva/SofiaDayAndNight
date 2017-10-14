@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using SofiaDayAndNight.Data.Models.Contracts;
+using SofiaDayAndNight.Common.Enums;
 
 namespace SofiaDayAndNight.Data.Models
 {
@@ -15,13 +16,14 @@ namespace SofiaDayAndNight.Data.Models
         public User()
         {
             this.City = "Sofia";
+            this.AccessType = AccessType.None;
         }
 
         [MaxLength(100)]
         public string City { get; set; }
 
         [Index]
-        public bool IsForbidden { get; set; }
+        public AccessType AccessType { get; set; }
 
         [Index]
         public bool IsDeleted { get; set; }
