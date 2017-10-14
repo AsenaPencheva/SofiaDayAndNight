@@ -143,10 +143,10 @@ namespace SofiaDayAndNight.Data.Services
             }          
         }
 
-        public IndividualStatus GetStatus(string currentUserId, Guid? id)
+        public IndividualStatus GetStatus(string currentUsername, Guid? id)
         {
             // Guid?
-            var current = this.GetByUser(currentUserId);
+            var current = this.GetByUsername(currentUsername);
             if (current != null)
             {
                 if (current.Id == id)
@@ -170,11 +170,11 @@ namespace SofiaDayAndNight.Data.Services
             return IndividualStatus.None;
         }
 
-        public void SendFriendRequest(string currentUserId, Guid? id)
+        public void SendFriendRequest(string currentUser, Guid? id)
         {
-            if (!string.IsNullOrEmpty(currentUserId) && id.HasValue)
+            if (!string.IsNullOrEmpty(currentUser) && id.HasValue)
             {
-                var current = this.GetByUser(currentUserId);
+                var current = this.GetByUsername(currentUser);
                 var friendToAdd = this.GetById(id);
                 if (current != null && friendToAdd != null)
                 {
@@ -187,11 +187,11 @@ namespace SofiaDayAndNight.Data.Services
             }
         }
 
-        public void CancelFriendRequest(string currentUserId, Guid? id)
+        public void CancelFriendRequest(string currentUser, Guid? id)
         {
-            if (!string.IsNullOrEmpty(currentUserId) && id.HasValue)
+            if (!string.IsNullOrEmpty(currentUser) && id.HasValue)
             {
-                var current = this.GetByUser(currentUserId);
+                var current = this.GetByUsername(currentUser);
                 var friendToRemove = this.GetById(id);
                 if (current != null && friendToRemove != null)
                 {
@@ -204,11 +204,11 @@ namespace SofiaDayAndNight.Data.Services
             }
         }
 
-        public void ConfirmFriendship(string currentUserId, Guid? id)
+        public void ConfirmFriendship(string currentUser, Guid? id)
         {
-            if (!string.IsNullOrEmpty(currentUserId) && id.HasValue)
+            if (!string.IsNullOrEmpty(currentUser) && id.HasValue)
             {
-                var current = this.GetByUser(currentUserId);
+                var current = this.GetByUsername(currentUser);
                 var friendToAdd = this.GetById(id);
                 if (current != null && friendToAdd != null)
                 {
@@ -223,11 +223,11 @@ namespace SofiaDayAndNight.Data.Services
             }
         }
 
-        public void RemoveFriendship(string currentUserId, Guid? id)
+        public void RemoveFriendship(string currentUser, Guid? id)
         {
-            if (!string.IsNullOrEmpty(currentUserId) && id.HasValue)
+            if (!string.IsNullOrEmpty(currentUser) && id.HasValue)
             {
-                var current = this.GetByUser(currentUserId);
+                var current = this.GetByUsername(currentUser);
                 var friendToRemove = this.GetById(id);
                 if (current != null && friendToRemove != null)
                 {
@@ -315,6 +315,11 @@ namespace SofiaDayAndNight.Data.Services
                 }
             }
             return new List<Organization>();
+        }
+
+        public IEnumerable<Individual> GetAll()
+        {
+            return this.individualSetWrapper.All.ToList();
         }
     }
 }

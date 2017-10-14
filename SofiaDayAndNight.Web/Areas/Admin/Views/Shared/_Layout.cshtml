@@ -1,0 +1,18 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+	@Styles.Render("~/Content/kendo/css")
+}
+
+@section kendoScripts {
+	@Scripts.Render("~/bundles/kendo")
+}
+
+@RenderBody()
+
+
+@section scripts {
+	@RenderSection("scripts", required: false)
+}

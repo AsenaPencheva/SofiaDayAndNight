@@ -100,7 +100,10 @@ namespace SofiaDayAndNight.Web.Controllers
         {
             var user = UserManager.FindByName(User.Identity.Name);
             var role = this.UserManager.GetRoles(user.Id).First();
-            ViewData["userId"] = user.Id;
+            if (role == UserRole.Admin.ToString())
+            {
+                return RedirectToAction("Index", "Admin", new { area = "Admin" }); // load profile
+            }
             if (user.IsCompleted)
             {
                 return RedirectToAction("ProfileDetails", role, new { username = this.User.Identity.Name, area = "User" }); // load profile

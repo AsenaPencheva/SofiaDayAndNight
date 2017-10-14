@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Bytes2you.Validation;
+
 using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Contracts;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Services.Contracts;
+using SofiaDayAndNight.Common;
 
 namespace SofiaDayAndNight.Data.Services
 {
@@ -131,8 +133,8 @@ namespace SofiaDayAndNight.Data.Services
                 {
                     organization.Followers.Add(current);
                     this.Update(organization);
-                }               
-            }     
+                }
+            }
         }
 
         public void Unfollow(string currentId, Guid? id)
@@ -152,39 +154,69 @@ namespace SofiaDayAndNight.Data.Services
 
         public IEnumerable<Event> GetPassedEvents(string username)
         {
-            var currentDate = DateTime.Now;
-            var individual = this.GetByUsername(username);
+            if (!string.IsNullOrEmpty(username))
+            {
+                var currentDate = DateTimeProvider.Current.UtcNow;
 
-            return this.organizationSetWrapper.All
-               .Where(x => x.User.UserName == username).FirstOrDefault()
-               .Events.Where(e => e.Ends < currentDate).ToList();
+                return this.organizationSetWrapper.All
+                    .Where(x => x.User.UserName == username).FirstOrDefault() != null ?
+                    this.organizationSetWrapper.All
+                    .Where(x => x.User.UserName == username).FirstOrDefault()
+                    .Events.Where(e => e.Ends < currentDate).ToList() : new List<Event>();
+            }
+
+            return new List<Event>();
         }
 
         public IEnumerable<Event> GetCurrentEvents(string username)
         {
-            var currentDate = DateTime.Now;
-            var individual = this.GetByUsername(username);
+            if (!string.IsNullOrEmpty(username))
+            {
+                var currentDate = DateTimeProvider.Current.UtcNow;
 
-            return this.organizationSetWrapper.All
-             .Where(x => x.User.UserName == username).FirstOrDefault()
-             .Events.Where(e => e.Begins < currentDate && currentDate < e.Ends).ToList();
+                return this.organizationSetWrapper.All
+                    .Where(x => x.User.UserName == username).FirstOrDefault() != null?
+                    this.organizationSetWrapper.All
+                    .Where(x => x.User.UserName == username).FirstOrDefault()
+                    .Events.Where(e => e.Begins < currentDate && currentDate < e.Ends).ToList() : new List<Event>();
+            }
+
+            return new List<Event>();
         }
 
         public IEnumerable<Event> GetUpcomingEvents(string username)
         {
-            var currentDate = DateTime.Now;
-            //var individual = this.GetByUsername(username);
+            if (!string.IsNullOrEmpty(username))
+            {
+                var currentDate = DateTimeProvider.Current.UtcNow;
 
-            return this.organizationSetWrapper.All
-                .Where(x => x.User.UserName == username).FirstOrDefault()
-                .Events.Where(e => currentDate < e.Begins).ToList();
+                return this.organizationSetWrapper.All
+                    .Where(x => x.User.UserName == username).FirstOrDefault() != null ?
+                    this.organizationSetWrapper.All
+                    .Where(x => x.User.UserName == username).FirstOrDefault()
+                    .Events.Where(e => currentDate < e.Begins).ToList() : new List<Event>();
+            }
+
+            return new List<Event>();
         }
 
         public IEnumerable<Individual> GetFollowers(string username)
         {
-            var individual = this.GetByUsername(username);
+            if (!string.IsNullOrEmpty(username))
+            {
+                var individual = this.GetByUsername(username);
+                if (individual != null)
+                {
+                    return individual.Followers.ToList();
+                }
+            }
 
-            return individual.Followers.ToList();
+            return new List<Individual>();
+        }
+
+        public IEnumerable<Organization> GetAll()
+        {
+            return this.organizationSetWrapper.All.ToList();
         }
     }
 }

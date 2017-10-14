@@ -1,0 +1,9 @@
+﻿@model AccessType?
+@using SofiaDayAndNight.Common.Enums
+@(
+	Html.Kendo().DropDownListFor(m => m)
+		.DataTextField("Text")
+		.DataValueField("Value")
+		.BindTo(Extensions.EnumToSelectList(typeof(AccessType)))
+)
+

@@ -5,8 +5,8 @@ using Moq;
 using NUnit.Framework;
 
 using SofiaDayAndNight.Data.Contracts;
-using SofiaDayAndNight.Data.Services;
 using SofiaDayAndNight.Data.Models;
+using SofiaDayAndNight.Data.Services;
 
 namespace SofiaDayAndNight.UnitTests.Data.Services.IndividualServiceTests
 {
@@ -27,6 +27,7 @@ namespace SofiaDayAndNight.UnitTests.Data.Services.IndividualServiceTests
 
             return data;
         }
+
         [Test]
         public void NotThrowException_WhenUserIsNull()
         {

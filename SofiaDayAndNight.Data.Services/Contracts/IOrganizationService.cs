@@ -21,5 +21,6 @@ namespace SofiaDayAndNight.Data.Services.Contracts
         IEnumerable<Event> GetCurrentEvents(string username);
         IEnumerable<Event> GetUpcomingEvents(string username);
         IEnumerable<Individual> GetFollowers(string username);
+        IEnumerable<Organization> GetAll();
     }
 }

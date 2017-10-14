@@ -11,7 +11,7 @@ namespace SofiaDayAndNight.Data
     public class SofiaDayAndNightDbContext : IdentityDbContext<User>
     {
         public SofiaDayAndNightDbContext()
-            : base("SofiaDayAndNightDatabase", throwIfV1Schema: false)
+            : base("DefaultConnection")
         {
         }
 
@@ -189,7 +189,7 @@ namespace SofiaDayAndNight.Data
         }
 
         //public void SetEntryState(object entity, EntityState entityState)
-        //{
+        //{B
         //    var entry = this.Entry(entity);
         //    entry.State = entityState;
         //}

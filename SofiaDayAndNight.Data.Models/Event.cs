@@ -16,6 +16,7 @@ namespace SofiaDayAndNight.Data.Models
             this.EventType = EventType.Other;
             this.Privacy = Privacy.OnlyFriends;
             this.IndividualsAttended = new HashSet<Individual>();
+            this.AccessType = AccessType.None;
         }
 
         [MinLength(3)]
@@ -31,7 +32,7 @@ namespace SofiaDayAndNight.Data.Models
 
         public Privacy Privacy { get; set; }
 
-        public bool IsForbidden { get; set; }
+        public AccessType AccessType { get; set; }
 
         [DateRange]
         public DateTime Begins { get; set; }

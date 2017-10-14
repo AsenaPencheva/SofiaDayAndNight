@@ -15,14 +15,14 @@ namespace SofiaDayAndNight.UnitTests.Data.Services.IndividualServiceTests
     [TestFixture]
     public class GetStatus_Should
     {
-        private static readonly string userId = "testUserId";
+        private static readonly string username = "testUser";
         private static readonly Guid individualId = Guid.NewGuid();
         private static readonly Guid userToCheckId = Guid.NewGuid();
 
         private static IEnumerable<Individual> Data()
         {
             var user = new User();
-            user.Id = userId;
+            user.UserName = username;
             var individual = new Individual();
             individual.User = user;
             individual.Id = individualId;
@@ -72,7 +72,7 @@ namespace SofiaDayAndNight.UnitTests.Data.Services.IndividualServiceTests
             var service = new IndividualService(mockedEfWrappert.Object, mockedDbContext.Object);
 
             // Act 
-            var result = service.GetStatus(userId, individualId);
+            var result = service.GetStatus(username, individualId);
 
             // Assert 
             Assert.AreEqual(IndividualStatus.IsCurrent, result);
@@ -94,7 +94,7 @@ namespace SofiaDayAndNight.UnitTests.Data.Services.IndividualServiceTests
             var service = new IndividualService(mockedEfWrappert.Object, mockedDbContext.Object);
 
             // Act 
-            var result = service.GetStatus(userId, userToCheckId);
+            var result = service.GetStatus(username, userToCheckId);
             data.First().Friends.Remove(friend);
 
             // Assert 
@@ -117,7 +117,7 @@ namespace SofiaDayAndNight.UnitTests.Data.Services.IndividualServiceTests
             var service = new IndividualService(mockedEfWrappert.Object, mockedDbContext.Object);
 
             // Act 
-            var result = service.GetStatus(userId, userToCheckId);
+            var result = service.GetStatus(username, userToCheckId);
             data.First().FriendRequested.Remove(friend);
 
             // Assert 
@@ -140,7 +140,7 @@ namespace SofiaDayAndNight.UnitTests.Data.Services.IndividualServiceTests
             var service = new IndividualService(mockedEfWrappert.Object, mockedDbContext.Object);
 
             // Act 
-            var result = service.GetStatus(userId, userToCheckId);
+            var result = service.GetStatus(username, userToCheckId);
             data.First().FriendRequests.Remove(friend);
 
             // Assert 
@@ -161,7 +161,7 @@ namespace SofiaDayAndNight.UnitTests.Data.Services.IndividualServiceTests
             var service = new IndividualService(mockedEfWrappert.Object, mockedDbContext.Object);
 
             // Act 
-            var result = service.GetStatus(userId, userToCheckId);
+            var result = service.GetStatus(username, userToCheckId);
 
             // Assert 
             Assert.AreEqual(IndividualStatus.None, result);

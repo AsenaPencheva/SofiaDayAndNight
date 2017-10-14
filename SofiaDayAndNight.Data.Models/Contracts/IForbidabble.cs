@@ -1,7 +1,9 @@
-﻿namespace SofiaDayAndNight.Data.Models.Contracts
+﻿using SofiaDayAndNight.Common.Enums;
+
+namespace SofiaDayAndNight.Data.Models.Contracts
 {
     public interface IForbidabble
     {
-        bool IsForbidden { get; set; }
+        AccessType AccessType { get; set; }
     }
 }

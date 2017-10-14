@@ -1,20 +1,19 @@
-﻿using AutoMapper;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using SofiaDayAndNight.Common.Enums;
-using SofiaDayAndNight.Data.Models;
-using SofiaDayAndNight.Data.Services;
-using SofiaDayAndNight.Data.Services.Contracts;
-using SofiaDayAndNight.Web.Areas.User.Models;
-using SofiaDayAndNight.Web.Helpers;
-using SofiaDayAndNight.Web.Infrastructure;
-using SofiaDayAndNight.Web.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+
+using AutoMapper;
+
+using SofiaDayAndNight.Common.Enums;
+using SofiaDayAndNight.Data.Models;
+using SofiaDayAndNight.Data.Services.Contracts;
+using SofiaDayAndNight.Web.Areas.User.Models;
+using SofiaDayAndNight.Web.Helpers;
+using Bytes2you.Validation;
 
 namespace SofiaDayAndNight.Web.Areas.User.Controllers
 {
@@ -22,16 +21,22 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
     public class IndividualController : Controller
     {
         private readonly IIndividualService individualService;
-        private readonly IImageService imageService;
+        //private readonly IImageService imageService;
         private readonly IMapper mapper;
         private readonly IPhotoHelper photoHelper;
+        private readonly IUserProvider userProvider;
 
-        public IndividualController(IIndividualService individualService, IImageService imageService, IMapper mapper,IPhotoHelper photoHelper)
+        public IndividualController(IIndividualService individualService, IMapper mapper, IPhotoHelper photoHelper, IUserProvider userProvider)
         {
+            Guard.WhenArgument(individualService, "individualService").IsNull().Throw();
+            Guard.WhenArgument(mapper, "mapper").IsNull().Throw();
+            Guard.WhenArgument(photoHelper, "photoHelper").IsNull().Throw();
+
             this.individualService = individualService;
-            this.imageService = imageService;
+            //this.imageService = imageService;
             this.mapper = mapper;
             this.photoHelper = photoHelper;
+            this.userProvider = userProvider;
         }
 
         public ActionResult ProfileDetails(string username)
@@ -42,7 +47,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             }
 
             var individual = this.individualService.GetByUsername(username);
-        
+
             if (individual == null)
             {
                 return HttpNotFound();
@@ -51,7 +56,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             var model = this.mapper.Map<IndividualViewModel>(individual);
 
             // error if ViewBag.UserId is null
-            model.IndividualStatus = this.individualService.GetStatus(this.User.Identity.GetUserId(), model.Id);
+            model.IndividualStatus = this.individualService.GetStatus(this.User.Identity.Name, model.Id);
 
             return this.View(model);
         }
@@ -64,7 +69,11 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
                 return View("ProfileForm", model);
             }
 
-            var user = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            var user = this.userProvider.FindByName(User.Identity.Name);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
 
             var individual = this.mapper.Map<Individual>(model);
             individual.CreatedOn = DateTime.Now;
@@ -72,8 +81,8 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             if (upload != null && upload.ContentLength > 0)
             {
                 var imageViewModel = this.photoHelper.UploadImage(upload);
-               
-                var image= this.mapper.Map<Image>(imageViewModel);
+
+                var image = this.mapper.Map<Image>(imageViewModel);
                 individual.ProfileImage = image;
             }
 
@@ -82,15 +91,15 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             //this.individualService.Create(individual);
             user.Individual = individual;
             user.IsCompleted = true;
-            System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().Update(user);
+            this.userProvider.Update(user);
 
             return RedirectToAction("ProfileDetails", new { area = "User", username = user.UserName });
         }
 
-        [HttpPost] 
+        [HttpPost]
         public ActionResult SendFriendRequest(Guid? id)
         {
-            this.individualService.SendFriendRequest(this.User.Identity.GetUserId(), id);
+            this.individualService.SendFriendRequest(this.User.Identity.Name, id);
 
             if (Request.IsAjaxRequest())
             {
@@ -106,7 +115,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         [HttpPost]
         public ActionResult CancelFriendRequest(Guid? id)
         {
-            this.individualService.CancelFriendRequest(this.User.Identity.GetUserId(), id);
+            this.individualService.CancelFriendRequest(this.User.Identity.Name, id);
 
             if (Request.IsAjaxRequest())
             {
@@ -122,7 +131,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         [HttpPost]
         public ActionResult ConfirmFriendship(Guid? id)
         {
-            this.individualService.ConfirmFriendship(this.User.Identity.GetUserId(), id);
+            this.individualService.ConfirmFriendship(this.User.Identity.Name, id);
 
             if (Request.IsAjaxRequest())
             {
@@ -138,7 +147,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         [HttpPost]
         public ActionResult CancelFriendship(Guid? id)
         {
-            this.individualService.RemoveFriendship(this.User.Identity.GetUserId(), id);
+            this.individualService.RemoveFriendship(this.User.Identity.Name, id);
 
             if (Request.IsAjaxRequest())
             {
@@ -148,7 +157,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
                 return this.PartialView("_IndividualInfoPartial", model);
             }
 
-            return this.RedirectToAction("ProfileDetails", new { username= this.User.Identity.Name });
+            return this.RedirectToAction("ProfileDetails", new { username = this.User.Identity.Name });
         }
 
         [AjaxOnly]
@@ -195,7 +204,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
 
             var model = new EventsListViewModel();
             model.PassedEvents = passedEvents;
-            model.OngoingEvents= currentEvents;
+            model.OngoingEvents = currentEvents;
             model.UpCommingEvents = upcommingEvents;
 
             return this.PartialView("_EventsListPartial", model);
@@ -206,7 +215,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         {
             var model = new OrganizationsListViewModel();
             model.Username = username;
-            model.Organizations = this.individualService.GetFollowingOrganization(username).Select(x=>this.mapper.Map<OrganizationViewModel>(x));                        
+            model.Organizations = this.individualService.GetFollowingOrganization(username).Select(x => this.mapper.Map<OrganizationViewModel>(x));
 
             return this.PartialView("_OrganizationsListPartial", model);
         }

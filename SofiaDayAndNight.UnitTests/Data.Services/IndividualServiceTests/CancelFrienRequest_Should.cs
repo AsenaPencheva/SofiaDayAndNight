@@ -1,13 +1,12 @@
-﻿using Moq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using Moq;
 using NUnit.Framework;
 using SofiaDayAndNight.Data.Contracts;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SofiaDayAndNight.UnitTests.Data.Services.IndividualServiceTests
 {
@@ -72,9 +71,9 @@ namespace SofiaDayAndNight.UnitTests.Data.Services.IndividualServiceTests
         public void CallUpdateMethod_WhenParamsMatch()
         {
             // Arrange
-            var userId = "testUserId";
+            var username = "testUser";
             var user = new User();
-            user.Id = userId;
+            user.UserName = username;
             var individual = new Individual();
             individual.User = user;
 
@@ -95,7 +94,7 @@ namespace SofiaDayAndNight.UnitTests.Data.Services.IndividualServiceTests
             var service = new IndividualService(mockedEfWrappert.Object, mockedDbContext.Object);
 
             // Act
-            service.CancelFriendRequest(userId, id);
+            service.CancelFriendRequest(username, id);
 
             // Assert
             mockedEfWrappert.Verify(x => x.Update(It.IsAny<Individual>()), Times.Exactly(2));

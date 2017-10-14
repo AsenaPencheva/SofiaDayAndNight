@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SofiaDayAndNight.Common", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SofiaDayAndNight.UnitTests", "SofiaDayAndNight.UnitTests\SofiaDayAndNight.UnitTests.csproj", "{C6AE02E0-8E34-4F41-80E7-0A74982D2494}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SofiaDayAndNight.IntegrationTests", "SofiaDayAndNight.IntegrationTests\SofiaDayAndNight.IntegrationTests.csproj", "{18364FD2-7A0D-4F8D-993C-F73E38007D73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{C6AE02E0-8E34-4F41-80E7-0A74982D2494}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6AE02E0-8E34-4F41-80E7-0A74982D2494}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6AE02E0-8E34-4F41-80E7-0A74982D2494}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18364FD2-7A0D-4F8D-993C-F73E38007D73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18364FD2-7A0D-4F8D-993C-F73E38007D73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18364FD2-7A0D-4F8D-993C-F73E38007D73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18364FD2-7A0D-4F8D-993C-F73E38007D73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
