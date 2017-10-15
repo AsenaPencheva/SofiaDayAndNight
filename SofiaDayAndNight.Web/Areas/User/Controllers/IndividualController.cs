@@ -172,6 +172,11 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             var friendsList = this.individualService.GetFriendsRequests(username)
                 .Select(x => this.mapper.Map<IndividualViewModel>(x)).ToList();
 
+            foreach (var friend in friendsList)
+            {
+                friend.IndividualStatus = IndividualStatus.HasRequest;
+            }
+
             return this.PartialView("_RequestsListPartial", friendsList);
         }
 
@@ -186,6 +191,11 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
 
             var friendsList = this.individualService.GetFriends(username)
                 .Select(x => this.mapper.Map<IndividualViewModel>(x)).ToList();
+
+            foreach (var friend in friendsList)
+            {
+                friend.IndividualStatus = IndividualStatus.IsFriend;
+            }
 
             return this.PartialView("_FriendsListPartial", friendsList);
         }
@@ -207,17 +217,21 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             model.OngoingEvents = currentEvents;
             model.UpCommingEvents = upcommingEvents;
 
-            return this.PartialView("_EventsListPartial", model);
+            return this.PartialView("_FriendsListPartial", model);
         }
 
         [AjaxOnly]
         public ActionResult FollowingList(string username)
         {
-            var model = new OrganizationsListViewModel();
-            model.Username = username;
-            model.Organizations = this.individualService.GetFollowingOrganization(username).Select(x => this.mapper.Map<OrganizationViewModel>(x));
+            var organizations = this.individualService.GetFollowingOrganization(username)
+                .Select(x => this.mapper.Map<OrganizationViewModel>(x));
 
-            return this.PartialView("_OrganizationsListPartial", model);
+            foreach (var org in organizations)
+            {
+                org.OrganizationStatus = OrganizationStatus.IsFollowed;
+            }
+            
+            return this.PartialView("_OrganizationsListPartial", organizations);
         }
     }
 }
