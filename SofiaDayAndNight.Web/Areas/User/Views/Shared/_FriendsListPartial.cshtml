@@ -1,4 +1,5 @@
 ﻿@using SofiaDayAndNight.Web.Areas.User.Models
+@using SofiaDayAndNight.Common.Enums
 @model IEnumerable<IndividualViewModel>
 
 <br />
@@ -7,9 +8,19 @@
 	<li class="list-group-item list-group-item-action flex-column align-items-start">
 		<div class="d-flex w-100 justify-content-between ">
 			@Html.Partial("_FriendPartial", friend)
-			@using (Html.BeginForm("CancelFriendship", "Individual", new { id = friend.Id, area = "User" }, FormMethod.Post))
+			@if (friend.IndividualStatus == IndividualStatus.IsFriend)
 			{
-				<button type="submit" class="btn btn-primary btn-sm">Remove Friend</button>
+				using (Html.BeginForm("CancelFriendship", "Individual", new { id = friend.Id, area = "User" }, FormMethod.Post))
+				{
+					<button type="submit" class="btn btn-primary btn-sm">Remove Friend</button>
+				}
+			}
+			@if (friend.IndividualStatus == IndividualStatus.HasRequest)
+			{
+				using (Html.BeginForm("ConfirmFriendship", "Individual", new { id = friend.Id, area = "User" }, FormMethod.Post))
+				{
+					<button type="submit" class="btn btn-primary btn-sm">Confirm Friend</button>
+				}
 			}
 			<br />
 			@Html.ActionLink("View Profile", "ProfileDetails", "Individual",

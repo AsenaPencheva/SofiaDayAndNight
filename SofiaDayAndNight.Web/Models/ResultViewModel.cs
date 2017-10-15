@@ -8,9 +8,9 @@ namespace SofiaDayAndNight.Web.Models
 {
     public class ResultViewModel
     {
-        public FriendsListViewModel IndividualsList { get; set; }
+        public IEnumerable<IndividualViewModel> Individuals { get; set; }
 
-        public OrganizationsListViewModel OrganizationsList { get; set; }
+        public IEnumerable<OrganizationViewModel> Organizations { get; set; }
 
         public EventsListViewModel EventsList { get; set; }
     }

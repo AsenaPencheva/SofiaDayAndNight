@@ -21,6 +21,7 @@ namespace SofiaDayAndNight.Data.Services
         public OrganizationService(IIndividualService individualService, IEfDbSetWrapper<Organization> organizationSetWrapper, IUnitOfWork dbContext)
         {
             Guard.WhenArgument(organizationSetWrapper, "organizationSetWrapper").IsNull().Throw();
+            Guard.WhenArgument(individualService, "individualService").IsNull().Throw();
             Guard.WhenArgument(dbContext, "dbContext").IsNull().Throw();
 
             this.organizationSetWrapper = organizationSetWrapper;

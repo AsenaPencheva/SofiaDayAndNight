@@ -1,23 +1,81 @@
 ﻿@using SofiaDayAndNight.Web.Areas.User.Models
-@model FriendsListViewModel
+@using SofiaDayAndNight.Common.Enums
+@model IEnumerable<IndividualViewModel>
 
 <br />
 <div class="row">
 	<h4>Individuals</h4>
 	<ul class="list-group">
-		@foreach (var organization in Model.Friends)
+		@foreach (var friend in Model)
 		{
 			<li class="col-md-4 col-xs-12 col-sm-6 col-lg-4 list-group-item list-group-item-action flex-column align-items-start">
 				<div class="d-flex w-100 justify-content-between ">
-					@Html.Partial("~/Areas/User/Views/Shared/_FriendPartial.cshtml", organization)
+					@Html.Partial("~/Areas/User/Views/Shared/_FriendPartial.cshtml", friend)
 					<div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
-						@*@using (Html.BeginForm("Unfollow", "Organization", new { id = organization.Id, area = "User" }, FormMethod.Post))
+						@if (friend.IndividualStatus == IndividualStatus.None)
 						{
-							<button type="submit" class="btn btn-primary btn-sm">Unfollow</button>
+							using (Ajax.BeginForm(
+								"SendFriendRequest",
+								"Individual",
+								new { id = friend.Id, area = "User" },
+								new AjaxOptions
+								{
+									UpdateTargetId = "details",
+									HttpMethod = "Post"
+								}))
+							{
+								<button class="btn btn-primary btn-sm" type="submit">Send Request</button>
+							}
 						}
-						<br />*@
+						@if (friend.IndividualStatus == IndividualStatus.IsRequested)
+						{
+							using (Ajax.BeginForm(
+								"CancelFriendRequest",
+								"Individual",
+								new { id = friend.Id, area = "User" },
+								new AjaxOptions
+								{
+									UpdateTargetId = "details",
+									HttpMethod = "Post"
+								}))
+							{
+								<button class="btn btn-primary btn-sm" type="submit">Cancel Request</button>
+							}
+
+						}
+						@if (friend.IndividualStatus == IndividualStatus.IsFriend)
+						{
+							using (Ajax.BeginForm(
+								"CancelFriendship",
+								"Individual",
+								new { id = friend.Id, area = "User" },
+								new AjaxOptions
+								{
+									UpdateTargetId = "details",
+									HttpMethod = "Post"
+								}))
+							{
+								<button class="btn btn-primary btn-sm" type="submit">Remove Friend</button>
+							}
+						}
+						@if (friend.IndividualStatus == IndividualStatus.HasRequest)
+						{
+							using (Ajax.BeginForm(
+								"ConfirmFriendship",
+								"Individual",
+								new { id = friend.Id, area = "User" },
+								new AjaxOptions
+								{
+									UpdateTargetId = "details",
+									HttpMethod = "Post"
+								}))
+							{
+								<button class="btn btn-primary btn-sm" type="submit">Confirm Friend</button>
+							}
+						}
+						<br>
 						@Html.ActionLink("View Profile", "ProfileDetails", "Organization",
-						new { username = organization.UserName, area = "User" }, new { @class = "btn btn-primary btn-sm" })
+						new { username = friend.UserName, area = "User" }, new { @class = "btn btn-primary btn-sm" })
 					</div>
 				</div>
 			</li>

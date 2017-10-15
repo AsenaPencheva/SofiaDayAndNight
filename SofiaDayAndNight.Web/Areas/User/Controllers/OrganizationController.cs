@@ -3,12 +3,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Models;
-using SofiaDayAndNight.Data.Services;
 using SofiaDayAndNight.Data.Services.Contracts;
 using SofiaDayAndNight.Web.Areas.User.Models;
 using SofiaDayAndNight.Web.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -141,11 +139,9 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         [AjaxOnly]
         public ActionResult FollowersList(string username)
         {
-            var model = new FriendsListViewModel();
-            model.Username = username;
-            model.Friends = this.organizationService.GetFollowers(username).Select(x => this.mapper.Map<IndividualViewModel>(x));
+            var followers = this.organizationService.GetFollowers(username).Select(x => this.mapper.Map<IndividualViewModel>(x));
 
-            return this.PartialView("_IndividualsListPartial", model);
+            return this.PartialView("_IndividualsListPartial", followers);
         }
     }
 }

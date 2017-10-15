@@ -59,13 +59,22 @@ namespace SofiaDayAndNight.Web.Controllers
             model.EventsList.UpCommingEvents = events.Where(x => currentDate < x.Begins)
                 .Select(x => this.mapper.Map<EventViewModel>(x)).ToList();
 
-            var individuals = new FriendsListViewModel();
-            individuals.Friends = this.individualService.GetIndividualsByNameOrUsername(searchTerm).Select(x => this.mapper.Map<IndividualViewModel>(x));
-            model.IndividualsList = individuals;
+            var individuals  = this.individualService.GetIndividualsByNameOrUsername(searchTerm).Select(x => this.mapper.Map<IndividualViewModel>(x)).ToList();
+            foreach (var i in individuals)
+            {
+                i.IndividualStatus = this.individualService.GetStatus(User.Identity.Name, i.Id);
+            }
 
-            var organizations = new OrganizationsListViewModel();
-            organizations.Organizations=this.organizationService.GetPlacesByNameOrUsername(searchTerm).Select(x => this.mapper.Map<OrganizationViewModel>(x));
-            model.OrganizationsList = organizations;
+            model.Individuals = individuals;
+
+            var organizations=this.organizationService.GetPlacesByNameOrUsername(searchTerm).Select(x => this.mapper.Map<OrganizationViewModel>(x)).ToList();
+
+            foreach (var o in organizations)
+            {
+               o.OrganizationStatus = this.organizationService.GetStatus(User.Identity.Name, o.Id);
+            }
+
+            model.Organizations = organizations;
 
             return this.View(model);
         }
