@@ -65,9 +65,7 @@
     <Compile Include="ImageService.cs" />
     <Compile Include="IndividualService.cs" />
     <Compile Include="Contracts\IOrganizationService.cs" />
-    <Compile Include="Models\IndividualModel.cs" />
     <Compile Include="OrganizationService.cs" />
-    <Compile Include="UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

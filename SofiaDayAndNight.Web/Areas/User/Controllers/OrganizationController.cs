@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Bytes2you.Validation;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using SofiaDayAndNight.Common.Enums;
@@ -19,11 +20,20 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
     {
         private readonly IOrganizationService organizationService;
         private readonly IMapper mapper;
+        private readonly IUserProvider userProvider;
+        private readonly IPhotoHelper photoHelper;
 
-        public OrganizationController(IOrganizationService organizationService, IMapper mapper)
+        public OrganizationController(IOrganizationService organizationService, IMapper mapper, IPhotoHelper photoHelper, IUserProvider userProvider)
         {
+            Guard.WhenArgument(organizationService, "organizationService").IsNull().Throw();
+            Guard.WhenArgument(mapper, "mapper").IsNull().Throw();
+            Guard.WhenArgument(userProvider, "userProvider").IsNull().Throw();
+            Guard.WhenArgument(photoHelper, "photoHelper").IsNull().Throw();
+
             this.organizationService = organizationService;
             this.mapper = mapper;
+            this.userProvider = userProvider;
+            this.photoHelper = photoHelper;
         }
 
         // GET: Organization/Organization
@@ -42,7 +52,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
 
             var model = this.mapper.Map<OrganizationViewModel>(organization);
 
-            model.OrganizationStatus = this.organizationService.GetStatus(this.User.Identity.GetUserId(), model.Id);
+            model.OrganizationStatus = this.organizationService.GetStatus(this.User.Identity.Name, model.Id);
 
             return this.View(model);
         }
@@ -55,22 +65,20 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
                 return View("ProfileForm", model);
             }
 
-            var user = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            var user = this.userProvider.FindByName(User.Identity.Name);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
 
             var organization = this.mapper.Map<Organization>(model);
             organization.CreatedOn = DateTime.Now;
             // add default photo
             if (upload != null && upload.ContentLength > 0)
             {
-                var image = new Image
-                {
-                    Name = System.IO.Path.GetFileName(upload.FileName),
-                    ContentType = upload.ContentType
-                };
-                using (var reader = new System.IO.BinaryReader(upload.InputStream))
-                {
-                    image.Data = reader.ReadBytes(upload.ContentLength);
-                }
+                var imageViewModel = this.photoHelper.UploadImage(upload);
+
+                var image = this.mapper.Map<Image>(imageViewModel);
                 organization.ProfileImage = image;
             }
 
@@ -79,7 +87,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             //this.individualService.Create(individual);
             user.Organization = organization;
             user.IsCompleted = true;
-            System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().Update(user);
+            this.userProvider.Update(user);
 
             return RedirectToAction("ProfileDetails", new { area = "User", username = user.UserName });
         }
@@ -87,7 +95,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         [HttpPost]
         public ActionResult Follow(Guid? id)
         {
-            this.organizationService.Follow(this.User.Identity.GetUserId(), id);
+            this.organizationService.Follow(this.User.Identity.Name, id);
 
             if (Request.IsAjaxRequest())
             {
@@ -119,6 +127,11 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         [AjaxOnly]
         public ActionResult EventsList(string username)
         {
+            if (username == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             var passedEvents = this.organizationService.GetPassedEvents(username)
                .Select(x => this.mapper.Map<EventViewModel>(x)).ToList();
 
@@ -139,7 +152,12 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         [AjaxOnly]
         public ActionResult FollowersList(string username)
         {
-            var followers = this.organizationService.GetFollowers(username).Select(x => this.mapper.Map<IndividualViewModel>(x));
+            if (username == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var followers = this.organizationService.GetFollowers(username).Select(x => this.mapper.Map<IndividualViewModel>(x)).ToList();
 
             return this.PartialView("_IndividualsListPartial", followers);
         }

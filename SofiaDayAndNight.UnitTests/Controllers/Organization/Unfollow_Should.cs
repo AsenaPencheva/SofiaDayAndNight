@@ -14,19 +14,18 @@ using SofiaDayAndNight.Web.Areas.User.Controllers;
 using SofiaDayAndNight.Web.Areas.User.Models;
 using SofiaDayAndNight.Web.Helpers;
 
-namespace SofiaDayAndNight.UnitTests.Controllers.Individual
+namespace SofiaDayAndNight.UnitTests.Controllers.Organization
 {
     [TestFixture]
-    public class CancelFriendship_Should
+   public class Unfollow_Should
     {
         [Test]
-        public void CallSendRequest_WhenCalled()
+        public void CallUnollow_WhenCalled()
         {
             // Arrange
             var username = "testUser";
-            var mockedIndividualService = new Mock<IIndividualService>();
-            //mockedIndividualService.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(new SofiaDayAndNight.Data.Models.Individual());
-            mockedIndividualService.Setup(x => x.RemoveFriendship(It.IsAny<string>(), It.IsAny<Guid>())).Verifiable();
+            var mockedOrganizationService = new Mock<IOrganizationService>();
+            mockedOrganizationService.Setup(x => x.Unfollow(It.IsAny<string>(), It.IsAny<Guid>())).Verifiable();
             var mockedPhotoHelper = new Mock<IPhotoHelper>();
             var mockedUserProvider = new Mock<IUserProvider>();
             var mockedMapper = new Mock<IMapper>();
@@ -45,18 +44,18 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             httpContext.SetupGet(x => x.User).Returns(principal.Object);
             controllerContext.SetupGet(x => x.HttpContext).Returns(httpContext.Object);
 
-            var controller = new IndividualController(
-              mockedIndividualService.Object,
+            var controller = new OrganizationController(
+              mockedOrganizationService.Object,
               mockedMapper.Object,
               mockedPhotoHelper.Object,
               mockedUserProvider.Object);
             controller.ControllerContext = controllerContext.Object;
 
             // Act
-            controller.CancelFriendship(Guid.NewGuid());
+            controller.Unfollow(Guid.NewGuid());
 
             // Assert
-            mockedIndividualService.Verify(x => x.RemoveFriendship(It.IsAny<string>(), It.IsAny<Guid>()), Times.Once);
+            mockedOrganizationService.Verify(x => x.Unfollow(It.IsAny<string>(), It.IsAny<Guid>()), Times.Once);
         }
 
         [Test]
@@ -64,13 +63,13 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
         {
             // Arrange
             var username = "testUser";
-            var mockedIndividualService = new Mock<IIndividualService>();
-            mockedIndividualService.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(new SofiaDayAndNight.Data.Models.Individual());
-            mockedIndividualService.Setup(x => x.RemoveFriendship(It.IsAny<string>(), It.IsAny<Guid>())).Verifiable();
+            var mockedOrganizationService = new Mock<IOrganizationService>();
+            mockedOrganizationService.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(new SofiaDayAndNight.Data.Models.Organization());
+            mockedOrganizationService.Setup(x => x.Unfollow(It.IsAny<string>(), It.IsAny<Guid>())).Verifiable();
             var mockedPhotoHelper = new Mock<IPhotoHelper>();
             var mockedUserProvider = new Mock<IUserProvider>();
             var mockedMapper = new Mock<IMapper>();
-            mockedMapper.Setup(x => x.Map<IndividualViewModel>(It.IsAny<SofiaDayAndNight.Data.Models.Individual>())).Returns(new IndividualViewModel());
+            mockedMapper.Setup(x => x.Map<OrganizationViewModel>(It.IsAny<SofiaDayAndNight.Data.Models.Organization>())).Returns(new OrganizationViewModel());
 
             var request = new Mock<HttpRequestBase>();
             request.SetupGet(x => x.Headers).Returns(
@@ -86,19 +85,19 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             httpContext.SetupGet(x => x.User).Returns(principal.Object);
             controllerContext.SetupGet(x => x.HttpContext).Returns(httpContext.Object);
 
-            var controller = new IndividualController(
-              mockedIndividualService.Object,
+            var controller = new OrganizationController(
+              mockedOrganizationService.Object,
               mockedMapper.Object,
               mockedPhotoHelper.Object,
               mockedUserProvider.Object);
             controller.ControllerContext = controllerContext.Object;
 
             // Act
-            controller.CancelFriendship(Guid.NewGuid());
+            controller.Unfollow(Guid.NewGuid());
 
             // Assert
             mockedMapper.Verify(x =>
-            x.Map<IndividualViewModel>(It.IsAny<SofiaDayAndNight.Data.Models.Individual>()), Times.Once);
+            x.Map<OrganizationViewModel>(It.IsAny<SofiaDayAndNight.Data.Models.Organization>()), Times.Once);
         }
 
         [Test]
@@ -107,15 +106,15 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             // Arrange
             var username = "testUser";
             var id = Guid.NewGuid();
-            var viewModel = new IndividualViewModel();
+            var viewModel = new OrganizationViewModel();
             viewModel.Id = id;
-            var mockedIndividualService = new Mock<IIndividualService>();
-            mockedIndividualService.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(new SofiaDayAndNight.Data.Models.Individual());
-            mockedIndividualService.Setup(x => x.RemoveFriendship(It.IsAny<string>(), It.IsAny<Guid>())).Verifiable();
+            var mockedOrganizationService = new Mock<IOrganizationService>();
+            mockedOrganizationService.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(new SofiaDayAndNight.Data.Models.Organization());
+            mockedOrganizationService.Setup(x => x.Unfollow(It.IsAny<string>(), It.IsAny<Guid>())).Verifiable();
             var mockedPhotoHelper = new Mock<IPhotoHelper>();
             var mockedUserProvider = new Mock<IUserProvider>();
             var mockedMapper = new Mock<IMapper>();
-            mockedMapper.Setup(x => x.Map<IndividualViewModel>(It.IsAny<SofiaDayAndNight.Data.Models.Individual>())).Returns(viewModel);
+            mockedMapper.Setup(x => x.Map<OrganizationViewModel>(It.IsAny<SofiaDayAndNight.Data.Models.Organization>())).Returns(viewModel);
 
             var request = new Mock<HttpRequestBase>();
             request.SetupGet(x => x.Headers).Returns(
@@ -131,8 +130,8 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             httpContext.SetupGet(x => x.User).Returns(principal.Object);
             controllerContext.SetupGet(x => x.HttpContext).Returns(httpContext.Object);
 
-            var controller = new IndividualController(
-              mockedIndividualService.Object,
+            var controller = new OrganizationController(
+              mockedOrganizationService.Object,
               mockedMapper.Object,
               mockedPhotoHelper.Object,
               mockedUserProvider.Object);
@@ -140,9 +139,9 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
 
             //Act & Assert
             controller
-             .WithCallTo(x => x.CancelFriendship(Guid.NewGuid()))
-             .ShouldRenderPartialView("_IndividualInfoPartial")
-             .WithModel<IndividualViewModel>(model =>
+             .WithCallTo(x => x.Unfollow(Guid.NewGuid()))
+             .ShouldRenderPartialView("_OrganizationInfoPartial")
+             .WithModel<OrganizationViewModel>(model =>
              {
                  Assert.AreEqual(viewModel.Id, model.Id);
              });
@@ -153,9 +152,8 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
         {
             // Arrange
             var username = "testUser";
-            var mockedIndividualService = new Mock<IIndividualService>();
-            //mockedIndividualService.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(new SofiaDayAndNight.Data.Models.Individual());
-            mockedIndividualService.Setup(x => x.RemoveFriendship(It.IsAny<string>(), It.IsAny<Guid>())).Verifiable();
+            var mockedOrganizationService = new Mock<IOrganizationService>();
+            mockedOrganizationService.Setup(x => x.Unfollow(It.IsAny<string>(), It.IsAny<Guid>())).Verifiable();
             var mockedPhotoHelper = new Mock<IPhotoHelper>();
             var mockedUserProvider = new Mock<IUserProvider>();
             var mockedMapper = new Mock<IMapper>();
@@ -174,8 +172,8 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             httpContext.SetupGet(x => x.User).Returns(principal.Object);
             controllerContext.SetupGet(x => x.HttpContext).Returns(httpContext.Object);
 
-            var controller = new IndividualController(
-              mockedIndividualService.Object,
+            var controller = new OrganizationController(
+              mockedOrganizationService.Object,
               mockedMapper.Object,
               mockedPhotoHelper.Object,
               mockedUserProvider.Object);
@@ -183,11 +181,9 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
 
             //Act & Assert
             controller
-             .WithCallTo(x => x.CancelFriendship(Guid.NewGuid()))
-             .ShouldRedirectTo(typeof(IndividualController).GetMethod("ProfileDetails"))
+             .WithCallTo(x => x.Unfollow(Guid.NewGuid()))
+             .ShouldRedirectTo<IndividualController>(typeof(IndividualController).GetMethod("ProfileDetails"))
              .WithRouteValue("username");
         }
     }
 }
-
-

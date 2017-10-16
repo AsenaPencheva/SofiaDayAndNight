@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Models.Abstracts;
-using System;
 
 namespace SofiaDayAndNight.Data.Models
 {

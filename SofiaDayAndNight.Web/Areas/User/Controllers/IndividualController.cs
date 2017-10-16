@@ -1,19 +1,17 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using System;
+﻿using System;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
 using AutoMapper;
+using Bytes2you.Validation;
 
 using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Services.Contracts;
 using SofiaDayAndNight.Web.Areas.User.Models;
 using SofiaDayAndNight.Web.Helpers;
-using Bytes2you.Validation;
 
 namespace SofiaDayAndNight.Web.Areas.User.Controllers
 {
@@ -31,6 +29,7 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             Guard.WhenArgument(individualService, "individualService").IsNull().Throw();
             Guard.WhenArgument(mapper, "mapper").IsNull().Throw();
             Guard.WhenArgument(photoHelper, "photoHelper").IsNull().Throw();
+            Guard.WhenArgument(userProvider, "userProvider").IsNull().Throw();
 
             this.individualService = individualService;
             //this.imageService = imageService;
@@ -47,7 +46,6 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             }
 
             var individual = this.individualService.GetByUsername(username);
-
             if (individual == null)
             {
                 return HttpNotFound();
@@ -163,11 +161,10 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         [AjaxOnly]
         public ActionResult FriendsRequest(string username)
         {
-            //if (!Request.IsAjaxRequest())
-            //{
-            //    Response.StatusCode = (int)HttpStatusCode.Forbidden;
-            //    return this.Content("This action can be invoke only by AJAX call");
-            //}
+            if (username == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
             var friendsList = this.individualService.GetFriendsRequests(username)
                 .Select(x => this.mapper.Map<IndividualViewModel>(x)).ToList();
@@ -177,17 +174,16 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
                 friend.IndividualStatus = IndividualStatus.HasRequest;
             }
 
-            return this.PartialView("_RequestsListPartial", friendsList);
+            return this.PartialView("_FriendsListPartial", friendsList);
         }
 
         [AjaxOnly]
         public ActionResult Friends(string username)
         {
-            //if (!Request.IsAjaxRequest())
-            //{
-            //    Response.StatusCode = (int)HttpStatusCode.Forbidden;
-            //    return this.Content("This action can be invoke only by AJAX call");
-            //}
+            if (username == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
             var friendsList = this.individualService.GetFriends(username)
                 .Select(x => this.mapper.Map<IndividualViewModel>(x)).ToList();
@@ -203,6 +199,11 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
         [AjaxOnly]
         public ActionResult EventsList(string username)
         {
+            if (username == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             var passedEvents = this.individualService.GetPassedEvents(username)
                .Select(x => this.mapper.Map<EventViewModel>(x)).ToList();
 
@@ -217,12 +218,17 @@ namespace SofiaDayAndNight.Web.Areas.User.Controllers
             model.OngoingEvents = currentEvents;
             model.UpCommingEvents = upcommingEvents;
 
-            return this.PartialView("_FriendsListPartial", model);
+            return this.PartialView("_EventsListPartial", model);
         }
 
         [AjaxOnly]
         public ActionResult FollowingList(string username)
         {
+            if (username == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             var organizations = this.individualService.GetFollowingOrganization(username)
                 .Select(x => this.mapper.Map<OrganizationViewModel>(x));
 

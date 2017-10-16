@@ -1,20 +1,18 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Net;
+using System.Security.Principal;
+using System.Web;
+using System.Web.Mvc;
+
+using AutoMapper;
 using Moq;
 using NUnit.Framework;
+using TestStack.FluentMVCTesting;
+
 using SofiaDayAndNight.Data.Services.Contracts;
 using SofiaDayAndNight.Web.Areas.User.Controllers;
 using SofiaDayAndNight.Web.Areas.User.Models;
 using SofiaDayAndNight.Web.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using TestStack.FluentMVCTesting;
 
 namespace SofiaDayAndNight.UnitTests.Controllers.Individual
 {

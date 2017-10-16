@@ -78,5 +78,14 @@ namespace SofiaDayAndNight.Web.Controllers
 
             return this.View(model);
         }
+
+        [OutputCache(Duration = 360, VaryByParam = "none")]
+        [ChildActionOnly]
+        public ActionResult CachedEvents()
+        {
+            var events = this.eventService.GetUpcoming().Select(x=>this.mapper.Map<EventViewModel>(x)).ToList();
+            
+            return this.PartialView("_CachedEvents", events);
+        }
     }
 }

@@ -102,9 +102,20 @@
     <Compile Include="Controllers\Individual\CancelFriendship_Should.cs" />
     <Compile Include="Controllers\Individual\ConfirmFriendship_Should.cs" />
     <Compile Include="Controllers\Individual\Constructur_Should.cs" />
+    <Compile Include="Controllers\Individual\EventsList_Should.cs" />
+    <Compile Include="Controllers\Individual\FollowingList_Should.cs" />
+    <Compile Include="Controllers\Individual\FriendsRequests_Should.cs" />
+    <Compile Include="Controllers\Individual\Friends_Should.cs" />
     <Compile Include="Controllers\Individual\ProfileDetails_Should.cs" />
     <Compile Include="Controllers\Individual\SendFriendRequest_Should.cs" />
     <Compile Include="Controllers\Individual\Submit_Should.cs" />
+    <Compile Include="Controllers\Organization\Constructur_Should.cs" />
+    <Compile Include="Controllers\Organization\EventsList_Should.cs" />
+    <Compile Include="Controllers\Organization\FollowersList_Should.cs" />
+    <Compile Include="Controllers\Organization\Follow_Should.cs" />
+    <Compile Include="Controllers\Organization\ProfileDetails_Should.cs" />
+    <Compile Include="Controllers\Organization\Submit_Should.cs" />
+    <Compile Include="Controllers\Organization\Unfollow_Should.cs" />
     <Compile Include="Data.Services\EventServiceTests\Constructor_Should.cs" />
     <Compile Include="Data.Services\EventServiceTests\GetAll_Should.cs" />
     <Compile Include="Data.Services\EventServiceTests\GetById_Should.cs" />
@@ -176,6 +187,7 @@
       <Name>SofiaDayAndNight.Web</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

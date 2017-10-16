@@ -7,6 +7,7 @@ using Bytes2you.Validation;
 using SofiaDayAndNight.Data.Contracts;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Services.Contracts;
+using SofiaDayAndNight.Common;
 
 namespace SofiaDayAndNight.Data.Services
 {
@@ -67,6 +68,16 @@ namespace SofiaDayAndNight.Data.Services
         public IEnumerable<Event> GetAll()
         {
             return this.eventsSetWrapper.All.ToList();
+        }
+
+        public IEnumerable<Event> GetUpcoming()
+        {
+            var currentDate = DateTimeProvider.Current.UtcNow;
+            var dateToCheck = currentDate.AddHours(1);
+
+            return this.eventsSetWrapper.All
+                .Where(x => dateToCheck <= x.Begins)
+                .OrderBy(x => x.Begins).Take(3).ToList();
         }
     }
 }

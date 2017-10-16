@@ -7,6 +7,6 @@ namespace SofiaDayAndNight.Data.Services.Contracts
     public interface IImageService
     {
         Image GetById(Guid? id);
-        void Create(Image image);
+        //void Create(Image image);
     }
 }

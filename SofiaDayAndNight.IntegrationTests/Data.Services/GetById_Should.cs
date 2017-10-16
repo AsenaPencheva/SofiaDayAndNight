@@ -1,17 +1,14 @@
-﻿
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
+
 using Ninject;
 using NUnit.Framework;
+
 using SofiaDayAndNight.Data;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Services.Contracts;
 using SofiaDayAndNight.Web.App_Start;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SofiaDayAndNight.IntegrationTests.Data.Services
 {

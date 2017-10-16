@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Linq;
+using System.Collections.Generic;
 
 using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Models;
-using System.Collections.Generic;
+
 
 namespace SofiaDayAndNight.Data.Services.Contracts
 {

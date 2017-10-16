@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 
 using SofiaDayAndNight.Data.Models;
-using System.Collections.Generic;
 
 namespace SofiaDayAndNight.Data.Services.Contracts
 {
@@ -19,5 +18,6 @@ namespace SofiaDayAndNight.Data.Services.Contracts
         //void Unban(Guid id);
         void Update(Event eventToUpdate);
         IEnumerable<Event> GetAll();
+        IEnumerable<Event> GetUpcoming();
     }
 }

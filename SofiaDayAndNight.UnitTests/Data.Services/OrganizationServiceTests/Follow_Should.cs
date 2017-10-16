@@ -94,7 +94,7 @@ namespace SofiaDayAndNight.UnitTests.Data.Services.OrganizationServiceTests
             mockedEfWrappert.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(new Organization());
             var mockedDbContext = new Mock<IUnitOfWork>();
             var mockedIndividualService = new Mock<IIndividualService>();
-            mockedIndividualService.Setup(x => x.GetByUser(It.IsAny<string>())).Returns(new Individual());
+            mockedIndividualService.Setup(x => x.GetByUsername(It.IsAny<string>())).Returns(new Individual());
             var service = new OrganizationService(mockedIndividualService.Object, mockedEfWrappert.Object, mockedDbContext.Object);
 
             // Act

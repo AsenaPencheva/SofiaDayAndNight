@@ -1,9 +1,8 @@
-﻿using SofiaDayAndNight.Data;
-using SofiaDayAndNight.Data.Migrations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 
+using SofiaDayAndNight.Data;
 
 namespace SofiaDayAndNight.IntegrationTests
 {

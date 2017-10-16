@@ -4,11 +4,11 @@ using System.Linq;
 
 using Bytes2you.Validation;
 
+using SofiaDayAndNight.Common;
 using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Contracts;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Services.Contracts;
-using SofiaDayAndNight.Common;
 
 namespace SofiaDayAndNight.Data.Services
 {

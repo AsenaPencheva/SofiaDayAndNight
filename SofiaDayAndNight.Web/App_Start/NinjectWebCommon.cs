@@ -8,6 +8,7 @@ namespace SofiaDayAndNight.Web.App_Start
     using System.Web;
     using System.Data.Entity;
 
+    using AutoMapper;
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Extensions.Conventions;
@@ -16,13 +17,6 @@ namespace SofiaDayAndNight.Web.App_Start
     using SofiaDayAndNight.Data.Contracts;
     using SofiaDayAndNight.Data.EfDbSetWrappers;
     using SofiaDayAndNight.Data.Services.Contracts;
-    using AutoMapper;
-    using SofiaDayAndNight.Data.Services;
-    using Microsoft.AspNet.Identity;
-    using SofiaDayAndNight.Data.Models;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using System.Reflection;
-    using SofiaDayAndNight.Web.Helpers;
     using SofiaDayAndNight.Common;
 
     public static class NinjectWebCommon

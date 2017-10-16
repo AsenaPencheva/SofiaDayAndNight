@@ -13,7 +13,7 @@ using SofiaDayAndNight.Web.Areas.User.Controllers;
 using SofiaDayAndNight.Web.Areas.User.Models;
 using SofiaDayAndNight.Web.Helpers;
 
-namespace SofiaDayAndNight.UnitTests.Controllers.Individual
+namespace SofiaDayAndNight.UnitTests.Controllers.Organization
 {
     [TestFixture]
     public class Submit_Should
@@ -22,20 +22,19 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
         public void ReturnProfileFormWithEmpty_WhenModelStatusIsInvalid()
         {
             // Arrange            
-            var mockedIndividualService = new Mock<IIndividualService>();
             var mockedOrganizationService = new Mock<IOrganizationService>();
             var mockedMapper = new Mock<IMapper>();
             var mockedPhotoHelper = new Mock<IPhotoHelper>();
             var mockedUserProvider = new Mock<IUserProvider>();
 
-            var controller = new IndividualController(
-                mockedIndividualService.Object,
+            var controller = new OrganizationController(
+                mockedOrganizationService.Object,
                 mockedMapper.Object,
                 mockedPhotoHelper.Object,
                 mockedUserProvider.Object);
             controller.ModelState.AddModelError("test", "test");
 
-            var model = new IndividualViewModel();
+            var model = new OrganizationViewModel();
 
             var mockedUpload = new Mock<HttpPostedFileBase>();
 
@@ -52,17 +51,17 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
         {
             // Arrange    
             var username = "testUser";
-            var user = new SofiaDayAndNight.Data.Models.User();
-            var viewModel = new IndividualViewModel();
-            var mockedIndividualService = new Mock<IIndividualService>();
+            var user = new User();
+            var viewModel = new OrganizationViewModel();
+
             var mockedOrganizationService = new Mock<IOrganizationService>();
             var mockedPhotoHelper = new Mock<IPhotoHelper>();
             var mockedUserProvider = new Mock<IUserProvider>();
             mockedUserProvider.Setup(x => x.FindByName(It.IsAny<string>())).Returns(user);
             mockedUserProvider.Setup(x => x.Update(user)).Verifiable();
             var mockedMapper = new Mock<IMapper>();
-            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Individual>(It.IsAny<IndividualViewModel>()))
-                .Returns(new SofiaDayAndNight.Data.Models.Individual());
+            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Organization>(It.IsAny<OrganizationViewModel>()))
+                .Returns(new SofiaDayAndNight.Data.Models.Organization());
 
             var mockedUpload = new Mock<HttpPostedFileBase>();
 
@@ -71,8 +70,8 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             principal.SetupGet(x => x.Identity.Name).Returns(username);
             controllerContext.SetupGet(x => x.HttpContext.User).Returns(principal.Object);
 
-            var controller = new IndividualController(
-               mockedIndividualService.Object,
+            var controller = new OrganizationController(
+               mockedOrganizationService.Object,
                mockedMapper.Object,
                mockedPhotoHelper.Object,
                mockedUserProvider.Object);
@@ -83,7 +82,7 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             controller.Submit(viewModel, mockedUpload.Object);
 
             // Assert
-            mockedMapper.Verify(x => x.Map<SofiaDayAndNight.Data.Models.Individual>(It.IsAny<IndividualViewModel>()), Times.Once);
+            mockedMapper.Verify(x => x.Map<SofiaDayAndNight.Data.Models.Organization>(It.IsAny<OrganizationViewModel>()), Times.Once);
         }
 
         [Test]
@@ -91,17 +90,16 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
         {
             // Arrange    
             var username = "testUser";
-            var user = new SofiaDayAndNight.Data.Models.User();
-            var viewModel = new IndividualViewModel();
-            var mockedIndividualService = new Mock<IIndividualService>();
+            var user = new User();
+            var viewModel = new OrganizationViewModel();
             var mockedOrganizationService = new Mock<IOrganizationService>();
             var mockedPhotoHelper = new Mock<IPhotoHelper>();
             var mockedUserProvider = new Mock<IUserProvider>();
             mockedUserProvider.Setup(x => x.FindByName(It.IsAny<string>())).Returns(user);
             mockedUserProvider.Setup(x => x.Update(user)).Verifiable();
             var mockedMapper = new Mock<IMapper>();
-            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Individual>(It.IsAny<IndividualViewModel>()))
-                .Returns(new SofiaDayAndNight.Data.Models.Individual());
+            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Organization>(It.IsAny<OrganizationViewModel>()))
+                .Returns(new SofiaDayAndNight.Data.Models.Organization());
 
             var mockedUpload = new Mock<HttpPostedFileBase>();
 
@@ -110,8 +108,8 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             principal.SetupGet(x => x.Identity.Name).Returns(username);
             controllerContext.SetupGet(x => x.HttpContext.User).Returns(principal.Object);
 
-            var controller = new IndividualController(
-               mockedIndividualService.Object,
+            var controller = new OrganizationController(
+               mockedOrganizationService.Object,
                mockedMapper.Object,
                mockedPhotoHelper.Object,
                mockedUserProvider.Object);
@@ -130,17 +128,16 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
         {
             // Arrange    
             var username = "testUser";
-            var user = new SofiaDayAndNight.Data.Models.User();
-            var viewModel = new IndividualViewModel();
-            var mockedIndividualService = new Mock<IIndividualService>();
+            var user = new User();
+            var viewModel = new OrganizationViewModel();
             var mockedOrganizationService = new Mock<IOrganizationService>();
             var mockedPhotoHelper = new Mock<IPhotoHelper>();
             var mockedUserProvider = new Mock<IUserProvider>();
             mockedUserProvider.Setup(x => x.FindByName(It.IsAny<string>())).Returns(user);
             mockedUserProvider.Setup(x => x.Update(user)).Verifiable();
             var mockedMapper = new Mock<IMapper>();
-            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Individual>(It.IsAny<IndividualViewModel>()))
-                .Returns(new SofiaDayAndNight.Data.Models.Individual());
+            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Organization>(It.IsAny<OrganizationViewModel>()))
+                .Returns(new SofiaDayAndNight.Data.Models.Organization());
 
             var mockedUpload = new Mock<HttpPostedFileBase>();
 
@@ -149,8 +146,8 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             principal.SetupGet(x => x.Identity.Name).Returns(username);
             controllerContext.SetupGet(x => x.HttpContext.User).Returns(principal.Object);
 
-            var controller = new IndividualController(
-               mockedIndividualService.Object,
+            var controller = new OrganizationController(
+               mockedOrganizationService.Object,
                mockedMapper.Object,
                mockedPhotoHelper.Object,
                mockedUserProvider.Object);
@@ -169,17 +166,16 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
         {
             // Arrange    
             var username = "testUser";
-            var user = new SofiaDayAndNight.Data.Models.User();
-            var viewModel = new IndividualViewModel();
-            var mockedIndividualService = new Mock<IIndividualService>();
+            var user = new User();
+            var viewModel = new OrganizationViewModel();
             var mockedOrganizationService = new Mock<IOrganizationService>();
             var mockedPhotoHelper = new Mock<IPhotoHelper>();
             var mockedUserProvider = new Mock<IUserProvider>();
             mockedUserProvider.Setup(x => x.FindByName(It.IsAny<string>())).Returns(user);
             mockedUserProvider.Setup(x => x.Update(user)).Verifiable();
             var mockedMapper = new Mock<IMapper>();
-            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Individual>(It.IsAny<IndividualViewModel>()))
-                .Returns(new SofiaDayAndNight.Data.Models.Individual());
+            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Organization>(It.IsAny<OrganizationViewModel>()))
+                .Returns(new SofiaDayAndNight.Data.Models.Organization());
 
             var mockedUpload = new Mock<HttpPostedFileBase>();
 
@@ -188,8 +184,8 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             principal.SetupGet(x => x.Identity.Name).Returns(username);
             controllerContext.SetupGet(x => x.HttpContext.User).Returns(principal.Object);
 
-            var controller = new IndividualController(
-               mockedIndividualService.Object,
+            var controller = new OrganizationController(
+               mockedOrganizationService.Object,
                mockedMapper.Object,
                mockedPhotoHelper.Object,
                mockedUserProvider.Object);
@@ -199,7 +195,7 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             //Act & Assert
             controller
              .WithCallTo(x => x.Submit(viewModel, mockedUpload.Object))
-             .ShouldRedirectTo(typeof(IndividualController).GetMethod("ProfileDetails"));
+             .ShouldRedirectTo(typeof(OrganizationController).GetMethod("ProfileDetails"));
         }
 
         [Test]
@@ -208,16 +204,15 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             // Arrange    
             var username = "testUser";
             var user = new User();
-            var viewModel = new IndividualViewModel();
-            var mockedIndividualService = new Mock<IIndividualService>();
+            var viewModel = new OrganizationViewModel();
             var mockedOrganizationService = new Mock<IOrganizationService>();
             var mockedPhotoHelper = new Mock<IPhotoHelper>();
             var mockedUserProvider = new Mock<IUserProvider>();
             mockedUserProvider.Setup(x => x.FindByName(It.IsAny<string>())).Returns((User)null);
             mockedUserProvider.Setup(x => x.Update(user)).Verifiable();
             var mockedMapper = new Mock<IMapper>();
-            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Individual>(It.IsAny<IndividualViewModel>()))
-                .Returns(new SofiaDayAndNight.Data.Models.Individual());
+            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Organization>(It.IsAny<OrganizationViewModel>()))
+                .Returns(new SofiaDayAndNight.Data.Models.Organization());
 
             var mockedUpload = new Mock<HttpPostedFileBase>();
 
@@ -226,8 +221,8 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             principal.SetupGet(x => x.Identity.Name).Returns(username);
             controllerContext.SetupGet(x => x.HttpContext.User).Returns(principal.Object);
 
-            var controller = new IndividualController(
-               mockedIndividualService.Object,
+            var controller = new OrganizationController(
+               mockedOrganizationService.Object,
                mockedMapper.Object,
                mockedPhotoHelper.Object,
                mockedUserProvider.Object);
@@ -246,16 +241,15 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             // Arrange    
             var username = "testUser";
             var user = new User();
-            var viewModel = new IndividualViewModel();
-            var mockedIndividualService = new Mock<IIndividualService>();
+            var viewModel = new OrganizationViewModel();
             var mockedOrganizationService = new Mock<IOrganizationService>();
             var mockedPhotoHelper = new Mock<IPhotoHelper>();
             var mockedUserProvider = new Mock<IUserProvider>();
             mockedUserProvider.Setup(x => x.FindByName(It.IsAny<string>())).Returns(user);
             mockedUserProvider.Setup(x => x.Update(user)).Verifiable();
             var mockedMapper = new Mock<IMapper>();
-            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Individual>(It.IsAny<IndividualViewModel>()))
-                .Returns(new SofiaDayAndNight.Data.Models.Individual());
+            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Organization>(It.IsAny<OrganizationViewModel>()))
+                .Returns(new SofiaDayAndNight.Data.Models.Organization());
 
             var mockedUpload = new Mock<HttpPostedFileBase>();
             mockedPhotoHelper.Setup(x => x.UploadImage(mockedUpload.Object)).Verifiable();
@@ -265,8 +259,8 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             principal.SetupGet(x => x.Identity.Name).Returns(username);
             controllerContext.SetupGet(x => x.HttpContext.User).Returns(principal.Object);
 
-            var controller = new IndividualController(
-               mockedIndividualService.Object,
+            var controller = new OrganizationController(
+               mockedOrganizationService.Object,
                mockedMapper.Object,
                mockedPhotoHelper.Object,
                mockedUserProvider.Object);
@@ -286,15 +280,15 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             // Arrange    
             var username = "testUser";
             var user = new User();
-            var viewModel = new IndividualViewModel();
-            var mockedIndividualService = new Mock<IIndividualService>();
+            var viewModel = new OrganizationViewModel();
+            var mockedOrganizationService = new Mock<IOrganizationService>();
             var mockedPhotoHelper = new Mock<IPhotoHelper>();
             var mockedUserProvider = new Mock<IUserProvider>();
             mockedUserProvider.Setup(x => x.FindByName(It.IsAny<string>())).Returns(user);
             mockedUserProvider.Setup(x => x.Update(user)).Verifiable();
             var mockedMapper = new Mock<IMapper>();
-            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Individual>(It.IsAny<IndividualViewModel>()))
-                .Returns(new SofiaDayAndNight.Data.Models.Individual());
+            mockedMapper.Setup(x => x.Map<SofiaDayAndNight.Data.Models.Organization>(It.IsAny<OrganizationViewModel>()))
+                .Returns(new SofiaDayAndNight.Data.Models.Organization());
 
             var mockedUpload = new Mock<HttpPostedFileBase>();
             mockedUpload.SetupGet(x => x.ContentLength).Returns(1);
@@ -305,8 +299,8 @@ namespace SofiaDayAndNight.UnitTests.Controllers.Individual
             principal.SetupGet(x => x.Identity.Name).Returns(username);
             controllerContext.SetupGet(x => x.HttpContext.User).Returns(principal.Object);
 
-            var controller = new IndividualController(
-               mockedIndividualService.Object,
+            var controller = new OrganizationController(
+               mockedOrganizationService.Object,
                mockedMapper.Object,
                mockedPhotoHelper.Object,
                mockedUserProvider.Object);

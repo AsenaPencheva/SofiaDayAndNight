@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 
 using AutoMapper;
 using Moq;
@@ -11,7 +10,6 @@ using SofiaDayAndNight.Data.Services.Contracts;
 using SofiaDayAndNight.Web.Areas.User.Controllers;
 using SofiaDayAndNight.Web.Areas.User.Models;
 using SofiaDayAndNight.Web.Helpers;
-using System.Web.Mvc;
 
 namespace SofiaDayAndNight.UnitTests.Controllers.Event
 {

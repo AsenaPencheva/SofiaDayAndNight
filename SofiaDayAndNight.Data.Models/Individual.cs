@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 
 using SofiaDayAndNight.Data.Models.Abstracts;
-using System;
 
 namespace SofiaDayAndNight.Data.Models
 {

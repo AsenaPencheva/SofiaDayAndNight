@@ -22,14 +22,14 @@ namespace SofiaDayAndNight.Data.Services
             this.dbContext = dbContext;
         }
 
-        public void Create(Image image)
-        {
-            if (image != null)
-            {
-                this.imageSetWrapper.Add(image);
-                this.dbContext.Commit();
-            }           
-        }
+        //public void Create(Image image)
+        //{
+        //    if (image != null)
+        //    {
+        //        this.imageSetWrapper.Add(image);
+        //        this.dbContext.Commit();
+        //    }           
+        //}
 
         public Image GetById(Guid? id)
         {

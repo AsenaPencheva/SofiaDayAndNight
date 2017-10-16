@@ -4,11 +4,11 @@ using System.Linq;
 
 using Bytes2you.Validation;
 
+using SofiaDayAndNight.Common;
 using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Contracts;
 using SofiaDayAndNight.Data.Models;
 using SofiaDayAndNight.Data.Services.Contracts;
-using SofiaDayAndNight.Common;
 
 namespace SofiaDayAndNight.Data.Services
 {
@@ -87,18 +87,18 @@ namespace SofiaDayAndNight.Data.Services
             return organization;
         }
 
-        public OrganizationStatus GetStatus(string currentUserId, Guid? id)
+        public OrganizationStatus GetStatus(string username, Guid? id)
         {
             if (id.HasValue)
             {
                 var organization = this.organizationSetWrapper.GetById(id.Value);
                 if (organization != null)
                 {
-                    if (organization.User.Id == currentUserId)
+                    if (organization.User.UserName == username)
                     {
                         return OrganizationStatus.isCurrent;
                     }
-                    else if (organization.Followers.Where(x => x.User.Id == currentUserId).Count() > 0)
+                    else if (organization.Followers.Where(x => x.User.UserName == username).Count() > 0)
                     {
                         return OrganizationStatus.IsFollowed;
                     }
@@ -123,11 +123,11 @@ namespace SofiaDayAndNight.Data.Services
             }
         }
 
-        public void Follow(string currentId, Guid? id)
+        public void Follow(string currentUser, Guid? id)
         {
-            if (!string.IsNullOrEmpty(currentId) && id.HasValue)
+            if (!string.IsNullOrEmpty(currentUser) && id.HasValue)
             {
-                var current = this.individualService.GetByUser(currentId);
+                var current = this.individualService.GetByUsername(currentUser);
                 var organization = this.GetById(id);
 
                 if (current != null && organization != null)
@@ -138,11 +138,11 @@ namespace SofiaDayAndNight.Data.Services
             }
         }
 
-        public void Unfollow(string currentId, Guid? id)
+        public void Unfollow(string currentUser, Guid? id)
         {
-            if (!string.IsNullOrEmpty(currentId) && id.HasValue)
+            if (!string.IsNullOrEmpty(currentUser) && id.HasValue)
             {
-                var current = this.individualService.GetByUser(currentId);
+                var current = this.individualService.GetByUsername(currentUser);
                 var organization = this.GetById(id);
 
                 if (current != null && organization != null)

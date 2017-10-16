@@ -71,7 +71,7 @@ namespace SofiaDayAndNight.UnitTests.Data.Services.OrganizationServiceTests
             var mockedIndividualService = new Mock<IIndividualService>();
 
             var user = new User();
-            user.Id = userId;
+            user.UserName = userId;
             var organization = new Organization();
             organization.User = user;
             organization.Id = organizationId;
@@ -123,14 +123,14 @@ namespace SofiaDayAndNight.UnitTests.Data.Services.OrganizationServiceTests
             var mockedDbContext = new Mock<IUnitOfWork>();
 
             var user = new User();
-            user.Id = userId;
+            user.UserName = userId;
             var organization = new Organization();
             organization.User = user;
             organization.Id = organizationId;
             var follower = new Individual();
             var followerId = "followerId";
             follower.User = new User();
-            follower.User.Id = followerId;
+            follower.User.UserName = followerId;
             organization.Followers.Add(follower);
 
             mockedEfWrappert.Setup(m => m.GetById(It.IsAny<Guid>())).Returns(organization);

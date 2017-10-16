@@ -49,14 +49,17 @@
 	</div>
 	<div class="form-group">
 		@Html.Label("Begins", new { @class = "col-md-2 control-label" })
-		<div class="col-md-10">
-			@Html.TextBoxFor(m => m.Begins, "{0:dd/MM/yyyy}", new { maxlength = 10 })
+		<div class="col-md-10 input-group date" id='datetimepicker6'>
+			@Html.EditorFor(m => m.Begins, new { @class="form-control" })
+			<span class="input-group-addon">
+				<span class="glyphicon glyphicon-calendar"></span>
+			</span>
 		</div>
 	</div>
 	<div class="form-group">
 		@Html.Label("Ends", new { @class = "col-md-2 control-label" })
-		<div class="col-md-10">
-			@Html.TextBoxFor(m => m.Ends, "{0:dd/MM/yyyy}", new { maxlength = 10 })
+		<div class="col-md-10 input-group date" id='datetimepicker7'>
+			@Html.EditorFor(m => m.Ends, new { @class = "form-control" })
 		</div>
 	</div>
 	<div class="form-group">
@@ -65,7 +68,20 @@
 		</div>
 	</div>
 }
-
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker6').datetimepicker();
+        $('#datetimepicker7').datetimepicker({
+            useCurrent: false 
+        });
+        $("#datetimepicker6").on("dp.change", function (e) {
+            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+        });
+        $("#datetimepicker7").on("dp.change", function (e) {
+            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+        });
+    });
+</script>
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
 }

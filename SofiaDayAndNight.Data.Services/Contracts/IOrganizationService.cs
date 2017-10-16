@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+
 using SofiaDayAndNight.Common.Enums;
 using SofiaDayAndNight.Data.Models;
 

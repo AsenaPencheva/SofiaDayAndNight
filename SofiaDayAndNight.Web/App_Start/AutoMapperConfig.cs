@@ -1,10 +1,11 @@
-﻿using AutoMapper;
-using SofiaDayAndNight.Web.Infrastructure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Web;
+
+using AutoMapper;
+
+using SofiaDayAndNight.Web.Infrastructure;
 
 namespace SofiaDayAndNight.Web.App_Start
 {
