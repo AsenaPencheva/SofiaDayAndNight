@@ -36,8 +36,8 @@ Registration of users in different roles is available
 </hr>
 <p>The lib is on trial version and it is not legal to use it unless purchased or also downloaded as trial <a href="http://www.telerik.com/kendo-ui">Kend UI</a></p>
 Screenshots:
-<img src="SofiaDayAndNight.Web/Images/Screenshots/1.jpg" />
-<img src="SofiaDayAndNight.Web/Images/Screenshots/2.jpg" />
-<img src="SofiaDayAndNight.Web/Images/Screenshots/3.jpg" />
-<img src="SofiaDayAndNight.Web/Images/Screenshots/4.jpg" />
-<img src="SofiaDayAndNight.Web/Images/Screenshots/5.jpg" />
+<img src="Screenshots/1.png" />
+<img src="Screenshots/2.png" />
+<img src="Screenshots/3.png" />
+<img src="Screenshots/4.png" />
+<img src="Screenshots/5.png" />
